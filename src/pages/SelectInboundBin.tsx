@@ -197,11 +197,11 @@ const SelectInboundBin = () => {
 
       {/* Fixed White Div with Search and Stats */}
       <div className="fixed top-[142px] left-0 right-0 bg-white border-b border-gray-200 z-40 shadow-sm -mt-[6px]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="container mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
           <div className="max-w-6xl mx-auto">
-            <div className="flex items-center gap-2 sm:gap-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
               {/* Search Input */}
-              <div className="relative flex-1 max-w-md">
+              <div className="relative flex-1 max-w-full sm:max-w-md">
                 <div className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                   <Search className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
                 </div>
@@ -210,7 +210,7 @@ const SelectInboundBin = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search bin ID..."
-                  className="h-9 sm:h-12 pl-8 sm:pl-10 pr-8 sm:pr-10 text-sm sm:text-base w-full"
+                  className="h-10 sm:h-12 pl-8 sm:pl-10 pr-8 sm:pr-10 text-sm sm:text-base w-full"
                 />
                 {searchQuery && (
                   <button
@@ -226,7 +226,7 @@ const SelectInboundBin = () => {
               <Button
                 variant={filterType === "empty" ? "default" : "outline"}
                 onClick={() => setFilterType(filterType === "all" ? "empty" : "all")}
-                className="h-9 sm:h-12 px-3 sm:px-6 text-sm sm:text-base bg-white/80 backdrop-blur-sm border-gray-200 hover:bg-white hover:border-gray-300 shadow-sm flex-shrink-0"
+                className="h-10 sm:h-12 px-3 sm:px-6 text-sm sm:text-base bg-white/80 backdrop-blur-sm border-gray-200 hover:bg-white hover:border-gray-300 shadow-sm flex-shrink-0 w-full sm:w-auto"
               >
                 <Filter className="mr-1 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                 <span className="hidden sm:inline">{filterType === "all" ? "All" : "Empty"}</span>
@@ -234,7 +234,7 @@ const SelectInboundBin = () => {
               </Button>
               
               {/* Total Bins Label */}
-              <div className="text-sm sm:text-lg font-medium text-foreground whitespace-nowrap">
+              <div className="text-sm sm:text-lg font-medium text-foreground whitespace-nowrap text-center sm:text-left">
                 Total Bins: <span className="text-red-600">{bins.length}</span>
               </div>
             </div>
@@ -243,8 +243,8 @@ const SelectInboundBin = () => {
       </div>
 
       {/* Scrollable Bins List */}
-      <div className="pt-[4.5rem]">
-        <main className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <div className="pt-[5rem] sm:pt-[4.5rem]">
+        <main className="px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
           <div className="max-w-6xl mx-auto">
             {isLoading ? (
               <div className="flex items-center justify-center min-h-[400px]">
@@ -254,11 +254,11 @@ const SelectInboundBin = () => {
                 </div>
               </div>
             ) : bins.length > 0 ? (
-              <div className="flex flex-wrap gap-2 sm:gap-6 justify-center">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6 justify-items-center">
                 {bins.map((bin, index) => (
                   <div
                     key={bin.id}
-                    className="animate-fade-in cursor-pointer transition-all hover:scale-[1.02] active:scale-[0.98] w-[calc(50%-0.5rem)] sm:w-[180px] md:w-[220px] lg:w-[240px] xl:w-[240px]"
+                    className="animate-fade-in cursor-pointer transition-all hover:scale-[1.02] active:scale-[0.98] w-full max-w-[280px] sm:w-[210px] md:w-[230px] lg:w-[250px] xl:w-[270px]"
                     style={{ animationDelay: `${index * 20}ms` }}
                     onClick={() => handleBinClick(bin)}
                   >
@@ -270,17 +270,17 @@ const SelectInboundBin = () => {
                 ))}
               </div>
             ) : (
-              <div className="text-center space-y-6">
+              <div className="text-center space-y-6 px-4">
                 <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
                   <Package className="h-10 w-10 text-gray-600" />
                 </div>
                 <div className="flex items-center justify-center gap-3">
                   <Package className="h-8 w-8 text-gray-600" />
-                  <h2 className="text-3xl sm:text-4xl font-semibold text-foreground">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">
                     No Bins Found
                   </h2>
                 </div>
-                <p className="text-lg text-muted-foreground max-w-md mx-auto">
+                <p className="text-base sm:text-lg text-muted-foreground max-w-md mx-auto">
                   {searchQuery ? 'No bins match your search criteria.' : 'No bins available in the system.'}
                 </p>
               </div>
