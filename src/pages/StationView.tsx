@@ -35,6 +35,7 @@ const StationView = () => {
   const navigate = useNavigate();
   const username = sessionStorage.getItem("username") || "Guest";
   const [pendingOrder, setPendingOrder] = useState<StationOrder | null>(null);
+  const [pendingOrders, setPendingOrders] = useState<StationOrder[]>([]);
   const [inProgressTrays, setInProgressTrays] = useState<InProgressTray[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingInProgress, setIsLoadingInProgress] = useState(false);
@@ -88,18 +89,22 @@ const StationView = () => {
         console.log("Station orders response:", data);
         
         if (data.records && data.records.length > 0) {
-          // Get the most recent pending order
+          // Set all pending orders
+          setPendingOrders(data.records);
+          // Also keep the first one as the active order for compatibility
           const latestOrder = data.records[0];
           setPendingOrder(latestOrder);
           setIsLoading(false);
         } else {
           // No pending orders found
+          setPendingOrders([]);
           setPendingOrder(null);
           setIsLoading(false);
         }
       } else {
         // API failed - show station as clear and stop polling
         console.log("API failed, showing station as clear");
+        setPendingOrders([]);
         setPendingOrder(null);
         setIsLoading(false);
         setShouldStopPolling(true);
@@ -107,6 +112,7 @@ const StationView = () => {
     } catch (error) {
       console.error("Error fetching pending orders:", error);
       // Error occurred - show station as clear and stop polling
+      setPendingOrders([]);
       setPendingOrder(null);
       setIsLoading(false);
       setShouldStopPolling(true);
@@ -212,6 +218,7 @@ const StationView = () => {
         // Restart polling to check for new orders
         setShouldStopPolling(false);
         setIsLoading(true);
+        setPendingOrders([]);
         setPendingOrder(null);
         // The polling interval will automatically call fetchPendingOrders again
       } else {
@@ -244,48 +251,55 @@ const StationView = () => {
                     <p className="text-lg text-muted-foreground">Checking station status...</p>
                   </div>
                 </div>
-              ) : pendingOrder ? (
-                <div className="space-y-8">
-                  {/* Station Status Card */}
-                  <Card className="p-8 sm:p-12 bg-gradient-to-br from-amber-50 to-orange-50 border-amber-200 shadow-lg">
-                    <div className="text-center space-y-6">
-                      {/* Station and Tray Info */}
-                      <div className="bg-white/70 rounded-xl p-6 space-y-4">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div className="text-center sm:text-left">
-                            <p className="text-sm font-normal text-amber-600 mb-1">Station</p>
-                            <p className="text-xl font-medium text-amber-900">
-                              {pendingOrder.station_friendly_name || 'Main Station'}
-                            </p>
-                          </div>
-                          <div className="text-center sm:text-left">
-                            <p className="text-sm font-normal text-amber-600 mb-1">Tray ID</p>
-                            <p className="text-xl font-medium text-amber-900">
-                              {pendingOrder.tray_id}
-                            </p>
+              ) : pendingOrders.length > 0 ? (
+                <div className="space-y-6">
+                  {pendingOrders.map((order, index) => (
+                    <Card key={order.id} className="p-6 sm:p-8 bg-gradient-to-br from-amber-50 to-orange-50 border-amber-200 shadow-lg">
+                      <div className="text-center space-y-6">
+                        {/* Station and Tray Info */}
+                        <div className="bg-white/70 rounded-xl p-4 sm:p-6 space-y-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="text-center sm:text-left">
+                              <p className="text-sm font-normal text-amber-600 mb-1">Station</p>
+                              <p className="text-lg sm:text-xl font-medium text-amber-900">
+                                {order.station_friendly_name || 'Main Station'}
+                              </p>
+                            </div>
+                            <div className="text-center sm:text-left">
+                              <p className="text-sm font-normal text-amber-600 mb-1">Tray ID</p>
+                              <p className="text-lg sm:text-xl font-medium text-amber-900">
+                                {order.tray_id}
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      {/* Action Buttons */}
-                      <div className="flex flex-col sm:flex-row gap-4 justify-center w-full">
-                        <Button
-                          onClick={handleContinueOrder}
-                          className="flex-1 bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg"
-                        >
-                          Continue Order
-                          <ArrowRight className="ml-2 h-5 w-5" />
-                        </Button>
-                        <Button
-                          onClick={() => setShowReleaseConfirm(true)}
-                          variant="outline"
-                          className="flex-1 border-red-200 text-red-600 hover:bg-red-50 px-8 py-3 text-lg"
-                        >
-                          Release Tray
-                        </Button>
+                        {/* Action Buttons */}
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center w-full">
+                          <Button
+                            onClick={() => {
+                              setPendingOrder(order);
+                              handleContinueOrder();
+                            }}
+                            className="flex-1 bg-green-600 hover:bg-green-700 text-white px-6 sm:px-8 py-3 text-base sm:text-lg"
+                          >
+                            Continue Order
+                            <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              setPendingOrder(order);
+                              setShowReleaseConfirm(true);
+                            }}
+                            variant="outline"
+                            className="flex-1 border-red-200 text-red-600 hover:bg-red-50 px-6 sm:px-8 py-3 text-base sm:text-lg"
+                          >
+                            Release Tray
+                          </Button>
+                        </div>
                       </div>
-                    </div>
-                  </Card>
+                    </Card>
+                  ))}
                 </div>
               ) : (
                 /* No Pending Orders */
