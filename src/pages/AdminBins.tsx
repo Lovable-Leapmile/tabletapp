@@ -216,9 +216,9 @@ const AdminBins = () => {
           <div className="fixed top-[142px] left-0 right-0 bg-white border-b border-gray-200 z-40 shadow-sm -mt-[6px]">
             <div className="container mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
               <div className="max-w-6xl mx-auto">
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
+                <div className="flex flex-row items-center gap-2 sm:gap-4 flex-wrap">
                   {/* Search Input */}
-                  <div className="relative flex-1 max-w-full sm:max-w-md">
+                  <div className="relative flex-1 min-w-[200px]">
                     <div className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                       <Search className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
                     </div>
@@ -240,8 +240,8 @@ const AdminBins = () => {
                   </div>
                   
                   {/* Total Bins Label */}
-                  <div className="text-sm sm:text-lg font-medium text-foreground whitespace-nowrap text-center sm:text-left">
-                    Total Bins: <span className="text-red-600">{filteredBins.length > 0 ? filteredBins.length : bins.length}</span>
+                  <div className="text-sm sm:text-lg font-medium text-foreground whitespace-nowrap flex-shrink-0">
+                    Total: <span className="text-red-600">{filteredBins.length > 0 ? filteredBins.length : bins.length}</span>
                   </div>
                 </div>
               </div>
@@ -260,12 +260,12 @@ const AdminBins = () => {
                     </div>
                   </div>
                 ) : filteredBins.length > 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6 justify-items-center">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
                     {filteredBins.map((bin) => (
                       <div
                         key={bin.id}
                         onClick={() => handleBinSelect(bin)}
-                        className="cursor-pointer transition-all hover:scale-[1.02] active:scale-[0.98] w-full max-w-[280px] sm:w-[210px] md:w-[230px] lg:w-[250px] xl:w-[270px]"
+                        className="cursor-pointer transition-all hover:scale-[1.02] active:scale-[0.98] w-full"
                       >
                         <BinCard binId={bin.tray_id} itemCount={bin.total_item_quantity} />
                       </div>
@@ -296,7 +296,7 @@ const AdminBins = () => {
         <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           <div className="max-w-6xl mx-auto space-y-6">
             {/* Selected Bin Header */}
-            <div className="w-full">
+            <div className="w-full [&>div]:!w-full">
               <BinCard binId={selectedBin?.tray_id || ""} itemCount={selectedBin?.total_item_quantity || 0} />
             </div>
 

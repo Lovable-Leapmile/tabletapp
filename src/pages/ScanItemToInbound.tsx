@@ -600,7 +600,7 @@ const ScanItemToInbound = () => {
               onClick={handleCompleteOrder}
               className="w-full h-12 sm:h-14 text-base sm:text-lg font-medium bg-green-600 hover:bg-green-700 text-white transition-smooth"
             >
-              Complete Order
+              Release Tray
             </Button>
           </div>
         </div>
