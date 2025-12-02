@@ -7,7 +7,7 @@ import { ItemCard } from "@/components/ItemCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Barcode, Camera, X, ArrowRight, Package, PackageCheck, Loader2, PackageSearch } from "lucide-react";
+import { Barcode, Camera, X, ArrowRight, Package, PackageCheck, Loader2, PackageSearch, MapPin } from "lucide-react";
 import { toast } from "sonner";
 import robotAnimation from "@/assets/robot-bin-animation.gif";
 import { getApiUrl } from "@/utils/api";
@@ -519,13 +519,35 @@ const ScanItemToPickup = () => {
             <div className="max-w-3xl mx-auto space-y-6">
             {/* Selected Bin */}
             <div>
-              <div className="flex items-center gap-3 mb-3">
-                <Package className="h-6 w-6 text-red-600" />
-                <h3 className="text-lg sm:text-xl font-medium text-foreground">
-                  Selected Bin
-                </h3>
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <Package className="h-6 w-6 text-red-600" />
+                  <h3 className="text-lg sm:text-xl font-medium text-foreground">
+                    Selected Bin
+                  </h3>
+                </div>
+                {orderRecord?.station_friendly_name && (
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-5 w-5 text-blue-600" />
+                    <h3 className="text-lg sm:text-xl font-medium text-foreground">
+                      Retrieved to Station
+                    </h3>
+                  </div>
+                )}
               </div>
-              <BinCard binId={binId} itemCount={3} />
+              <div className="flex gap-4">
+                <div className="flex-1">
+                  <BinCard binId={binId} itemCount={3} />
+                </div>
+                {orderRecord?.station_friendly_name && (
+                  <div className="w-48 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <p className="text-sm font-medium text-blue-800 mb-1">Station Name</p>
+                    <p className="text-base font-semibold text-blue-900 text-left">
+                      {orderRecord.station_friendly_name}
+                    </p>
+                  </div>
+                )}
+              </div>
               
               {/* Countdown Timer */}
               {isCountdownActive && countdown > 0 && (
