@@ -489,7 +489,7 @@ const ScanItemToInbound = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-background pt-[180px]">
+    <div className="flex flex-col h-screen bg-background pt-[140px]">
       <AppBar title="Scan Item to Inbound" showBack username={username} onBack={handleBack} />
 
       {isLoading ? (
@@ -530,7 +530,7 @@ const ScanItemToInbound = () => {
                   <div className="flex items-center gap-2">
                     <MapPin className="h-5 w-5 text-blue-600" />
                     <h3 className="text-lg sm:text-xl font-medium text-foreground">
-                      Retrieved to Station
+                      Station
                     </h3>
                   </div>
                 )}
@@ -540,9 +540,8 @@ const ScanItemToInbound = () => {
                   <BinCard binId={binId} itemCount={3} />
                 </div>
                 {orderRecord?.station_friendly_name && (
-                  <div className="w-48 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <p className="text-sm font-medium text-blue-800 mb-1">Station Name</p>
-                    <p className="text-base font-semibold text-blue-900 text-left">
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg px-6 py-4 flex items-center justify-center">
+                    <p className="text-lg font-semibold text-blue-900 text-center">
                       {orderRecord.station_friendly_name}
                     </p>
                   </div>

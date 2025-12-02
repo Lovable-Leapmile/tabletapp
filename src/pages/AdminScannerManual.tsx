@@ -9,7 +9,7 @@ const AdminScannerManual = () => {
   const username = sessionStorage.getItem("username") || "Guest";
 
   return (
-    <div className="min-h-screen flex flex-col bg-background pt-[180px]">
+    <div className="min-h-screen flex flex-col bg-background pt-[140px]">
       <AppBar title="Scanner Manual" showBack username={username} />
       
       <main className="flex-1 px-6 py-8 pb-24 overflow-y-auto">
