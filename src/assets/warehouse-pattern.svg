@@ -1,0 +1,173 @@
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="#171717" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Grid structure -->
+    <path d="M0 50 L400 50" opacity="0.3"/>
+    <path d="M0 100 L400 100" opacity="0.3"/>
+    <path d="M0 150 L400 150" opacity="0.3"/>
+    <path d="M0 200 L400 200" opacity="0.3"/>
+    <path d="M0 250 L400 250" opacity="0.3"/>
+    <path d="M0 300 L400 300" opacity="0.3"/>
+    <path d="M0 350 L400 350" opacity="0.3"/>
+    <path d="M50 0 L50 400" opacity="0.3"/>
+    <path d="M100 0 L100 400" opacity="0.3"/>
+    <path d="M150 0 L150 400" opacity="0.3"/>
+    <path d="M200 0 L200 400" opacity="0.3"/>
+    <path d="M250 0 L250 400" opacity="0.3"/>
+    <path d="M300 0 L300 400" opacity="0.3"/>
+    <path d="M350 0 L350 400" opacity="0.3"/>
+    
+    <!-- Delivery Truck (top-left) -->
+    <path d="M20 20 L50 20 L55 30 L70 30 L75 20 L90 20 L90 40 L20 40 Z"/>
+    <circle cx="30" cy="40" r="4"/>
+    <circle cx="80" cy="40" r="4"/>
+    <path d="M55 20 L55 30"/>
+    <path d="M70 20 L70 30"/>
+    
+    <!-- Parcel Box (top-center) -->
+    <path d="M150 15 L180 25 L180 45 L150 35 Z"/>
+    <path d="M150 15 L150 35"/>
+    <path d="M180 25 L180 45"/>
+    <path d="M150 15 L180 25"/>
+    <path d="M150 35 L180 45"/>
+    
+    <!-- Barcode (top-right) -->
+    <path d="M320 20 L320 40"/>
+    <path d="M325 20 L325 40"/>
+    <path d="M330 20 L330 40"/>
+    <path d="M335 20 L335 40"/>
+    <path d="M340 20 L340 40"/>
+    <path d="M345 20 L345 40"/>
+    <path d="M350 20 L350 40"/>
+    
+    <!-- Arrow (left-center) -->
+    <path d="M25 120 L45 120"/>
+    <path d="M40 115 L45 120 L40 125"/>
+    
+    <!-- Location Pin (left-center) -->
+    <path d="M30 160 Q30 150 35 150 Q40 150 40 160 Q40 170 35 170 Q30 170 30 160"/>
+    <path d="M35 150 L35 160"/>
+    
+    <!-- Route Lines (left-bottom) -->
+    <path d="M20 220 Q30 210 40 220 T60 220"/>
+    <path d="M20 240 Q30 230 40 240 T60 240"/>
+    
+    <!-- AMR Robot (center-top) -->
+    <circle cx="200" cy="50" r="12"/>
+    <path d="M200 38 L200 62"/>
+    <path d="M188 50 L212 50"/>
+    <path d="M195 45 L205 45"/>
+    <path d="M195 55 L205 55"/>
+    
+    <!-- Robotic Arm (center) -->
+    <circle cx="200" cy="150" r="6"/>
+    <path d="M200 144 L200 180"/>
+    <path d="M200 180 L220 200"/>
+    <path d="M200 180 L180 200"/>
+    <path d="M220 200 L230 195"/>
+    <path d="M180 200 L170 195"/>
+    
+    <!-- Conveyor Belt (center-bottom) -->
+    <path d="M150 250 L250 250"/>
+    <path d="M150 255 L250 255"/>
+    <path d="M160 250 L160 255"/>
+    <path d="M180 250 L180 255"/>
+    <path d="M200 250 L200 255"/>
+    <path d="M220 250 L220 255"/>
+    <path d="M240 250 L240 255"/>
+    
+    <!-- Sensor (center-right) -->
+    <circle cx="320" cy="150" r="8"/>
+    <path d="M312 150 L308 150"/>
+    <path d="M328 150 L332 150"/>
+    <path d="M320 142 L320 138"/>
+    <path d="M320 158 L320 162"/>
+    <path d="M315 145 L311 141"/>
+    <path d="M325 145 L329 141"/>
+    <path d="M315 155 L311 159"/>
+    <path d="M325 155 L329 159"/>
+    
+    <!-- Warehouse Racks (bottom-left) -->
+    <path d="M30 320 L30 380"/>
+    <path d="M50 320 L50 380"/>
+    <path d="M30 320 L50 320"/>
+    <path d="M30 340 L50 340"/>
+    <path d="M30 360 L50 360"/>
+    <path d="M30 380 L50 380"/>
+    
+    <!-- Pallet (bottom-center) -->
+    <path d="M150 330 L200 330 L200 350 L150 350 Z"/>
+    <path d="M150 330 L150 350"/>
+    <path d="M200 330 L200 350"/>
+    <path d="M160 330 L160 350"/>
+    <path d="M170 330 L170 350"/>
+    <path d="M180 330 L180 350"/>
+    <path d="M190 330 L190 350"/>
+    
+    <!-- Trolley (bottom-right) -->
+    <path d="M320 330 L360 330 L365 340 L375 340 L380 330 L380 350 L320 350 Z"/>
+    <circle cx="330" cy="350" r="4"/>
+    <circle cx="370" cy="350" r="4"/>
+    <path d="M340 330 L340 350"/>
+    <path d="M360 330 L360 350"/>
+    
+    <!-- Carton (right-top) -->
+    <path d="M350 20 L380 30 L380 50 L350 40 Z"/>
+    <path d="M350 20 L350 40"/>
+    <path d="M380 30 L380 50"/>
+    <path d="M350 20 L380 30"/>
+    <path d="M350 40 L380 50"/>
+    <path d="M365 25 L365 45"/>
+    
+    <!-- Scanning Symbol (right-center) -->
+    <path d="M350 200 L370 200"/>
+    <path d="M350 200 L350 220"/>
+    <path d="M370 200 L370 220"/>
+    <path d="M350 220 L370 220"/>
+    <path d="M355 205 L365 205"/>
+    <path d="M355 210 L365 210"/>
+    <path d="M355 215 L365 215"/>
+    
+    <!-- Shipping Label (right-bottom) -->
+    <path d="M350 300 L380 300 L380 320 L350 320 Z"/>
+    <path d="M350 300 L350 320"/>
+    <path d="M380 300 L380 320"/>
+    <path d="M355 305 L375 305"/>
+    <path d="M355 310 L375 310"/>
+    <path d="M355 315 L375 315"/>
+    
+    <!-- Additional flow arrows -->
+    <path d="M100 50 L120 50"/>
+    <path d="M115 45 L120 50 L115 55"/>
+    
+    <path d="M280 50 L300 50"/>
+    <path d="M295 45 L300 50 L295 55"/>
+    
+    <path d="M100 150 L120 150"/>
+    <path d="M115 145 L120 150 L115 155"/>
+    
+    <path d="M280 150 L300 150"/>
+    <path d="M295 145 L300 150 L295 155"/>
+    
+    <!-- Additional route lines -->
+    <path d="M100 250 Q120 240 140 250 T180 250"/>
+    <path d="M220 250 Q240 260 260 250 T300 250"/>
+    
+    <!-- Additional sensors -->
+    <circle cx="100" cy="200" r="5" opacity="0.6"/>
+    <circle cx="300" cy="200" r="5" opacity="0.6"/>
+    
+    <!-- Additional barcodes -->
+    <path d="M150 80 L150 100"/>
+    <path d="M155 80 L155 100"/>
+    <path d="M160 80 L160 100"/>
+    <path d="M165 80 L165 100"/>
+    <path d="M170 80 L170 100"/>
+    
+    <path d="M230 80 L230 100"/>
+    <path d="M235 80 L235 100"/>
+    <path d="M240 80 L240 100"/>
+    <path d="M245 80 L245 100"/>
+    <path d="M250 80 L250 100"/>
+  </g>
+</svg>
+

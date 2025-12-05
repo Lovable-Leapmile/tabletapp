@@ -1,0 +1,74 @@
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Warehouse shelves -->
+  <rect x="20" y="300" width="60" height="4" fill="#171717"/>
+  <rect x="20" y="320" width="60" height="4" fill="#171717"/>
+  <rect x="20" y="340" width="60" height="4" fill="#171717"/>
+  
+  <!-- Boxes/Packages -->
+  <rect x="25" y="280" width="15" height="15" fill="#171717"/>
+  <rect x="45" y="280" width="15" height="15" fill="#171717"/>
+  <rect x="65" y="280" width="15" height="15" fill="#171717"/>
+  
+  <!-- Robot icon simplified -->
+  <circle cx="120" cy="310" r="8" fill="#171717"/>
+  <rect x="112" y="318" width="16" height="12" fill="#171717"/>
+  <rect x="108" y="330" width="8" height="4" fill="#171717"/>
+  <rect x="124" y="330" width="8" height="4" fill="#171717"/>
+  
+  <!-- Truck/Vehicle -->
+  <rect x="180" y="300" width="40" height="20" fill="#171717"/>
+  <circle cx="190" cy="320" r="6" fill="#171717"/>
+  <circle cx="210" cy="320" r="6" fill="#171717"/>
+  <rect x="220" y="305" width="15" height="10" fill="#171717"/>
+  
+  <!-- More shelves -->
+  <rect x="280" y="300" width="60" height="4" fill="#171717"/>
+  <rect x="280" y="320" width="60" height="4" fill="#171717"/>
+  <rect x="280" y="340" width="60" height="4" fill="#171717"/>
+  
+  <!-- More boxes -->
+  <rect x="285" y="280" width="15" height="15" fill="#171717"/>
+  <rect x="305" y="280" width="15" height="15" fill="#171717"/>
+  <rect x="325" y="280" width="15" height="15" fill="#171717"/>
+  
+  <!-- Conveyor belt -->
+  <rect x="20" y="200" width="100" height="8" fill="#171717"/>
+  <rect x="30" y="195" width="20" height="15" fill="#171717"/>
+  <rect x="60" y="195" width="20" height="15" fill="#171717"/>
+  <rect x="90" y="195" width="20" height="15" fill="#171717"/>
+  
+  <!-- Storage racks -->
+  <rect x="180" y="180" width="4" height="60" fill="#171717"/>
+  <rect x="200" y="180" width="4" height="60" fill="#171717"/>
+  <rect x="220" y="180" width="4" height="60" fill="#171717"/>
+  <rect x="180" y="180" width="44" height="4" fill="#171717"/>
+  <rect x="180" y="200" width="44" height="4" fill="#171717"/>
+  <rect x="180" y="220" width="44" height="4" fill="#171717"/>
+  
+  <!-- More boxes on racks -->
+  <rect x="190" y="185" width="12" height="12" fill="#171717"/>
+  <rect x="210" y="185" width="12" height="12" fill="#171717"/>
+  
+  <!-- Robot arm -->
+  <circle cx="320" cy="200" r="6" fill="#171717"/>
+  <rect x="314" y="200" width="20" height="3" fill="#171717"/>
+  <rect x="330" y="195" width="3" height="15" fill="#171717"/>
+  
+  <!-- Arrow/Flow direction -->
+  <path d="M50 150 L80 150" stroke="#171717" stroke-width="2" fill="none"/>
+  <path d="M75 145 L80 150 L75 155" stroke="#171717" stroke-width="2" fill="none"/>
+  
+  <!-- More logistics elements -->
+  <rect x="120" y="120" width="30" height="20" fill="#171717"/>
+  <rect x="125" y="125" width="20" height="10" fill="#171717" opacity="0.3"/>
+  
+  <rect x="200" y="100" width="40" height="25" fill="#171717"/>
+  <circle cx="210" cy="130" r="5" fill="#171717"/>
+  <circle cx="230" cy="130" r="5" fill="#171717"/>
+  
+  <!-- Warehouse building outline -->
+  <rect x="280" y="80" width="80" height="60" fill="none" stroke="#171717" stroke-width="2"/>
+  <rect x="300" y="100" width="20" height="20" fill="#171717"/>
+  <polygon points="280,80 320,50 360,80" fill="#171717"/>
+</svg>
+

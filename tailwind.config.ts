@@ -109,6 +109,174 @@ export default {
             opacity: "0.5",
           },
         },
+        "robot-work": {
+          "0%, 100%": {
+            transform: "translateY(0) rotate(0deg)",
+          },
+          "25%": {
+            transform: "translateY(-8px) rotate(-5deg)",
+          },
+          "50%": {
+            transform: "translateY(-4px) rotate(0deg)",
+          },
+          "75%": {
+            transform: "translateY(-8px) rotate(5deg)",
+          },
+        },
+        "package-float": {
+          "0%, 100%": {
+            transform: "translateY(0) scale(1)",
+            opacity: "0.6",
+          },
+          "50%": {
+            transform: "translateY(-10px) scale(1.1)",
+            opacity: "1",
+          },
+        },
+        "shuttle-move": {
+          "0%": {
+            transform: "translateX(-40px)",
+          },
+          "50%": {
+            transform: "translateX(40px)",
+          },
+          "100%": {
+            transform: "translateX(-40px)",
+          },
+        },
+        "parcel-pickup": {
+          "0%, 20%": {
+            transform: "translateY(0) scale(1)",
+            opacity: "1",
+          },
+          "30%, 70%": {
+            transform: "translateY(-20px) scale(0.8)",
+            opacity: "0.8",
+          },
+          "80%, 100%": {
+            transform: "translateY(0) scale(1)",
+            opacity: "1",
+          },
+        },
+        "parcel-shelf": {
+          "0%, 100%": {
+            opacity: "1",
+            transform: "scale(1)",
+          },
+          "25%, 75%": {
+            opacity: "0.3",
+            transform: "scale(0.9)",
+          },
+        },
+        "autonomous-pulse": {
+          "0%, 100%": {
+            transform: "scale(1)",
+            opacity: "1",
+          },
+          "50%": {
+            transform: "scale(1.05)",
+            opacity: "0.9",
+          },
+        },
+        "autonomous-glow": {
+          "0%, 100%": {
+            boxShadow: "0 0 0 0 rgba(0, 0, 0, 0.1)",
+          },
+          "50%": {
+            boxShadow: "0 0 20px 5px rgba(0, 0, 0, 0.15)",
+          },
+        },
+        "lock-pulse": {
+          "0%, 100%": {
+            transform: "scale(1)",
+            opacity: "1",
+          },
+          "50%": {
+            transform: "scale(1.05)",
+            opacity: "0.9",
+          },
+        },
+        "shuttle-operate": {
+          "0%": {
+            transform: "translateX(-50px) translateY(0)",
+          },
+          "20%": {
+            transform: "translateX(-30px) translateY(-5px)",
+          },
+          "40%": {
+            transform: "translateX(0) translateY(0)",
+          },
+          "60%": {
+            transform: "translateX(30px) translateY(-5px)",
+          },
+          "80%": {
+            transform: "translateX(50px) translateY(0)",
+          },
+          "100%": {
+            transform: "translateX(-50px) translateY(0)",
+          },
+        },
+        "plate-rotate": {
+          "0%, 40%": {
+            transform: "rotate(0deg)",
+          },
+          "50%": {
+            transform: "rotate(90deg)",
+          },
+          "60%": {
+            transform: "rotate(180deg)",
+          },
+          "70%": {
+            transform: "rotate(270deg)",
+          },
+          "80%, 100%": {
+            transform: "rotate(360deg)",
+          },
+        },
+        "item-pickup": {
+          "0%, 15%": {
+            transform: "translateY(0) scale(1)",
+            opacity: "1",
+          },
+          "25%": {
+            transform: "translateY(-15px) scale(0.9)",
+            opacity: "0.9",
+          },
+          "35%, 65%": {
+            transform: "translateY(-25px) scale(0.8)",
+            opacity: "0.7",
+          },
+          "75%": {
+            transform: "translateY(-15px) scale(0.9)",
+            opacity: "0.9",
+          },
+          "85%, 100%": {
+            transform: "translateY(0) scale(1)",
+            opacity: "1",
+          },
+        },
+        "item-storage": {
+          "0%, 30%": {
+            opacity: "0",
+            transform: "scale(0.8)",
+          },
+          "40%": {
+            opacity: "0.5",
+            transform: "scale(0.9)",
+          },
+          "50%": {
+            opacity: "1",
+            transform: "scale(1)",
+          },
+          "60%": {
+            opacity: "0.8",
+            transform: "scale(0.95)",
+          },
+          "70%, 100%": {
+            opacity: "0",
+            transform: "scale(0.8)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -116,6 +284,18 @@ export default {
         "fade-in": "fade-in 0.3s ease-out",
         "slide-in": "slide-in 0.3s ease-out",
         "scan-pulse": "scan-pulse 1.5s ease-in-out infinite",
+        "robot-work": "robot-work 3s ease-in-out infinite",
+        "package-float": "package-float 2s ease-in-out infinite",
+        "shuttle-move": "shuttle-move 4s ease-in-out infinite",
+        "parcel-pickup": "parcel-pickup 4s ease-in-out infinite",
+        "parcel-shelf": "parcel-shelf 4s ease-in-out infinite",
+        "autonomous-pulse": "autonomous-pulse 2s ease-in-out infinite",
+        "autonomous-glow": "autonomous-glow 2s ease-in-out infinite",
+        "lock-pulse": "lock-pulse 2s ease-in-out infinite",
+        "shuttle-operate": "shuttle-operate 6s ease-in-out infinite",
+        "plate-rotate": "plate-rotate 6s ease-in-out infinite",
+        "item-pickup": "item-pickup 6s ease-in-out infinite",
+        "item-storage": "item-storage 6s ease-in-out infinite",
       },
     },
   },
