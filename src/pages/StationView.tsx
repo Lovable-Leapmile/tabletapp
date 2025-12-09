@@ -43,19 +43,34 @@ const StationView = () => {
   const [showOrderTypeDialog, setShowOrderTypeDialog] = useState(false);
   const [showReleaseConfirm, setShowReleaseConfirm] = useState(false);
   const [isReleasing, setIsReleasing] = useState(false);
-  const [shouldStopPolling, setShouldStopPolling] = useState(false);
 
   useEffect(() => {
-    if (shouldStopPolling) return;
+    console.log("Setting up polling interval for StationView...");
 
     const pollInterval = setInterval(() => {
+      console.log("Polling: Fetching both APIs...");
+      // Always fetch both APIs regardless of active tab
       fetchPendingOrders();
-    }, 5000); // Poll every 5 seconds
+      fetchInProgressTrays();
+    }, 3000); // Poll every 3 seconds
 
-    return () => clearInterval(pollInterval);
-  }, [shouldStopPolling]);
+    console.log("Polling interval set up");
+
+    // Cleanup when component unmounts
+    return () => {
+      console.log("Cleaning up polling interval - StationView unmounted");
+      clearInterval(pollInterval);
+    };
+  }, []); // Empty dependency array - only run once on mount
 
   useEffect(() => {
+    // Initial fetch when component mounts
+    fetchPendingOrders();
+    fetchInProgressTrays();
+  }, []);
+
+  useEffect(() => {
+    // Additional fetch when tab changes (optional, for immediate responsiveness)
     if (activeTab === "inprogress") {
       fetchInProgressTrays();
     } else if (activeTab === "station") {
@@ -64,7 +79,9 @@ const StationView = () => {
   }, [activeTab]);
 
   const fetchPendingOrders = async () => {
+    console.log("fetchPendingOrders called");
     const authToken = sessionStorage.getItem("authToken");
+    const userId = sessionStorage.getItem("userId");
     
     if (!authToken) {
       console.error("No auth token found");
@@ -74,7 +91,7 @@ const StationView = () => {
 
     try {
       const response = await fetch(
-        getApiUrl(`/nanostore/orders?tray_status=tray_ready_to_use&order_by_field=updated_at&order_by_type=ASC`),
+        getApiUrl(`/nanostore/orders?tray_status=tray_ready_to_use&user_id=${userId}&order_by_field=updated_at&order_by_type=ASC`),
         {
           method: 'GET',
           headers: {
@@ -102,25 +119,27 @@ const StationView = () => {
           setIsLoading(false);
         }
       } else {
-        // API failed - show station as clear and stop polling
-        console.log("API failed, showing station as clear");
+        // API failed - show station as clear but keep polling
+        console.log("API failed, showing station as clear but continuing to poll");
         setPendingOrders([]);
         setPendingOrder(null);
         setIsLoading(false);
-        setShouldStopPolling(true);
+        // Don't stop polling on errors - continue trying
       }
     } catch (error) {
       console.error("Error fetching pending orders:", error);
-      // Error occurred - show station as clear and stop polling
+      // Error occurred - show station as clear but keep polling
       setPendingOrders([]);
       setPendingOrder(null);
       setIsLoading(false);
-      setShouldStopPolling(true);
+      // Don't stop polling on errors - continue trying
     }
   };
 
   const fetchInProgressTrays = async () => {
+    console.log("fetchInProgressTrays called");
     const authToken = sessionStorage.getItem("authToken");
+    const userId = sessionStorage.getItem("userId");
     
     if (!authToken) {
       console.error("No auth token found");
@@ -131,7 +150,7 @@ const StationView = () => {
     
     try {
       const response = await fetch(
-        getApiUrl(`/nanostore/orders?tray_status=inprogress&order_by_field=updated_at&order_by_type=ASC`),
+        getApiUrl(`/nanostore/orders?tray_status=inprogress&user_id=${userId}&order_by_field=updated_at&order_by_type=ASC`),
         {
           method: 'GET',
           headers: {
@@ -215,8 +234,7 @@ const StationView = () => {
       if (response.ok) {
         console.log("Order completed successfully");
         setShowReleaseConfirm(false);
-        // Restart polling to check for new orders
-        setShouldStopPolling(false);
+        // Clear current order data and let polling refresh
         setIsLoading(true);
         setPendingOrders([]);
         setPendingOrder(null);
@@ -232,10 +250,10 @@ const StationView = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background pt-[140px]">
+    <div className="min-h-screen flex flex-col bg-background mobile-app-bar-padding">
       <AppBar title="Station View" showBack username={username} />
 
-      <main className="flex-1 px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <main className="flex-1 mobile-content-padding py-6 sm:py-8">
         <div className="max-w-4xl mx-auto">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-2">

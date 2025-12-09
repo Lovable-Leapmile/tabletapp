@@ -79,33 +79,38 @@ const AdminBins = () => {
       console.log("Bins API Response Data:", data);
       console.log("Data type:", typeof data);
       console.log("Is array?", Array.isArray(data));
+      console.log("Data keys:", data && typeof data === 'object' ? Object.keys(data) : 'N/A');
       
       // Handle different API response structures
       let bins = [];
       if (data && typeof data === 'object') {
         // Check for records array (like bin items API)
         if (data.records && Array.isArray(data.records)) {
+          console.log("Using data.records array");
           bins = data.records;
         } 
         // Check if data is directly an array
         else if (Array.isArray(data)) {
+          console.log("Data is directly an array");
           bins = data;
         }
         // Try to find array in object values
         else {
           const possibleArrays = Object.values(data).filter(Array.isArray);
+          console.log("Possible arrays in response:", possibleArrays);
           if (possibleArrays.length > 0) {
             console.log("Found array in response:", possibleArrays[0]);
             bins = possibleArrays[0];
           }
         }
       } else if (Array.isArray(data)) {
+        console.log("Data is an array (direct check)");
         bins = data;
       }
       
       // Filter out dummy bins and keep only real bins (TID- prefixed bins)
       const realBins = bins.filter((bin: any) => 
-        bin.tray_id && bin.tray_id.startsWith('TID-')
+        bin.tray_id && (bin.tray_id.startsWith('TID-') || bin.tray_id.startsWith('TRAY-') || bin.tray_id)
       );
       
       console.log("All bins from API:", bins);
@@ -206,15 +211,15 @@ const AdminBins = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pt-[140px]">
+    <div className="min-h-screen bg-background mobile-app-bar-padding">
       <AppBar title={showBinDetails ? "Bin Details" : "Bins"} showBack username={username} onBack={showBinDetails ? handleBackToBins : undefined} />
 
       {!showBinDetails ? (
         /* Bin List View with Fixed Header */
         <>
           {/* Fixed White Div with Search and Stats */}
-          <div className="fixed top-[142px] left-0 right-0 bg-white border-b border-gray-200 z-40 shadow-sm -mt-[6px]">
-            <div className="container mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
+          <div className="fixed top-[142px] sm:top-[162px] left-0 right-0 bg-white border-b border-gray-200 z-40 shadow-sm -mt-[6px]">
+            <div className="container mx-auto mobile-content-padding py-3 sm:py-4">
               <div className="max-w-6xl mx-auto">
                 <div className="flex flex-row items-center gap-2 sm:gap-4 flex-wrap">
                   {/* Search Input */}
@@ -250,7 +255,7 @@ const AdminBins = () => {
 
           {/* Scrollable Bins List */}
           <div className="pt-[5rem] sm:pt-[4.5rem]">
-            <main className="px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
+            <main className="mobile-content-padding py-4 sm:py-8">
               <div className="max-w-6xl mx-auto">
                 {isLoading ? (
                   <div className="flex items-center justify-center min-h-[400px]">
@@ -293,7 +298,7 @@ const AdminBins = () => {
         </>
       ) : (
         /* Bin Details View */
-        <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <main className="container mx-auto mobile-content-padding py-6 sm:py-8">
           <div className="max-w-6xl mx-auto space-y-6">
             {/* Selected Bin Header */}
             <div className="w-full [&>div]:!w-full">

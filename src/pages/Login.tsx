@@ -192,8 +192,8 @@ const Login = () => {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-xs sm:text-sm text-gray-400 font-normal">
-          Powered by <span className="font-medium text-gray-600">leapmile</span> © 2025
+        <p className="text-center text-xs sm:text-sm text-black font-normal">
+          Powered by <span className="font-medium text-black">leapmile</span> © 2025
         </p>
       </div>
     </div>;

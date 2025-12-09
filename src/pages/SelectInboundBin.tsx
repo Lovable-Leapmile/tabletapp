@@ -192,12 +192,11 @@ const SelectInboundBin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pt-[140px]">
-      <AppBar title="Select Inbound Bin" showBack username={username} />
-
+    <div className="min-h-screen bg-background mobile-app-bar-padding">
+      <AppBar title="Inbound" showBack username={username} onBack={() => navigate("/dashboard")} />
       {/* Fixed White Div with Search and Stats */}
-      <div className="fixed top-[142px] left-0 right-0 bg-white border-b border-gray-200 z-40 shadow-sm -mt-[6px]">
-        <div className="container mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
+      <div className="fixed top-[142px] sm:top-[162px] left-0 right-0 bg-white border-b border-gray-200 z-40 shadow-sm -mt-[6px]">
+        <div className="container mx-auto mobile-content-padding py-3 sm:py-4">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-row items-center gap-2 sm:gap-4 flex-wrap">
               {/* Search Input */}
@@ -244,7 +243,7 @@ const SelectInboundBin = () => {
 
       {/* Scrollable Bins List */}
       <div className="pt-[5rem] sm:pt-[4.5rem]">
-        <main className="px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
+        <main className="mobile-content-padding py-4 sm:py-8">
           <div className="max-w-6xl mx-auto">
             {isLoading ? (
               <div className="flex items-center justify-center min-h-[400px]">
