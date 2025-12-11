@@ -48,7 +48,7 @@ const Admin = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-background pt-[140px]">
+    <div className="min-h-screen flex flex-col bg-background mobile-app-bar-padding">
       <AppBar title="Admin" showBack username={username} />
 
       <main className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">

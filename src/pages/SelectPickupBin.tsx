@@ -23,6 +23,7 @@ import {
 interface Bin {
   id: string;
   itemCount: number;
+  trayWeight?: number;
 }
 
 const SelectPickupBin = () => {
@@ -84,16 +85,19 @@ const SelectPickupBin = () => {
           bins = data.records.map((tray: any) => ({
             id: tray.tray_id,
             itemCount: tray.total_item_quantity || 0,
+            trayWeight: tray.tray_weight,
           }));
         } else if (Array.isArray(data)) {
           bins = data.map((tray: any) => ({
             id: tray.tray_id,
             itemCount: tray.total_item_quantity || 0,
+            trayWeight: tray.tray_weight,
           }));
         } else if (data.data && Array.isArray(data.data)) {
           bins = data.data.map((tray: any) => ({
             id: tray.tray_id,
             itemCount: tray.total_item_quantity || 0,
+            trayWeight: tray.tray_weight,
           }));
         } else {
           console.error("Unexpected API response structure:", data);
@@ -196,7 +200,7 @@ const SelectPickupBin = () => {
       <AppBar title="Select Pickup Bin" showBack username={username} />
 
       {/* Fixed White Div with Search and Stats */}
-      <div className="fixed top-[142px] sm:top-[162px] left-0 right-0 bg-white border-b border-gray-200 z-40 shadow-sm -mt-[6px]">
+      <div className="fixed top-[calc(142px+env(safe-area-inset-top))] sm:top-[calc(162px+env(safe-area-inset-top))] left-0 right-0 bg-white border-b border-gray-200 z-40 shadow-sm -mt-[6px]">
         <div className="container mx-auto mobile-content-padding py-3 sm:py-4">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-row items-center gap-2 sm:gap-4 flex-wrap">
@@ -265,6 +269,7 @@ const SelectPickupBin = () => {
                     <BinCard
                       binId={bin.id}
                       itemCount={bin.itemCount}
+                      trayWeight={bin.trayWeight}
                     />
                   </div>
                 ))}
@@ -298,7 +303,7 @@ const SelectPickupBin = () => {
               <div className="px-4">
                 <div className="w-full">
                   <div className="w-full [&>div]:!w-full">
-                    <BinCard binId={selectedBin?.id || ""} itemCount={selectedBin?.itemCount || 0} onClick={() => {}} />
+                    <BinCard binId={selectedBin?.id || ""} itemCount={selectedBin?.itemCount || 0} trayWeight={selectedBin?.trayWeight} onClick={() => {}} />
                   </div>
                 </div>
               </div>

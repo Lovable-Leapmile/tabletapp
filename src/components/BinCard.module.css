@@ -1,0 +1,65 @@
+.overWeightGauge {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.warningIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.triangleIcon {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 10px solid #dc2626;
+  position: relative;
+  animation: trianglePulse 2s ease-in-out infinite;
+}
+
+.triangleIcon::after {
+  content: '!';
+  position: absolute;
+  top: 3px;
+  left: -2px;
+  color: #ffffff;
+  font-size: 8px;
+  font-weight: 900;
+  text-align: center;
+  width: 4px;
+}
+
+.gaugeText {
+  margin-top: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.gaugeTextLine {
+  font-size: 9px;
+  font-weight: 700;
+  color: #dc2626;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.2px;
+}
+
+@keyframes trianglePulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}

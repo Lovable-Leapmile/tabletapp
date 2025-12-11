@@ -38,7 +38,7 @@ const AdminTestScanner = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background pt-[140px]">
+    <div className="min-h-screen flex flex-col bg-background mobile-app-bar-padding">
       <AppBar title="Test Scanner" showBack />
       
       <main className="flex-1 px-6 py-8 pb-24 overflow-y-auto">

@@ -489,7 +489,7 @@ const ScanItemToInbound = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-background pt-[140px]">
+    <div className="flex flex-col h-screen bg-background mobile-app-bar-padding">
       <AppBar title="Scan Item to Inbound" showBack username={username} onBack={handleBack} />
 
       {isLoading ? (

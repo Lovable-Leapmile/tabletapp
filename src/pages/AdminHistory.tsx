@@ -408,19 +408,19 @@ const AdminHistory = () => {
   );
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col bg-background mobile-app-bar-padding">
       <AppBar title="Transaction History" showBack username={username} />
 
       {/* No Transaction Message Popup */}
       {showNoTransactionMessage && (
-        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-destructive text-destructive-foreground px-4 py-2 rounded-lg shadow-lg">
+        <div className="fixed top-[calc(80px+env(safe-area-inset-top))] left-1/2 transform -translate-x-1/2 z-50 bg-destructive text-destructive-foreground px-4 py-2 rounded-lg shadow-lg">
           No {activeTab} transactions found on selected date
         </div>
       )}
 
       {/* Fixed content container */}
       <div className="flex flex-col" style={{ height: 'calc(100vh - 64px)' }}>
-        <main className="container mx-auto px-4 sm:px-6 lg:px-8 pt-40 pb-4 flex-shrink-0">
+        <main className="container mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-4 flex-shrink-0">
           <div className="max-w-6xl mx-auto space-y-4">
             {/* Tabs */}
             <div className="flex justify-center w-full">

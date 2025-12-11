@@ -218,7 +218,7 @@ const AdminBins = () => {
         /* Bin List View with Fixed Header */
         <>
           {/* Fixed White Div with Search and Stats */}
-          <div className="fixed top-[142px] sm:top-[162px] left-0 right-0 bg-white border-b border-gray-200 z-40 shadow-sm -mt-[6px]">
+          <div className="fixed top-[calc(142px+env(safe-area-inset-top))] sm:top-[calc(162px+env(safe-area-inset-top))] left-0 right-0 bg-white border-b border-gray-200 z-40 shadow-sm -mt-[6px]">
             <div className="container mx-auto mobile-content-padding py-3 sm:py-4">
               <div className="max-w-6xl mx-auto">
                 <div className="flex flex-row items-center gap-2 sm:gap-4 flex-wrap">

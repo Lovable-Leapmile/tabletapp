@@ -154,11 +154,11 @@ const AdminUsers = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pt-[140px]">
+    <div className="min-h-screen bg-background mobile-app-bar-padding">
       <AppBar title="Users" showBack username={username} />
 
       {/* Fixed White Div with Search and Stats */}
-      <div className="fixed top-[142px] left-0 right-0 bg-white border-b border-gray-200 z-40 shadow-sm -mt-[6px]">
+      <div className="fixed top-[calc(142px+env(safe-area-inset-top))] left-0 right-0 bg-white border-b border-gray-200 z-40 shadow-sm -mt-[6px]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-2 sm:gap-4">

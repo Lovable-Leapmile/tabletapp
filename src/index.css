@@ -168,18 +168,18 @@ All colors MUST be HSL.
 
   /* Mobile-specific padding after app bar */
   .mobile-app-bar-padding {
-    padding-top: 140px;
+    padding-top: calc(140px + env(safe-area-inset-top));
   }
 
   @media (max-width: 640px) {
     .mobile-app-bar-padding {
-      padding-top: 160px;
+      padding-top: calc(160px + env(safe-area-inset-top));
     }
   }
 
   @media (max-width: 480px) {
     .mobile-app-bar-padding {
-      padding-top: 180px;
+      padding-top: calc(180px + env(safe-area-inset-top));
     }
   }
 

@@ -1,14 +1,19 @@
 import { Card } from "@/components/ui/card";
+import { AlertTriangle } from "lucide-react";
 import bin1 from "@/assets/bin1.png";
 import bin2 from "@/assets/bin2.png";
+import styles from "./BinCard.module.css";
 
 interface BinCardProps {
   binId: string;
   itemCount: number;
+  trayWeight?: number;
   onClick?: () => void;
 }
 
-export const BinCard = ({ binId, itemCount, onClick }: BinCardProps) => {
+export const BinCard = ({ binId, itemCount, trayWeight, onClick }: BinCardProps) => {
+  const isOverWeight = trayWeight && trayWeight > 18000;
+
   return (
     <Card
       onClick={onClick}
@@ -18,6 +23,20 @@ export const BinCard = ({ binId, itemCount, onClick }: BinCardProps) => {
         <span className="absolute top-0 left-0 text-xs sm:text-[10px] px-3 sm:px-2.5 py-0.5 rounded-tl-lg rounded-br-lg bg-green-500 text-white border border-green-600">
           Empty
         </span>
+      )}
+      {isOverWeight && (
+        <div className={styles.overWeightGauge}>
+          {/* Warning Triangle Icon */}
+          <div className={styles.warningIcon}>
+            <div className={styles.triangleIcon} />
+          </div>
+          
+          {/* Two-line text */}
+          <div className={styles.gaugeText}>
+            <span className={styles.gaugeTextLine}>Over</span>
+            <span className={styles.gaugeTextLine}>Weight</span>
+          </div>
+        </div>
       )}
       <div className="flex-shrink-0 w-12 h-12 sm:w-12 sm:h-12 bg-accent/20 rounded-lg flex items-center justify-center p-1.5 sm:p-1.5">
         <img 
