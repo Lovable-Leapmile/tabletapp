@@ -23,12 +23,19 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+// Get base path from env, removing trailing slash for BrowserRouter
+const getBasename = (): string => {
+  const base = import.meta.env.VITE_APP_BASE || "/";
+  // Remove trailing slash if present (but keep "/" as is)
+  return base === "/" ? "/" : base.replace(/\/$/, "");
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <BrowserRouter basename={getBasename()}>
         <BackHandlerProvider>
           <div className="mobile-full-height mobile-viewport no-pull-refresh">
             <Routes>
