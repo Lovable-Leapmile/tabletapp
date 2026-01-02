@@ -7,12 +7,18 @@
  * - No fallback URLs - environment variable is mandatory
  */
 
-// Get the base URL from environment variables with fallback
+// Get the base URL from environment variable (set via base-url.sh)
 export const getBaseUrl = (): string => {
-  const viteBaseUrl = import.meta.env.VITE_BASE_URL;
+  const baseUrl = import.meta.env.VITE_BASE_URL;
   
-  // Use environment variable if available, otherwise use default
-  return viteBaseUrl || 'https://robotmanagerv1test.qikpod.com';
+  if (!baseUrl) {
+    throw new Error(
+      'VITE_BASE_URL is not defined. Please run: source base-url.sh before starting the app.'
+    );
+  }
+  
+  // Remove trailing slash if present for consistency
+  return baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
 };
 
 /**
