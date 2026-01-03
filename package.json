@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "bash -c 'source src/env.sh && vite'",
-    "build": "vite build",
+    "prebuild": "echo 'VITE_BASE_URL=$LEAPMILE_HOST_BASEURL' > .env.production",
+    "build": "npm run prebuild && vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview"
