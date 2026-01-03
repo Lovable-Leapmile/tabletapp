@@ -1,21 +1,28 @@
 /**
  * API configuration utility for handling base URL
  * 
- * This utility requires VITE_BASE_URL to be defined in the .env file
- * - Local development (using .env files)
- * - Lovable deployment (using environment variables)
- * - No fallback URLs - environment variable is mandatory
+ * This utility looks for the base URL in the following order:
+ * 1. VITE_BASE_URL environment variable
+ * 2. LEAPMILE_HOST_BASEURL environment variable (for backward compatibility)
+ * 
+ * The base URL should be set during the build process.
  */
 
-// Get the base URL from environment variables (required)
+// Get the base URL from environment variables
 export const getBaseUrl = (): string => {
-  const viteBaseUrl = import.meta.env.VITE_BASE_URL;
+  // Try to get from VITE_BASE_URL first, then fallback to LEAPMILE_HOST_BASEURL
+  const viteBaseUrl = import.meta.env.VITE_BASE_URL || 
+                    process.env.LEAPMILE_HOST_BASEURL ||
+                    '';
   
   if (!viteBaseUrl) {
-    throw new Error('VITE_BASE_URL is not defined. Please set it in your .env file.');
+    console.error('VITE_BASE_URL is not defined. Please set it in your build process.');
+    console.error('Current environment variables:', import.meta.env);
+    throw new Error('API base URL is not configured. Please contact support.');
   }
   
-  return viteBaseUrl;
+  // Ensure the base URL ends with a single slash
+  return viteBaseUrl.endsWith('/') ? viteBaseUrl : `${viteBaseUrl}/`;
 };
 
 /**
@@ -23,12 +30,10 @@ export const getBaseUrl = (): string => {
  */
 export const getApiUrl = (endpoint: string): string => {
   const baseUrl = getBaseUrl();
+  // Remove leading slash from endpoint to prevent double slashes
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint.substring(1) : endpoint;
   
-  // Ensure the endpoint starts with a slash and doesn't have double slashes
-  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
-  const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-  
-  return `${cleanBaseUrl}${cleanEndpoint}`;
+  return `${baseUrl}${cleanEndpoint}`;
 };
 
 /**

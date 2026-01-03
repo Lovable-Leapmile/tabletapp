@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "bash -c 'source src/env.sh && vite'",
-    "prebuild": "echo 'VITE_BASE_URL=$LEAPMILE_HOST_BASEURL' > .env.production",
+    "dev": "vite",
+    "prebuild": "echo 'VITE_BASE_URL=$LEAPMILE_HOST_BASEURL' > .env.production && echo 'VITE_BASE_URL set to: $LEAPMILE_HOST_BASEURL'",
     "build": "npm run prebuild && vite build",
-    "build:dev": "vite build --mode development",
+    "build:dev": "LEAPMILE_HOST_BASEURL=http://localhost:8107 npm run build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
