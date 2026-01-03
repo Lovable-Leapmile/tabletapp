@@ -1,28 +1,22 @@
-/**
- * API configuration utility for handling base URL
- * 
- * This utility looks for the base URL in the following order:
- * 1. VITE_BASE_URL environment variable
- * 2. LEAPMILE_HOST_BASEURL environment variable (for backward compatibility)
- * 
- * The base URL should be set during the build process.
- */
+// This will be replaced at build time by Vite
+const BUILD_TIME_BASE_URL = import.meta.env.VITE_BASE_URL;
 
-// Get the base URL from environment variables
+/**
+ * Get the base URL for API requests
+ * In production, this uses the value set at build time
+ * In development, it falls back to the environment variable
+ */
 export const getBaseUrl = (): string => {
-  // Try to get from VITE_BASE_URL first, then fallback to LEAPMILE_HOST_BASEURL
-  const viteBaseUrl = import.meta.env.VITE_BASE_URL || 
-                    process.env.LEAPMILE_HOST_BASEURL ||
-                    '';
-  
-  if (!viteBaseUrl) {
-    console.error('VITE_BASE_URL is not defined. Please set it in your build process.');
-    console.error('Current environment variables:', import.meta.env);
-    throw new Error('API base URL is not configured. Please contact support.');
+  // Use build-time URL if available
+  if (BUILD_TIME_BASE_URL) {
+    return BUILD_TIME_BASE_URL.endsWith('/') 
+      ? BUILD_TIME_BASE_URL 
+      : `${BUILD_TIME_BASE_URL}/`;
   }
-  
-  // Ensure the base URL ends with a single slash
-  return viteBaseUrl.endsWith('/') ? viteBaseUrl : `${viteBaseUrl}/`;
+
+  // Fallback for development
+  const devUrl = import.meta.env.VITE_BASE_URL || 'https://sudarshan.leapmile.com';
+  return devUrl.endsWith('/') ? devUrl : `${devUrl}/`;
 };
 
 /**
@@ -30,9 +24,7 @@ export const getBaseUrl = (): string => {
  */
 export const getApiUrl = (endpoint: string): string => {
   const baseUrl = getBaseUrl();
-  // Remove leading slash from endpoint to prevent double slashes
   const cleanEndpoint = endpoint.startsWith('/') ? endpoint.substring(1) : endpoint;
-  
   return `${baseUrl}${cleanEndpoint}`;
 };
 
