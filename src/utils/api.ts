@@ -1,22 +1,18 @@
-// This will be replaced at build time by Vite
-const BUILD_TIME_BASE_URL = import.meta.env.VITE_BASE_URL;
-
 /**
- * Get the base URL for API requests
- * In production, this uses the value set at build time
- * In development, it falls back to the environment variable
+ * API configuration utility for handling base URL
+ * 
+ * This utility requires VITE_BASE_URL to be defined in the .env file
+ * - Local development (using .env files)
+ * - Lovable deployment (using environment variables)
+ * - No fallback URLs - environment variable is mandatory
  */
-export const getBaseUrl = (): string => {
-  // Use build-time URL if available
-  if (BUILD_TIME_BASE_URL) {
-    return BUILD_TIME_BASE_URL.endsWith('/') 
-      ? BUILD_TIME_BASE_URL 
-      : `${BUILD_TIME_BASE_URL}/`;
-  }
 
-  // Fallback for development
-  const devUrl = import.meta.env.VITE_BASE_URL || 'https://sudarshan.leapmile.com';
-  return devUrl.endsWith('/') ? devUrl : `${devUrl}/`;
+// Get the base URL from environment variables with fallback
+export const getBaseUrl = (): string => {
+  const viteBaseUrl = import.meta.env.VITE_BASE_URL;
+  
+  // Use environment variable if available, otherwise use default
+  return viteBaseUrl || 'https://robotmanagerv1test.qikpod.com';
 };
 
 /**
@@ -24,8 +20,12 @@ export const getBaseUrl = (): string => {
  */
 export const getApiUrl = (endpoint: string): string => {
   const baseUrl = getBaseUrl();
-  const cleanEndpoint = endpoint.startsWith('/') ? endpoint.substring(1) : endpoint;
-  return `${baseUrl}${cleanEndpoint}`;
+  
+  // Ensure the endpoint starts with a slash and doesn't have double slashes
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+  
+  return `${cleanBaseUrl}${cleanEndpoint}`;
 };
 
 /**

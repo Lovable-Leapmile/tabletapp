@@ -5,14 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node -e \"const fs = require('fs'); const baseUrl = process.env.LEAPMILE_HOST_BASEURL || 'https://sudarshan.leapmile.com'; fs.writeFileSync('.env.production', 'VITE_BASE_URL=' + baseUrl + '\\nVITE_APP_BASE=/dhlapp/\\n'); console.log('✅ Set VITE_BASE_URL to:', baseUrl);\"",
-    "verify:build": "node -e \"const fs = require('fs'); if (!fs.existsSync('dist') || !fs.readdirSync('dist').length) { console.error('❌ Build failed: dist directory is empty'); process.exit(1); }\"",
-    "build": "npm run prebuild && vite build && npm run verify:build",
-    "build:dev": "LEAPMILE_HOST_BASEURL=http://localhost:8107 npm run build",
-    "build:prod": "LEAPMILE_HOST_BASEURL=https://sudarshan.leapmile.com npm run build",
+    "build": "vite build",
+    "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "postinstall": "echo '📦 Build with: npm run build:prod\\n   Or set LEAPMILE_HOST_BASEURL and run: npm run build'"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.4",
