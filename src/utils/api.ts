@@ -11,8 +11,11 @@
 export const getBaseUrl = (): string => {
   const viteBaseUrl = import.meta.env.VITE_BASE_URL;
   
-  // Use environment variable if available, otherwise use default
-  return viteBaseUrl || 'https://robotmanagerv1test.qikpod.com';
+  if (!viteBaseUrl) {
+    throw new Error('VITE_BASE_URL is not defined in the .env file.');
+  }
+
+  return viteBaseUrl;
 };
 
 /**
