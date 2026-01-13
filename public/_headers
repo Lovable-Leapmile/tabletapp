@@ -1,2 +1,2 @@
 /*
-  Content-Security-Policy: default-src * data: blob: 'unsafe-inline' 'unsafe-eval'; frame-ancestors 'self' https://*.lovableproject.com https://*.lovable.app;
+  Content-Security-Policy: default-src * data: blob: 'unsafe-inline' 'unsafe-eval'; frame-ancestors 'self' https://lovable.dev https://*.lovable.dev https://*.lovableproject.com https://*.lovable.app;
