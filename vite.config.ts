@@ -10,16 +10,11 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
-    headers: {
-      "Content-Security-Policy": "default-src * data: blob: 'unsafe-inline' 'unsafe-eval'; frame-ancestors 'self' https://*.lovableproject.com https://*.lovable.app;",
-    },
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-    // Prevent "Invalid hook call" / hooks dispatcher null by ensuring a single React instance
-    dedupe: ["react", "react-dom"],
   },
 }));

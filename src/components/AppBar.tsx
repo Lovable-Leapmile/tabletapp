@@ -12,7 +12,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useTheme } from "@/components/ThemeProvider";
 
 interface AppBarProps {
   title: string;
@@ -25,7 +24,6 @@ interface AppBarProps {
 export const AppBar = ({ title, showBack = false, username = "John Doe", showHomeIcon = false, onBack }: AppBarProps) => {
   const navigate = useNavigate();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-  const { skin, isDhlTheme } = useTheme();
 
   const handleBack = () => {
     if (onBack) {
@@ -44,32 +42,12 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
     navigate("/");
   };
 
-  // Dynamic styles based on skin
-  const headerStyle = isDhlTheme
-    ? { backgroundColor: '#FACC15' } // yellow-400
-    : { backgroundColor: `hsl(${skin.colors.headerBackground})` };
-
-  const borderStyle = isDhlTheme
-    ? { borderBottomColor: '#DC2626' } // red-600
-    : { borderBottomColor: `hsl(${skin.colors.headerBorder})` };
-
-  const textColorClass = isDhlTheme ? 'text-red-600' : 'text-white';
-  const iconColorStyle = isDhlTheme 
-    ? { color: '#DC2626' } 
-    : { color: `hsl(${skin.colors.headerText})` };
-
   return (
     <>
       {/* Safe area for mobile screens */}
-      <div 
-        className="fixed top-0 left-0 right-0 h-[env(safe-area-inset-top)] z-50" 
-        style={headerStyle}
-      />
+      <div className="fixed top-0 left-0 right-0 h-[env(safe-area-inset-top)] bg-yellow-400 z-50" />
       
-      <header 
-        className="shadow-soft fixed top-[env(safe-area-inset-top)] left-0 right-0 z-50 border-b-2"
-        style={{ ...headerStyle, ...borderStyle }}
-      >
+      <header className="bg-yellow-400 shadow-soft fixed top-[env(safe-area-inset-top)] left-0 right-0 z-50 border-b-2 border-red-600">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col gap-3">
             {/* Top section - User ID */}
@@ -92,7 +70,7 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
                     onClick={handleBack}
                     className="bg-white hover:bg-gray-100 transition-smooth p-4 min-w-[56px] min-h-[56px] rounded-lg shadow-sm touch-feedback"
                   >
-                    <ArrowLeft className="h-8 w-8" style={iconColorStyle} />
+                    <ArrowLeft className="h-8 w-8 text-red-600" />
                   </Button>
                 )}
                 {/* Hidden spacer button for centering when no back button */}
@@ -112,12 +90,9 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
               <div className="flex-1 text-center">
                 <div className="flex items-center justify-center gap-2">
                   {showHomeIcon && (
-                    <Home className={`h-5 w-5 sm:h-6 sm:w-6 flex-shrink-0`} style={iconColorStyle} />
+                    <Home className="h-5 w-5 sm:h-6 sm:w-6 text-red-600 flex-shrink-0" />
                   )}
-                  <h1 
-                    className={`text-xl sm:text-2xl lg:text-3xl font-semibold leading-none ${textColorClass}`}
-                    style={!isDhlTheme ? { color: `hsl(${skin.colors.headerText})` } : undefined}
-                  >
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-red-600 leading-none">
                     {title}
                   </h1>
                 </div>
@@ -131,7 +106,7 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
                   onClick={handleLogoutClick}
                   className="bg-white hover:bg-gray-100 transition-smooth p-4 min-w-[56px] min-h-[56px] rounded-lg shadow-sm touch-feedback"
                 >
-                  <LogOut className="h-8 w-8" style={iconColorStyle} />
+                  <LogOut className="h-8 w-8 text-red-600" />
                 </Button>
               </div>
             </div>
