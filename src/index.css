@@ -58,6 +58,12 @@ All colors MUST be HSL.
     /* Animation timing */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
+    /* Skin-specific variables (defaults to DHL) */
+    --header-background: 48 100% 50%;
+    --header-border: 355 98% 43%;
+    --header-text: 355 98% 43%;
+    --login-background: 48 100% 50%;
+
     --sidebar-background: 0 0% 98%;
 
     --sidebar-foreground: 240 5.3% 26.1%;

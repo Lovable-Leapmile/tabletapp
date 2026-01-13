@@ -2,6 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { BackHandlerProvider } from "@/components/BackHandlerProvider";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
@@ -32,35 +33,37 @@ const getBasename = (): string => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter basename={getBasename()}>
-        <BackHandlerProvider>
-          <div className="mobile-full-height mobile-viewport no-pull-refresh">
-            <Routes>
-              <Route path="/" element={<Login />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/inbound/select-bin" element={<SelectInboundBin />} />
-              <Route path="/inbound/scan-items" element={<ScanItemToInbound />} />
-              <Route path="/pickup" element={<Pickup />} />
-              <Route path="/pickup/select-bin" element={<SelectPickupBin />} />
-              <Route path="/pickup/scan-items" element={<ScanItemToPickup />} />
-              <Route path="/station-view" element={<StationView />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/admin/users" element={<AdminUsers />} />
-              <Route path="/admin/bins" element={<AdminBins />} />
-              <Route path="/admin/add-product" element={<AdminAddProduct />} />
-              <Route path="/admin/history" element={<AdminHistory />} />
-              <Route path="/admin/test-scanner" element={<AdminTestScanner />} />
-              <Route path="/admin/scanner-manual" element={<AdminScannerManual />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </div>
-        </BackHandlerProvider>
-      </BrowserRouter>
-    </TooltipProvider>
+    <ThemeProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter basename={getBasename()}>
+          <BackHandlerProvider>
+            <div className="mobile-full-height mobile-viewport no-pull-refresh">
+              <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/inbound/select-bin" element={<SelectInboundBin />} />
+                <Route path="/inbound/scan-items" element={<ScanItemToInbound />} />
+                <Route path="/pickup" element={<Pickup />} />
+                <Route path="/pickup/select-bin" element={<SelectPickupBin />} />
+                <Route path="/pickup/scan-items" element={<ScanItemToPickup />} />
+                <Route path="/station-view" element={<StationView />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/admin/users" element={<AdminUsers />} />
+                <Route path="/admin/bins" element={<AdminBins />} />
+                <Route path="/admin/add-product" element={<AdminAddProduct />} />
+                <Route path="/admin/history" element={<AdminHistory />} />
+                <Route path="/admin/test-scanner" element={<AdminTestScanner />} />
+                <Route path="/admin/scanner-manual" element={<AdminScannerManual />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </div>
+          </BackHandlerProvider>
+        </BrowserRouter>
+      </TooltipProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 
