@@ -11,8 +11,8 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
     headers: {
-      "Content-Security-Policy": "default-src * data: blob: 'unsafe-inline' 'unsafe-eval'; frame-ancestors 'none';",
-      "X-Frame-Options": "DENY",
+      "Content-Security-Policy": "default-src * data: blob: 'unsafe-inline' 'unsafe-eval'; frame-ancestors 'self' https://*.lovableproject.com https://*.lovable.app;",
+      "X-Frame-Options": "SAMEORIGIN",
     },
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
