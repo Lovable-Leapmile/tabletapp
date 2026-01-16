@@ -29,10 +29,17 @@ const ScanItemToPickup = () => {
   const binId = location.state?.binId || sessionStorage.getItem("currentTrayId") || "Unknown";
   const orderId = location.state?.orderId || sessionStorage.getItem("currentOrderId") || "";
   const userId = sessionStorage.getItem("currentUserId") || sessionStorage.getItem("userId") || "";
+  const selectedBinItemCount = location.state?.itemCount !== undefined 
+    ? location.state.itemCount 
+    : parseInt(sessionStorage.getItem("selectedBinItemCount") || "0", 10);
+  
+  // Debug log to check the value
+  console.log("Selected bin item count:", selectedBinItemCount, "from state:", location.state?.itemCount, "from storage:", sessionStorage.getItem("selectedBinItemCount"));
 
   const [isLoading, setIsLoading] = useState(true);
   const [trayStatus, setTrayStatus] = useState<string>("");
   const [orderRecord, setOrderRecord] = useState<any>(null);
+  const [trayItemQuantity, setTrayItemQuantity] = useState<number>(0);
   const [pollingMode, setPollingMode] = useState<'inprogress' | 'ready_to_use' | 'stopped'>('inprogress');
   const [countdown, setCountdown] = useState<number>(0);
   const [isCountdownActive, setIsCountdownActive] = useState(false);
@@ -306,6 +313,78 @@ const ScanItemToPickup = () => {
     }
   }, [isLoading, trayStatus, isCountdownActive]);
 
+  // Fetch tray data to get total_item_quantity
+  const fetchTrayForOrder = async () => {
+    if (!orderId || !binId || binId === "Unknown") return;
+    
+    const authToken = sessionStorage.getItem("authToken");
+    if (!authToken) return;
+
+    try {
+      const response = await fetch(
+        getApiUrl(`/nanostore/trays_for_order?in_station=false&like=false&num_records=10&offset=0&order_flow=fifo`),
+        {
+          method: 'GET',
+          headers: {
+            'accept': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Trays for order API response:", data);
+        
+        // Find the tray that matches our binId
+        let tray = null;
+        if (data.records && Array.isArray(data.records)) {
+          tray = data.records.find((t: any) => t.tray_id === binId);
+          console.log("Looking for binId:", binId, "Found tray:", tray);
+        } else if (Array.isArray(data)) {
+          tray = data.find((t: any) => t.tray_id === binId);
+          console.log("Looking for binId:", binId, "Found tray:", tray);
+        }
+        
+        if (tray) {
+          const quantity = tray.total_item_quantity ?? tray.available_quantity ?? 0;
+          console.log("Setting tray item quantity to:", quantity, "from tray:", tray);
+          setTrayItemQuantity(quantity);
+        } else {
+          console.warn("Tray not found in API response for binId:", binId);
+          // Fallback to selectedBinItemCount if API doesn't return the tray
+          if (selectedBinItemCount > 0) {
+            setTrayItemQuantity(selectedBinItemCount);
+          }
+        }
+      } else {
+        console.error("Failed to fetch trays for order:", response.status);
+        // Fallback to selectedBinItemCount if API fails
+        if (selectedBinItemCount > 0) {
+          setTrayItemQuantity(selectedBinItemCount);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching tray for order:', error);
+      // Fallback to selectedBinItemCount if API fails
+      if (selectedBinItemCount > 0) {
+        setTrayItemQuantity(selectedBinItemCount);
+      }
+    }
+  };
+
+  // Fetch tray data when orderId and binId are available
+  useEffect(() => {
+    if (orderId && binId && binId !== "Unknown") {
+      // Set initial value from selectedBinItemCount
+      if (selectedBinItemCount > 0) {
+        setTrayItemQuantity(selectedBinItemCount);
+      }
+      // Then fetch from API to get updated value
+      fetchTrayForOrder();
+    }
+  }, [orderId, binId, selectedBinItemCount]);
+
   // Fetch scanned items when order is ready
   useEffect(() => {
     if (orderRecord?.id && trayStatus === "tray_ready_to_use") {
@@ -502,7 +581,7 @@ const ScanItemToPickup = () => {
             />
             <div className="space-y-2">
               <div className="flex items-center justify-center gap-3">
-                <PackageSearch className="h-8 w-8 text-red-600" />
+                <PackageSearch className="h-8 w-8 text-icon-accent" />
                 <h3 className="text-2xl sm:text-3xl font-semibold text-foreground">
                   Retrieving Bin {binId}
                 </h3>
@@ -521,7 +600,7 @@ const ScanItemToPickup = () => {
             <div>
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
-                  <Package className="h-6 w-6 text-red-600" />
+                  <Package className="h-6 w-6 text-icon-accent" />
                   <h3 className="text-lg sm:text-xl font-medium text-foreground">
                     Selected Bin
                   </h3>
@@ -537,7 +616,7 @@ const ScanItemToPickup = () => {
               </div>
               <div className="flex gap-4">
                 <div className="flex-1">
-                  <BinCard binId={binId} itemCount={3} />
+                  <BinCard binId={binId} itemCount={trayItemQuantity > 0 ? trayItemQuantity : selectedBinItemCount} />
                 </div>
                 {orderRecord?.station_friendly_name && (
                   <div className="bg-blue-50 border border-blue-200 rounded-lg px-6 py-4 flex items-center justify-center">
@@ -635,8 +714,8 @@ const ScanItemToPickup = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
           <div className={`px-8 py-4 rounded-lg backdrop-blur-md ${
             notification.type === 'success' 
-              ? 'bg-green-500/80' 
-              : 'bg-red-500/80'
+              ? 'bg-success/80' 
+              : 'bg-destructive/80'
           } text-white text-lg font-semibold animate-fade-in shadow-xl`}>
             {notification.message}
           </div>

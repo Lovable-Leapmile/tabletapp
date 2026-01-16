@@ -310,7 +310,7 @@ const StationView = () => {
                               setShowReleaseConfirm(true);
                             }}
                             variant="outline"
-                            className="flex-1 border-red-200 text-red-600 hover:bg-red-50 px-6 sm:px-8 py-3 text-base sm:text-lg"
+                            className="flex-1 border-destructive/20 text-destructive hover:bg-destructive/10 px-6 sm:px-8 py-3 text-base sm:text-lg"
                           >
                             Release Tray
                           </Button>
@@ -401,11 +401,11 @@ const StationView = () => {
                 </div>
               ) : (
                 <div className="text-center space-y-6">
-                  <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                    <PackageCheck className="h-10 w-10 text-gray-600" />
+                  <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto">
+                    <PackageCheck className="h-10 w-10 text-muted-foreground" />
                   </div>
                   <div className="flex items-center justify-center gap-3">
-                    <Monitor className="h-8 w-8 text-gray-600" />
+                    <Monitor className="h-8 w-8 text-muted-foreground" />
                     <h2 className="text-3xl sm:text-4xl font-semibold text-foreground">
                       No In Progress Trays
                     </h2>
@@ -468,7 +468,7 @@ const StationView = () => {
             <AlertDialogAction
               onClick={handleReleaseTray}
               disabled={isReleasing}
-              className="bg-red-600 hover:bg-red-700 text-white"
+              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
             >
               {isReleasing ? "Releasing..." : "Release Tray"}
             </AlertDialogAction>

@@ -218,8 +218,12 @@ const AdminBins = () => {
         /* Bin List View with Fixed Header */
         <>
           {/* Fixed White Div with Search and Stats */}
-          <div className="fixed top-[calc(142px+env(safe-area-inset-top))] sm:top-[calc(162px+env(safe-area-inset-top))] left-0 right-0 bg-white border-b border-gray-200 z-40 shadow-sm -mt-[6px]">
-            <div className="container mx-auto mobile-content-padding py-3 sm:py-4">
+          <div
+            className="fixed left-0 right-0 bg-card border-b border-border z-40 shadow-sm -mt-[6px]"
+            style={{
+              top: `calc(var(--app-bar-height, 122px) + env(safe-area-inset-top))`,
+            }}>
+            <div className="container mx-auto mobile-content-padding py-4">
               <div className="max-w-6xl mx-auto">
                 <div className="flex flex-row items-center gap-2 sm:gap-4 flex-wrap">
                   {/* Search Input */}
@@ -246,7 +250,7 @@ const AdminBins = () => {
                   
                   {/* Total Bins Label */}
                   <div className="text-sm sm:text-lg font-medium text-foreground whitespace-nowrap flex-shrink-0">
-                    Total: <span className="text-red-600">{filteredBins.length > 0 ? filteredBins.length : bins.length}</span>
+                    Total: <span className="text-icon-accent">{filteredBins.length > 0 ? filteredBins.length : bins.length}</span>
                   </div>
                 </div>
               </div>
@@ -278,11 +282,11 @@ const AdminBins = () => {
                   </div>
                 ) : (
                   <div className="text-center space-y-6 px-4">
-                    <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                      <Package className="h-10 w-10 text-gray-600" />
+                    <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto">
+                      <Package className="h-10 w-10 text-muted-foreground" />
                     </div>
                     <div className="flex items-center justify-center gap-3">
-                      <Package className="h-8 w-8 text-gray-600" />
+                      <Package className="h-8 w-8 text-muted-foreground" />
                       <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">
                         No Bins Found
                       </h2>
@@ -307,7 +311,7 @@ const AdminBins = () => {
 
             {/* Bin Items Header */}
             <div className="flex items-center justify-center gap-2">
-              <PackageOpen className="h-6 w-6 sm:h-7 sm:w-7 text-red-600" />
+              <PackageOpen className="h-6 w-6 sm:h-7 sm:w-7 text-icon-accent" />
               <h2 className="text-xl sm:text-2xl font-semibold text-foreground text-center">
                 Bin Items Details
               </h2>
@@ -326,8 +330,8 @@ const AdminBins = () => {
                 {binItems.map((item) => (
                   <Card key={item.id} className="p-6 bg-card border-border">
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <PackageOpen className="h-6 w-6 text-gray-600" />
+                      <div className="w-12 h-12 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
+                        <PackageOpen className="h-6 w-6 text-muted-foreground" />
                       </div>
                       <div className="flex-1 space-y-2">
                         <h3 className="text-lg font-semibold text-foreground">{item.item_description}</h3>
@@ -352,11 +356,11 @@ const AdminBins = () => {
               </div>
             ) : (
               <div className="text-center space-y-4">
-                <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                  <PackageOpen className="h-6 w-6 text-gray-600" />
+                <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mx-auto">
+                  <PackageOpen className="h-6 w-6 text-muted-foreground" />
                 </div>
                 <div className="flex items-center justify-center gap-2">
-                  <PackageOpen className="h-5 w-5 text-gray-600" />
+                  <PackageOpen className="h-5 w-5 text-muted-foreground" />
                   <h2 className="text-xl font-semibold text-foreground">
                     No Items Found
                   </h2>

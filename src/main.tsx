@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
+import ThemeProvider from "./components/ThemeProvider";
 
 // Add mobile viewport meta tags
 document.head.insertAdjacentHTML('beforeend', `
@@ -10,4 +11,8 @@ document.head.insertAdjacentHTML('beforeend', `
   <meta name="format-detection" content="telephone=no" />
 `);
 
-createRoot(document.getElementById("root")!).render(<App />);
+createRoot(document.getElementById("root")!).render(
+  <ThemeProvider>
+    <App />
+  </ThemeProvider>
+);

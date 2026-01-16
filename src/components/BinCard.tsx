@@ -1,56 +1,67 @@
 import { Card } from "@/components/ui/card";
-import { AlertTriangle } from "lucide-react";
-import bin1 from "@/assets/bin1.png";
-import bin2 from "@/assets/bin2.png";
-import styles from "./BinCard.module.css";
+import { cn } from "@/lib/utils";
+import bin1Image from "@/assets/bin1.png";
+import bin2Image from "@/assets/bin2.png";
 
 interface BinCardProps {
   binId: string;
   itemCount: number;
-  trayWeight?: number;
   onClick?: () => void;
+  className?: string;
+  showStatusBadge?: boolean;
 }
 
-export const BinCard = ({ binId, itemCount, trayWeight, onClick }: BinCardProps) => {
-  const isOverWeight = trayWeight && trayWeight > 18000;
-
+export const BinCard = ({
+  binId,
+  itemCount,
+  onClick,
+  className = "",
+  showStatusBadge = true
+}: BinCardProps) => {
+  const isEmpty = itemCount === 0;
+  
   return (
-    <Card
-      onClick={onClick}
-      className="flex items-center gap-3 sm:gap-3 p-3 sm:p-4 cursor-pointer transition-smooth active:scale-[0.98] bg-card border-border relative w-full sm:w-[210px] md:w-[230px] lg:w-[250px] xl:w-[270px] h-[70px] sm:h-[80px]"
-    >
-      {itemCount === 0 && (
-        <span className="absolute top-0 left-0 text-xs sm:text-[10px] px-3 sm:px-2.5 py-0.5 rounded-tl-lg rounded-br-lg bg-green-500 text-white border border-green-600">
-          Empty
-        </span>
-      )}
-      {isOverWeight && (
-        <div className={styles.overWeightGauge}>
-          {/* Warning Triangle Icon */}
-          <div className={styles.warningIcon}>
-            <div className={styles.triangleIcon} />
-          </div>
-          
-          {/* Two-line text */}
-          <div className={styles.gaugeText}>
-            <span className={styles.gaugeTextLine}>Over</span>
-            <span className={styles.gaugeTextLine}>Weight</span>
-          </div>
-        </div>
-      )}
-      <div className="flex-shrink-0 w-12 h-12 sm:w-12 sm:h-12 bg-accent/20 rounded-lg flex items-center justify-center p-1.5 sm:p-1.5">
+    <div className="relative">
+      <Card
+        onClick={onClick}
+        className={cn(
+          "group relative flex items-center gap-3 p-3 sm:p-4 cursor-pointer",
+          "transition-all duration-200 hover:shadow-md active:scale-[0.98]",
+          "bg-card border-border w-full h-[80px] sm:h-[90px]",
+          "sm:max-w-[240px] lg:max-w-[260px] xl:max-w-[280px]",
+          className
+        )}
+      >
+      
+      <div className={cn(
+        "flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-lg",
+        "flex items-center justify-center p-2 overflow-hidden",
+        isEmpty ? "bg-muted/30" : "bg-primary/10"
+      )}>
         <img 
-          src={itemCount > 0 ? bin1 : bin2} 
-          alt={itemCount > 0 ? "Bin with items" : "Empty bin"}
-          className="w-full h-full object-contain"
+          src={isEmpty ? bin2Image : bin1Image}
+          alt={isEmpty ? "Empty bin" : "Bin with items"}
+          className="w-full h-full object-contain transition-transform group-hover:scale-110"
         />
       </div>
-      <div className="flex-1 text-left min-w-0">
-        <div className="flex items-center gap-0.5 sm:gap-1.5">
-          <p className="text-sm sm:text-base font-medium text-foreground truncate">{binId}</p>
+      
+      {showStatusBadge && isEmpty && (
+        <div className="absolute top-0 left-0 pl-5 z-10">
+          <span className="inline-flex items-center pl-1.5 pr-1.5 pb-0.5 pt-0 rounded-b text-xs font-medium bg-success/20 text-success border border-success/30 border-t-0">
+            Empty
+          </span>
         </div>
-        <p className="text-xs sm:text-xs text-muted-foreground">({itemCount} items)</p>
+      )}
+      
+      <div className="flex-1 min-w-0">
+        <h3 className="text-sm sm:text-base font-medium text-foreground truncate">
+          {binId}
+        </h3>
+        <p className="text-xs sm:text-sm text-muted-foreground">
+          {isEmpty ? 'No items' : `${itemCount} item${itemCount !== 1 ? 's' : ''}`}
+        </p>
       </div>
     </Card>
+    </div>
   );
 };

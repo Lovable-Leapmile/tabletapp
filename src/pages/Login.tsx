@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import dhlLogo from "@/assets/dhl-logo.png";
 import { Lock } from "lucide-react";
 import { getApiUrl } from "@/utils/api";
 
+import { getSkin } from "@/config/skin.config";
+
 const Login = () => {
+  const skin = getSkin();
   const [mobileNumber, setMobileNumber] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -67,7 +69,7 @@ const Login = () => {
       handleLogin();
     }
   };
-  return <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 bg-gradient-to-b from-[#FFCC00] via-[#FFD633] to-[#FFCC00] relative overflow-hidden">
+  return <div style={{ backgroundColor: skin.colors.background }} className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden">
       {/* Technical Warehouse Blueprint Pattern */}
       <div className="absolute inset-0 z-0">
         <div 
@@ -93,8 +95,8 @@ const Login = () => {
       {/* Main Content Container */}
       <div className="w-full max-w-md space-y-10 sm:space-y-12 animate-fade-in relative z-10">
         {/* Logo */}
-        <div className="text-center">
-          <img src={dhlLogo} alt="DHL Supply Chain" className="h-14 sm:h-18 mx-auto opacity-95" />
+        <div className="text-center py-6 sm:py-8">
+          <img src={skin.logo} alt="Logo" className="h-20 sm:h-24 mx-auto opacity-95" />
         </div>
 
         {/* Premium Login Card with Glassmorphism */}
@@ -167,10 +169,7 @@ const Login = () => {
               value={mobileNumber} 
               onChange={e => setMobileNumber(e.target.value.replace(/\D/g, ""))} 
               onKeyPress={handleKeyPress} 
-                  className="h-14 sm:h-16 text-lg sm:text-xl text-center font-medium bg-gray-50/80 border-gray-200/80 focus:border-[#FFCC00] focus:ring-2 focus:ring-[#FFCC00]/20 focus:bg-white transition-all duration-200 rounded-2xl" 
-                  style={{
-                    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05) inset, 0 1px 0 rgba(255, 255, 255, 0.8)',
-                  }}
+              className={`h-14 sm:h-16 text-lg sm:text-xl text-center font-medium bg-${skin.colors.background} border-${skin.colors.border} focus:border-${skin.colors.primary} focus:ring-2 focus:ring-${skin.colors.ring} focus:bg-${skin.colors.background} transition-all duration-200 rounded-2xl`} 
               autoFocus 
               disabled={isLoading}
             />
@@ -179,10 +178,8 @@ const Login = () => {
               {/* Premium Button */}
             <Button 
               onClick={handleLogin} 
-                className="w-full h-14 sm:h-16 text-lg sm:text-xl font-semibold bg-[#FFCC00] hover:bg-[#FFD633] text-gray-900 rounded-2xl transition-all duration-200 shadow-lg hover:shadow-xl"
-                style={{
-                  boxShadow: '0 4px 14px rgba(255, 204, 0, 0.4), 0 1px 0 rgba(255, 255, 255, 0.3) inset',
-                }}
+                className="w-full h-14 sm:h-16 text-lg sm:text-xl font-semibold bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl transition-all duration-200 shadow-lg hover:shadow-xl"
+                style={{ boxShadow: `0 4px 14px ${skin.colors.primaryShadow}, 0 1px 0 rgba(255, 255, 255, 0.3) inset` }}
               disabled={isLoading}
             >
               {isLoading ? "Validating..." : "Login"}
@@ -192,8 +189,8 @@ const Login = () => {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-xs sm:text-sm text-black font-normal">
-          Powered by <span className="font-medium text-black">leapmile</span> © 2025
+        <p className="text-center text-xs sm:text-sm text-foreground font-normal">
+          Powered by <span className="font-medium text-foreground">leapmile</span> © 2025
         </p>
       </div>
     </div>;

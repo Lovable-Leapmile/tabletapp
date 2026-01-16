@@ -11,15 +11,15 @@ const Dashboard = () => {
   // Custom tray icons with arrows
   const InboundTrayIcon = () => (
     <div className="relative">
-      <Package className="w-10 h-10 sm:w-12 sm:h-12 text-black" />
-      <ArrowDown className="absolute -top-2 -right-2 w-6 h-6 sm:w-7 sm:h-7 text-red-600 bg-white rounded-full p-1 animate-bounce" />
+      <Package className="w-10 h-10 sm:w-12 sm:h-12 text-foreground" />
+      <ArrowDown className="absolute -top-2 -right-2 w-6 h-6 sm:w-7 sm:h-7 text-icon-accent bg-card rounded-full p-1 animate-bounce" />
     </div>
   );
 
   const PickupTrayIcon = () => (
     <div className="relative">
-      <Package className="w-10 h-10 sm:w-12 sm:h-12 text-black" />
-      <ArrowUp className="absolute -top-2 -right-2 w-6 h-6 sm:w-7 sm:h-7 text-green-600 bg-white rounded-full p-1 animate-bounce" />
+      <Package className="w-10 h-10 sm:w-12 sm:h-12 text-foreground" />
+      <ArrowUp className="absolute -top-2 -right-2 w-6 h-6 sm:w-7 sm:h-7 text-success bg-card rounded-full p-1 animate-bounce" />
     </div>
   );
 
@@ -57,7 +57,7 @@ const Dashboard = () => {
       <main className="flex-1 container mx-auto mobile-content-padding py-8 sm:py-12">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-center gap-3 mb-8 sm:mb-12">
-            <LayoutDashboard className="h-8 w-8 sm:h-10 sm:w-10 text-red-600" />
+            <LayoutDashboard className="h-8 w-8 sm:h-10 sm:w-10 text-icon-accent" />
             <h2 className="text-3xl sm:text-4xl font-semibold text-foreground text-center">
               Select an Operation
             </h2>
@@ -74,8 +74,8 @@ const Dashboard = () => {
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div className="flex flex-col items-center text-center space-y-4">
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-100 rounded-2xl flex items-center justify-center">
-                      <Icon className="w-10 h-10 sm:w-12 sm:h-12 text-black" />
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-muted rounded-2xl flex items-center justify-center">
+                      <Icon className="w-10 h-10 sm:w-12 sm:h-12 text-foreground" />
                     </div>
                     <div>
                       <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-2">

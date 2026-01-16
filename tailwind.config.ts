@@ -18,21 +18,51 @@ export default {
       },
       colors: {
         border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
+        input: "hsl(var(--border))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          hover: "hsl(var(--primary) / 0.9)",
+          active: "hsl(var(--primary) / 0.8)",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+          hover: "hsl(var(--secondary) / 0.9)",
+          active: "hsl(var(--secondary) / 0.8)",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
+          hover: "hsl(var(--destructive) / 0.9)",
+          active: "hsl(var(--destructive) / 0.8)",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground, white))",
+          hover: "hsl(var(--success) / 0.9)",
+          active: "hsl(var(--success) / 0.8)",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground, white))",
+          hover: "hsl(var(--warning) / 0.9)",
+          active: "hsl(var(--warning) / 0.8)",
+        },
+        error: {
+          DEFAULT: "hsl(var(--error))",
+          foreground: "hsl(var(--error-foreground, white))",
+          hover: "hsl(var(--error) / 0.9)",
+          active: "hsl(var(--error) / 0.8)",
+        },
+        info: {
+          DEFAULT: "hsl(var(--info))",
+          foreground: "hsl(var(--info-foreground, white))",
+          hover: "hsl(var(--info) / 0.9)",
+          active: "hsl(var(--info) / 0.8)",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
@@ -49,6 +79,16 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+          hover: "hsl(var(--card) / 0.9)",
+          active: "hsl(var(--card) / 0.8)",
+        },
+        support: {
+          DEFAULT: "hsl(var(--support, var(--destructive)))",
+          foreground: "hsl(var(--support-foreground, var(--destructive-foreground)))",
+        },
+        "icon-accent": {
+          DEFAULT: "hsl(var(--icon-accent, var(--destructive)))",
+          foreground: "hsl(var(--icon-accent-foreground, var(--destructive-foreground)))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

@@ -169,13 +169,23 @@ const SelectPickupBin = () => {
       const orderData = await response.json();
       
       // Store order info in session for scan items page
+      const itemCount = selectedBin.itemCount ?? 0;
+      console.log("Navigating with bin:", selectedBin.id, "itemCount:", itemCount);
+      
       sessionStorage.setItem("currentOrderId", orderData.id?.toString() || "");
       sessionStorage.setItem("currentTrayId", selectedBin.id);
       sessionStorage.setItem("currentUserId", userId);
       sessionStorage.setItem("trayStayTime", trayStayTime.toString());
+      sessionStorage.setItem("selectedBinItemCount", itemCount.toString());
       
       toast.success("Order created successfully!");
-      navigate("/pickup/scan-items", { state: { binId: selectedBin.id, orderId: orderData.id } });
+      navigate("/pickup/scan-items", { 
+        state: { 
+          binId: selectedBin.id, 
+          orderId: orderData.id,
+          itemCount: itemCount
+        } 
+      });
     } catch (error) {
       toast.error("Failed to create order. Please try again.");
       console.error("Error creating order:", error);
@@ -200,8 +210,13 @@ const SelectPickupBin = () => {
       <AppBar title="Select Pickup Bin" showBack username={username} />
 
       {/* Fixed White Div with Search and Stats */}
-      <div className="fixed top-[calc(142px+env(safe-area-inset-top))] sm:top-[calc(162px+env(safe-area-inset-top))] left-0 right-0 bg-white border-b border-gray-200 z-40 shadow-sm -mt-[6px]">
-        <div className="container mx-auto mobile-content-padding py-3 sm:py-4">
+      <div
+        className="fixed left-0 right-0 bg-card border-b border-border z-40 shadow-sm -mt-[6px]"
+        style={{
+          top: `calc(var(--app-bar-height, 122px) + env(safe-area-inset-top))`,
+        }}>
+
+        <div className="container mx-auto mobile-content-padding py-4">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-row items-center gap-2 sm:gap-4 flex-wrap">
               {/* Search Input */}
@@ -225,21 +240,25 @@ const SelectPickupBin = () => {
                   </button>
                 )}
               </div>
-              
-              {/* Filter Button */}
-              <Button
-                variant={filterType === "empty" ? "default" : "outline"}
-                onClick={() => setFilterType(filterType === "all" ? "empty" : "all")}
-                className="h-10 sm:h-12 px-2 sm:px-6 text-sm sm:text-base bg-white/80 backdrop-blur-sm border-gray-200 hover:bg-white hover:border-gray-300 shadow-sm flex-shrink-0"
-              >
-                <Filter className="mr-1 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                <span className="hidden sm:inline">{filterType === "all" ? "All" : "Empty"}</span>
-                <span className="sm:hidden">{filterType === "all" ? "A" : "E"}</span>
-              </Button>
-              
+              {/* Filter Buttons */}
+              <div className="flex items-center gap-2">
+                <Button
+                  variant={filterType === 'all' ? 'default' : 'outline'}
+                  onClick={() => setFilterType('all')}
+                  className="h-10 sm:h-12 px-4 sm:px-6 text-sm sm:text-base shadow-sm">
+                  All Bins
+                </Button>
+                <Button
+                  variant={filterType === 'empty' ? 'default' : 'outline'}
+                  onClick={() => setFilterType('empty')}
+                  className={`h-10 sm:h-12 px-4 sm:px-6 text-sm sm:text-base shadow-sm ${filterType === 'empty' ? 'text-primary-foreground' : ''}`}>
+                  Empty Bins
+                </Button>
+              </div>
+
               {/* Total Bins Label */}
               <div className="text-sm sm:text-lg font-medium text-foreground whitespace-nowrap flex-shrink-0">
-                Total: <span className="text-red-600">{bins.length}</span>
+                Total: <span className="text-primary">{bins.length}</span>
               </div>
             </div>
           </div>
@@ -253,7 +272,7 @@ const SelectPickupBin = () => {
             {isLoading ? (
               <div className="flex items-center justify-center min-h-[400px]">
                 <div className="text-center space-y-4">
-                  <div className="animate-spin h-12 w-12 border-4 border-accent border-t-transparent rounded-full mx-auto"></div>
+                  <div className="animate-spin h-12 w-12 border-4 border-primary border-t-transparent rounded-full mx-auto"></div>
                   <p className="text-lg text-muted-foreground">Loading bins...</p>
                 </div>
               </div>
@@ -269,18 +288,17 @@ const SelectPickupBin = () => {
                     <BinCard
                       binId={bin.id}
                       itemCount={bin.itemCount}
-                      trayWeight={bin.trayWeight}
                     />
                   </div>
                 ))}
               </div>
             ) : (
               <div className="text-center space-y-6 px-4">
-                <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                  <Package className="h-10 w-10 text-gray-600" />
+                <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto">
+                  <Package className="h-10 w-10 text-muted-foreground" />
                 </div>
                 <div className="flex items-center justify-center gap-3">
-                  <Package className="h-8 w-8 text-gray-600" />
+                  <Package className="h-8 w-8 text-muted-foreground" />
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">
                     No Bins Found
                   </h2>
@@ -300,12 +318,13 @@ const SelectPickupBin = () => {
           <AlertDialogHeader className="text-center">
             <AlertDialogTitle className="text-center">Confirm Bin Selection</AlertDialogTitle>
             <AlertDialogDescription className="space-y-4 text-center">
-              <div className="px-4">
-                <div className="w-full">
-                  <div className="w-full [&>div]:!w-full">
-                    <BinCard binId={selectedBin?.id || ""} itemCount={selectedBin?.itemCount || 0} trayWeight={selectedBin?.trayWeight} onClick={() => {}} />
-                  </div>
-                </div>
+              <div className="flex justify-center">
+                <BinCard 
+                  binId={selectedBin?.id || ""} 
+                  itemCount={selectedBin?.itemCount || 0} 
+                  onClick={() => {}} 
+                  className="!max-w-[280px]"
+                />
               </div>
               <div className="space-y-3">
                 <Label className="text-sm font-medium text-center block flex items-center justify-center gap-2">
@@ -319,7 +338,7 @@ const SelectPickupBin = () => {
                   <button
                     onClick={() => handleTimeChange(trayStayTime - 1)}
                     disabled={trayStayTime <= 1}
-                    className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="p-3 rounded-full bg-muted hover:bg-muted/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <ChevronLeft className="h-6 w-6" />
                   </button>
@@ -327,12 +346,10 @@ const SelectPickupBin = () => {
                   {/* Number Display with Min Label */}
                   <div className="flex items-center justify-center gap-2">
                     {/* Number Display */}
-                    <div className="text-5xl font-bold text-accent">
+                    <div className="text-5xl font-bold text-primary">
                       {trayStayTime}
                     </div>
-                    
-                    {/* Min Label */}
-                    <span className="text-lg font-medium text-accent">
+                    <span className="text-lg font-medium text-primary/80">
                       min
                     </span>
                   </div>
@@ -341,7 +358,7 @@ const SelectPickupBin = () => {
                   <button
                     onClick={() => handleTimeChange(trayStayTime + 1)}
                     disabled={trayStayTime >= 60}
-                    className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="p-3 rounded-full bg-muted hover:bg-muted/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <ChevronRight className="h-6 w-6" />
                   </button>
@@ -353,13 +370,13 @@ const SelectPickupBin = () => {
             <AlertDialogCancel 
               onClick={() => setSelectedBin(null)} 
               disabled={isCreatingOrder}
-              className="flex-1 h-11"
+              className="flex-1 h-11 border border-border bg-card text-foreground hover:bg-muted transition-colors"
             >
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirm}
-              className="flex-1 h-11 bg-accent hover:bg-accent/90 text-accent-foreground"
+              className="flex-1 h-11 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
               disabled={isCreatingOrder}
             >
               {isCreatingOrder ? "Creating Order..." : "Confirm"}

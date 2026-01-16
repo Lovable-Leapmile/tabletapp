@@ -350,9 +350,9 @@ const AdminHistory = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             {type === "inbound" ? (
-              <ArrowDown className="w-3 h-3 sm:w-4 sm:h-4 text-green-600" />
+              <ArrowDown className="w-3 h-3 sm:w-4 sm:h-4 text-success" />
             ) : (
-              <ArrowUp className="w-3 h-3 sm:w-4 sm:h-4 text-red-600" />
+              <ArrowUp className="w-3 h-3 sm:w-4 sm:h-4 text-icon-accent" />
             )}
             <span className="text-sm sm:text-base font-semibold text-foreground capitalize">{type}</span>
           </div>
@@ -376,8 +376,8 @@ const AdminHistory = () => {
 
           {/* Tray ID with Icon */}
           <div className="flex items-start gap-1.5 sm:gap-2">
-            <div className="w-4 h-4 sm:w-6 sm:h-6 bg-gray-100 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Archive className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-gray-600" />
+            <div className="w-4 h-4 sm:w-6 sm:h-6 bg-muted rounded flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Archive className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-muted-foreground" />
             </div>
             <div className="min-w-0 flex-1">
               <span className="text-xs text-muted-foreground block">Tray ID</span>
@@ -624,11 +624,11 @@ const AdminHistory = () => {
                   ))
                 ) : (
                   <div className="text-center space-y-6">
-                    <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                      <ArrowDown className="h-6 w-6 text-gray-600" />
+                    <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mx-auto">
+                      <ArrowDown className="h-6 w-6 text-muted-foreground" />
                     </div>
                     <div className="flex items-center justify-center gap-2">
-                      <ArrowDown className="h-5 w-5 text-gray-600" />
+                      <ArrowDown className="h-5 w-5 text-muted-foreground" />
                       <h2 className="text-xl font-semibold text-foreground">
                         No Inbound Transactions
                       </h2>
@@ -654,11 +654,11 @@ const AdminHistory = () => {
                   ))
                 ) : (
                   <div className="text-center space-y-6">
-                    <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                      <ArrowUp className="h-6 w-6 text-gray-600" />
+                    <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mx-auto">
+                      <ArrowUp className="h-6 w-6 text-muted-foreground" />
                     </div>
                     <div className="flex items-center justify-center gap-2">
-                      <ArrowUp className="h-5 w-5 text-gray-600" />
+                      <ArrowUp className="h-5 w-5 text-muted-foreground" />
                       <h2 className="text-xl font-semibold text-foreground">
                         No Pickup Transactions
                       </h2>

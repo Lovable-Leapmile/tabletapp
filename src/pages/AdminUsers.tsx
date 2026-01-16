@@ -158,12 +158,16 @@ const AdminUsers = () => {
       <AppBar title="Users" showBack username={username} />
 
       {/* Fixed White Div with Search and Stats */}
-      <div className="fixed top-[calc(142px+env(safe-area-inset-top))] left-0 right-0 bg-white border-b border-gray-200 z-40 shadow-sm -mt-[6px]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div
+        className="fixed left-0 right-0 bg-card border-b border-border z-40 shadow-sm -mt-[6px]"
+        style={{
+          top: `calc(var(--app-bar-height, 122px) + env(safe-area-inset-top))`,
+        }}>
+        <div className="container mx-auto mobile-content-padding py-4">
           <div className="max-w-6xl mx-auto">
-            <div className="flex items-center gap-2 sm:gap-4">
+            <div className="flex flex-row items-center gap-2 sm:gap-4 flex-wrap">
               {/* Search Input */}
-              <div className="relative flex-1 max-w-md">
+              <div className="relative flex-1 min-w-[200px]">
                 <div className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                   <Search className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
                 </div>
@@ -172,7 +176,7 @@ const AdminUsers = () => {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Search users..."
-                  className="h-9 sm:h-12 pl-8 sm:pl-10 pr-8 sm:pr-10 text-sm sm:text-base w-full"
+                  className="h-10 sm:h-12 pl-8 sm:pl-10 pr-8 sm:pr-10 text-sm sm:text-base w-full"
                 />
                 {searchTerm && (
                   <button
@@ -185,8 +189,8 @@ const AdminUsers = () => {
               </div>
               
               {/* Total Users Label */}
-              <div className="text-sm sm:text-lg font-medium text-foreground whitespace-nowrap">
-                Total Users: <span className="text-red-600">{filteredUsers.length > 0 ? filteredUsers.length : users.length}</span>
+              <div className="text-sm sm:text-lg font-medium text-foreground whitespace-nowrap flex-shrink-0">
+                Total Users: <span className="text-icon-accent">{filteredUsers.length > 0 ? filteredUsers.length : users.length}</span>
               </div>
             </div>
           </div>
@@ -206,15 +210,15 @@ const AdminUsers = () => {
               </div>
             ) : error ? (
               <div className="text-center space-y-4">
-                <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto">
+                <div className="w-20 h-20 bg-destructive/10 rounded-full flex items-center justify-center mx-auto">
                   <span className="text-4xl">⚠️</span>
                 </div>
-                <h2 className="text-2xl font-semibold text-red-600">API Error</h2>
+                <h2 className="text-2xl font-semibold text-destructive">API Error</h2>
                 <p className="text-muted-foreground">{error}</p>
                 <p className="text-sm text-muted-foreground">Showing mock data instead</p>
                 <button 
                   onClick={fetchUsers}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                  className="px-4 py-2 bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90"
                 >
                   Retry
                 </button>
@@ -251,11 +255,11 @@ const AdminUsers = () => {
               </div>
             ) : (
               <div className="text-center space-y-6">
-                <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                  <Users className="h-10 w-10 text-gray-600" />
+                <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto">
+                  <Users className="h-10 w-10 text-muted-foreground" />
                 </div>
                 <div className="flex items-center justify-center gap-3">
-                  <Users className="h-8 w-8 text-gray-600" />
+                  <Users className="h-8 w-8 text-muted-foreground" />
                   <h2 className="text-3xl sm:text-4xl font-semibold text-foreground">
                     No Users Found
                   </h2>
@@ -299,7 +303,7 @@ const AdminUsers = () => {
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleUpdateUserRole}
-              className="bg-red-600 hover:bg-red-700 text-white"
+              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
             >
               Submit
             </AlertDialogAction>

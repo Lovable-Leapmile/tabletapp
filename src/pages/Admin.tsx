@@ -54,7 +54,7 @@ const Admin = () => {
       <main className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-center gap-3 mb-8 sm:mb-12">
-            <Package className="h-8 w-8 sm:h-10 sm:w-10 text-red-600" />
+            <Package className="h-8 w-8 sm:h-10 sm:w-10 text-icon-accent" />
             <h2 className="text-3xl sm:text-4xl font-semibold text-foreground text-center">
               Admin Panel
             </h2>
@@ -71,8 +71,8 @@ const Admin = () => {
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
                   <div className="flex flex-col items-center text-center space-y-3">
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gray-100 rounded-xl flex items-center justify-center">
-                      <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-black" />
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-muted rounded-xl flex items-center justify-center">
+                      <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-foreground" />
                     </div>
                     <div>
                       <h3 className="text-lg sm:text-xl font-medium text-foreground mb-1">
