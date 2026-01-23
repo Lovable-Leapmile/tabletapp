@@ -151,8 +151,7 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
             <AlertDialogCancel className="flex-1">Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleLogoutConfirm}
-              className="flex-1"
-              variant="destructive"
+              className="flex-1 bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               Logout
             </AlertDialogAction>
