@@ -179,7 +179,7 @@ const Login = () => {
             <Button
               onClick={handleLogin}
               className="w-full h-14 sm:h-16 text-lg sm:text-xl font-semibold bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl transition-all duration-200 shadow-lg hover:shadow-xl"
-              style={{ boxShadow: `0 4px 14px ${skin.colors.primaryShadow}, 0 1px 0 rgba(255, 255, 255, 0.3) inset` }}
+              style={{ boxShadow: `0 4px 14px hsl(var(--primary) / 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset` }}
               disabled={isLoading}
             >
               {isLoading ? "Validating..." : "Login"}
