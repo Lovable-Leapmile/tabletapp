@@ -1,5 +1,8 @@
 // src/config/skin.config.ts
 
+// Import local logo assets
+import dhlLogo from "@/assets/dhl-logo.png";
+
 interface Skin {
   logo: string;
   colors: {
@@ -188,7 +191,7 @@ const skins: Record<string, Skin> = {
     },
   },
   DHL_UI: {
-    logo: "https://leapmile-website.blr1.digitaloceanspaces.com/DHL.png",
+    logo: dhlLogo,
     colors: {
       // Base colors
       background: "#FFFFFF",
