@@ -45,11 +45,11 @@ const Login = () => {
       const data = await response.json();
       console.log('Response data:', data);
 
-      if (response.ok && data.user_name) {
-        // Store user info and auth token in session
+      if (response.ok && data.user_name && data.token) {
+        // Store user info and auth token from API response
         sessionStorage.setItem("username", data.user_name);
         sessionStorage.setItem("userId", data.user_id?.toString() || "");
-        sessionStorage.setItem("authToken", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2wiOiJhZG1pbiIsImV4cCI6MTkyMTY2MzgyNH0.hYv8hPzpQbGzAl0QXoIWddeF4gk9wPfPqwRMDTE4zas");
+        sessionStorage.setItem("authToken", data.token);
 
         toast.success("Login successful!");
         navigate("/dashboard");
