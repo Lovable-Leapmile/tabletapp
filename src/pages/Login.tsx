@@ -81,8 +81,8 @@ const Login = () => {
       {/* Main Content Container */}
       <div className="w-full max-w-md space-y-10 sm:space-y-12 animate-fade-in relative z-10">
         {/* Logo */}
-        <div className="text-center py-6 sm:py-8">
-          <img src={skin.logo} alt="Logo" className="h-20 sm:h-24 mx-auto opacity-95" />
+        <div className="text-center py-4 sm:py-6">
+          <img src={skin.logo} alt="Logo" className="h-12 sm:h-14 mx-auto opacity-95" />
         </div>
 
         {/* Premium Login Card with Glassmorphism */}
