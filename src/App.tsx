@@ -41,7 +41,7 @@ const App = () => (
             IMPORTANT (mobile WebView): keep only ONE scroll container.
             Pages handle their own scrolling; this wrapper must not scroll.
           */}
-          <div className="mobile-full-height mobile-viewport overflow-hidden no-pull-refresh">
+          <div className="relative w-full h-full overflow-y-auto overflow-x-hidden overscroll-contain touch-pan-y scroll-container" style={{ WebkitOverflowScrolling: 'touch' }}>
             <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
