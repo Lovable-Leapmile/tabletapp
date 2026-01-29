@@ -250,7 +250,7 @@ const StationView = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background mobile-app-bar-padding">
+    <div className="min-h-screen flex flex-col bg-background mobile-app-bar-padding overflow-y-auto touch-scroll">
       <AppBar title="Station View" showBack username={username} />
 
       <main className="flex-1 mobile-content-padding py-6 sm:py-8">

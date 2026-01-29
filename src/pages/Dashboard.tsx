@@ -51,7 +51,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-background mobile-app-bar-padding">
+    <div className="min-h-screen flex flex-col bg-background mobile-app-bar-padding overflow-y-auto touch-scroll">
       <AppBar title="Dashboard" username={username} showHomeIcon />
 
       <main className="flex-1 container mx-auto mobile-content-padding py-8 sm:py-12">
