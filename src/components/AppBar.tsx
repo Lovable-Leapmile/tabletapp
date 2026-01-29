@@ -69,7 +69,7 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
       
       <header 
         ref={headerRef} 
-        className="bg-primary shadow-soft fixed top-[env(safe-area-inset-top)] left-0 right-0 z-50 border-b"
+        className="bg-primary shadow-soft fixed top-[env(safe-area-inset-top)] left-0 right-0 z-50 border-b touch-none"
         style={{ borderBottomColor: getBorderColor(), borderBottomWidth: '2px' }}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">

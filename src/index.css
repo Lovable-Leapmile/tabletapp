@@ -137,6 +137,11 @@ All colors MUST be HSL.
     user-select: none;
   }
 
+  /* Prevent scroll propagation on fixed elements */
+  .touch-none {
+    touch-action: none;
+  }
+
   /* Prevent pull-to-refresh */
   .no-pull-refresh {
     overscroll-behavior: none;
@@ -253,6 +258,7 @@ All colors MUST be HSL.
     font-feature-settings: "rlig" 1, "calt" 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 
   /* Mobile viewport height fix */
