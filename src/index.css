@@ -38,14 +38,18 @@ All colors MUST be HSL.
     --accent: 0 0% 96.1%;
     --accent-foreground: 0 0% 9%;
 
-    /* Destructive colors */
-    --destructive: 0 84.2% 60.2%;
+    /* Destructive colors - DHL Red */
+    --destructive: 357 97% 43%;
     --destructive-foreground: 0 0% 100%;
+
+    /* Icon accent - DHL Red for consistent icon coloring */
+    --icon-accent: 357 97% 43%;
+    --icon-accent-foreground: 0 0% 100%;
 
     /* Status colors */
     --success: 142.1 76.2% 36.3%;
     --warning: 38 92% 50%;
-    --error: 0 84.2% 60.2%;
+    --error: 357 97% 43%;
     --info: 199 89% 48%;
 
     /* Border and input */
