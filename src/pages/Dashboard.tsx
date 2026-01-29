@@ -51,48 +51,51 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-background mobile-app-bar-padding overflow-y-auto touch-scroll">
+    <div className="mobile-full-height flex flex-col bg-background overflow-hidden">
       <AppBar title="Dashboard" username={username} showHomeIcon />
 
-      <main className="flex-1 container mx-auto mobile-content-padding py-8 sm:py-12">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-center gap-3 mb-8 sm:mb-12">
-            <LayoutDashboard className="h-8 w-8 sm:h-10 sm:w-10 text-icon-accent" />
-            <h2 className="text-3xl sm:text-4xl font-semibold text-foreground text-center">
-              Select an Operation
-            </h2>
-          </div>
+      {/* Single scroll container (prevents mobile WebView scroll freeze + pull-to-refresh) */}
+      <main className="flex-1 overflow-y-auto touch-scroll no-pull-refresh mobile-app-bar-padding">
+        <div className="container mx-auto mobile-content-padding py-8 sm:py-12">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex items-center justify-center gap-3 mb-8 sm:mb-12">
+              <LayoutDashboard className="h-8 w-8 sm:h-10 sm:w-10 text-icon-accent" />
+              <h2 className="text-3xl sm:text-4xl font-semibold text-foreground text-center">
+                Select an Operation
+              </h2>
+            </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {navigationCards.map((card, index) => {
-              const Icon = card.icon;
-              return (
-                <Card
-                  key={card.title}
-                  onClick={() => navigate(card.path)}
-                  className={`p-8 sm:p-10 cursor-pointer transition-smooth active:scale-[0.98] bg-card border-border animate-fade-in animation-delay-${index}`}
-                >
-                  <div className="flex flex-col items-center text-center space-y-4">
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-muted rounded-2xl flex items-center justify-center">
-                      <Icon className="w-10 h-10 sm:w-12 sm:h-12 text-icon-accent" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {navigationCards.map((card, index) => {
+                const Icon = card.icon;
+                return (
+                  <Card
+                    key={card.title}
+                    onClick={() => navigate(card.path)}
+                    className={`p-8 sm:p-10 cursor-pointer transition-smooth active:scale-[0.98] bg-card border-border animate-fade-in animation-delay-${index}`}
+                  >
+                    <div className="flex flex-col items-center text-center space-y-4">
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 bg-muted rounded-2xl flex items-center justify-center">
+                        <Icon className="w-10 h-10 sm:w-12 sm:h-12 text-icon-accent" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-2">
+                          {card.title}
+                        </h3>
+                        <p className="text-sm sm:text-base text-muted-foreground">
+                          {card.description}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-2">
-                        {card.title}
-                      </h3>
-                      <p className="text-sm sm:text-base text-muted-foreground">
-                        {card.description}
-                      </p>
-                    </div>
-                  </div>
-                </Card>
-              );
-            })}
+                  </Card>
+                );
+              })}
+            </div>
           </div>
         </div>
-      </main>
 
-      <Footer />
+        <Footer />
+      </main>
     </div>
   );
 };

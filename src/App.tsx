@@ -37,7 +37,11 @@ const App = () => (
       <Sonner />
       <BrowserRouter basename={getBasename()}>
         <BackHandlerProvider>
-          <div className="mobile-full-height mobile-viewport no-pull-refresh touch-scroll">
+          {/*
+            IMPORTANT (mobile WebView): keep only ONE scroll container.
+            Pages handle their own scrolling; this wrapper must not scroll.
+          */}
+          <div className="mobile-full-height mobile-viewport overflow-hidden no-pull-refresh">
             <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
