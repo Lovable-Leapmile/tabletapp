@@ -94,7 +94,7 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
                     onClick={handleBack}
                     className="bg-card hover:bg-card/80 transition-colors p-4 min-w-[56px] min-h-[56px] rounded-lg shadow-sm active:scale-95"
                   >
-                    <ArrowLeft className="h-8 w-8 text-secondary" />
+                    <ArrowLeft className="h-8 w-8 text-icon-accent" />
                   </Button>
                 )}
                 {/* Hidden spacer button for centering when no back button */}
@@ -130,7 +130,7 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
                   onClick={handleLogoutClick}
                   className="bg-card hover:bg-card/80 transition-colors p-4 min-w-[56px] min-h-[56px] rounded-lg shadow-sm active:scale-95"
                 >
-                  <LogOut className="h-8 w-8 text-foreground/80 hover:text-foreground transition-colors" />
+                  <LogOut className="h-8 w-8 text-icon-accent hover:text-icon-accent/80 transition-colors" />
                 </Button>
               </div>
             </div>

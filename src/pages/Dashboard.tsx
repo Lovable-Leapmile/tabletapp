@@ -11,14 +11,14 @@ const Dashboard = () => {
   // Custom tray icons with arrows
   const InboundTrayIcon = () => (
     <div className="relative">
-      <Package className="w-10 h-10 sm:w-12 sm:h-12 text-foreground" />
+      <Package className="w-10 h-10 sm:w-12 sm:h-12 text-icon-accent" />
       <ArrowDown className="absolute -top-2 -right-2 w-6 h-6 sm:w-7 sm:h-7 text-icon-accent bg-card rounded-full p-1 animate-bounce" />
     </div>
   );
 
   const PickupTrayIcon = () => (
     <div className="relative">
-      <Package className="w-10 h-10 sm:w-12 sm:h-12 text-foreground" />
+      <Package className="w-10 h-10 sm:w-12 sm:h-12 text-icon-accent" />
       <ArrowUp className="absolute -top-2 -right-2 w-6 h-6 sm:w-7 sm:h-7 text-success bg-card rounded-full p-1 animate-bounce" />
     </div>
   );
@@ -74,7 +74,7 @@ const Dashboard = () => {
                 >
                   <div className="flex flex-col items-center text-center space-y-4">
                     <div className="w-20 h-20 sm:w-24 sm:h-24 bg-muted rounded-2xl flex items-center justify-center">
-                      <Icon className="w-10 h-10 sm:w-12 sm:h-12 text-foreground" />
+                      <Icon className="w-10 h-10 sm:w-12 sm:h-12 text-icon-accent" />
                     </div>
                     <div>
                       <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-2">

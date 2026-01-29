@@ -95,7 +95,7 @@ const Login = () => {
             {/* iOS-style Biometric Lock Icon */}
             <div className="flex justify-center mb-8">
               <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center login-icon-container">
-                <Lock className="w-10 h-10 sm:w-12 sm:h-12 text-muted-foreground animate-lock-pulse" strokeWidth={2} />
+                <Lock className="w-10 h-10 sm:w-12 sm:h-12 text-icon-accent animate-lock-pulse" strokeWidth={2} />
                 {/* Subtle glow */}
                 <div className="absolute inset-0 rounded-full opacity-20 login-icon-glow" />
               </div>
