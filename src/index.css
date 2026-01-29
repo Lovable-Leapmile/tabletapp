@@ -51,7 +51,7 @@ All colors MUST be HSL.
     /* Border and input */
     --border: 0 0% 90%;
     --input: 0 0% 100%;
-    --ring: 0 0% 9%;
+    --ring: 0 0% 40%;
 
     /* Radius */
     --radius: 0.75rem;
