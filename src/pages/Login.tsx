@@ -70,9 +70,9 @@ const Login = () => {
     }
   };
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden bg-background">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 relative bg-background overflow-auto">
       {/* Technical Warehouse Blueprint Pattern */}
-      <div className="absolute inset-0 z-0">
+      <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 login-pattern-overlay" />
         {/* Vignette glow around center */}
         <div className="absolute inset-0 pointer-events-none login-vignette" />
