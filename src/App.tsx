@@ -37,7 +37,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter basename={getBasename()}>
         <BackHandlerProvider>
-          <div className="mobile-full-height mobile-viewport no-pull-refresh">
+          <div className="mobile-full-height mobile-viewport no-pull-refresh touch-scroll">
             <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />

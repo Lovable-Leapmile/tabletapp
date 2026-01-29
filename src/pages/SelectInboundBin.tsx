@@ -206,7 +206,7 @@ const SelectInboundBin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background mobile-app-bar-padding">
+    <div className="min-h-screen bg-background mobile-app-bar-padding overflow-y-auto touch-scroll">
       <AppBar title="Inbound" showBack username={username} onBack={() => navigate("/dashboard")} />
       {/* Fixed White Div with Search and Stats */}
       <div
