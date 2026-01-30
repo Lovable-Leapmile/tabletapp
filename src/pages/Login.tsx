@@ -17,7 +17,10 @@ const Login = () => {
   const handleLogin = async () => {
     // Validate mobile number - must be at least 6 digits for password derivation
     if (!/^\d+$/.test(mobileNumber) || mobileNumber.length < 6) {
-      toast.error("Please enter a valid mobile number (at least 6 digits)");
+      toast.error("Please enter a valid mobile number (at least 6 digits)", {
+        duration: 1500,
+        id: 'validation-error',
+      });
       return;
     }
 
@@ -55,11 +58,17 @@ const Login = () => {
         navigate("/dashboard");
       } else {
         console.error("Login failed - Invalid credentials or missing user_name");
-        toast.error("Invalid credentials. Please try again.");
+        toast.error("Invalid credentials. Please try again.", {
+          duration: 1500,
+          id: 'login-error',
+        });
       }
     } catch (error) {
       console.error("Login error:", error);
-      toast.error("Login failed. Please check your connection and try again.");
+      toast.error("Login failed. Please check your connection and try again.", {
+        duration: 1500,
+        id: 'connection-error',
+      });
     } finally {
       setIsLoading(false);
     }
