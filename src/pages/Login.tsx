@@ -100,7 +100,7 @@ const Login = () => {
           <div className="absolute -inset-px rounded-3xl opacity-30 pointer-events-none login-card-highlight" />
 
           {/* Main Card */}
-          <div className="relative bg-white/95 backdrop-blur-xl rounded-3xl p-8 sm:p-10 border border-white/50 login-card-inner-shadow">
+          <div className="relative bg-white rounded-3xl p-8 sm:p-10 border border-border login-card-inner-shadow">
             {/* iOS-style Biometric Lock Icon */}
             <div className="flex justify-center mb-8">
               <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center login-icon-container">
