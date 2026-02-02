@@ -45,32 +45,6 @@ if ('overscrollBehavior' in document.documentElement.style) {
   document.documentElement.style.overscrollBehaviorY = 'auto';
 }
 
-// Request fullscreen on mobile devices
-const requestFullScreen = () => {
-  const elem = document.documentElement;
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen().catch(err => {
-      console.log(`Error attempting to enable fullscreen: ${err.message}`);
-    });
-  } else if ((elem as any).webkitRequestFullscreen) { /* Safari */
-    (elem as any).webkitRequestFullscreen();
-  } else if ((elem as any).msRequestFullscreen) { /* IE11 */
-    (elem as any).msRequestFullscreen();
-  }
-};
-
-// Attempt fullscreen on user interaction
-const handleFirstUserInteraction = () => {
-  ['click', 'touchstart'].forEach(event => {
-    document.addEventListener(event, () => {
-      requestFullScreen();
-    }, { once: true });
-  });
-};
-
-// Initialize fullscreen on user interaction
-handleFirstUserInteraction();
-
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider>
     <App />
