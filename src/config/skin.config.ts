@@ -145,7 +145,7 @@ const skins: Record<string, Skin> = {
       // Border and input
       border: "#E5E7EB", // Light gray border
       input: "#FFFFFF", // White input background
-      ring: "#0A6B71", // Primary color for focus rings
+      ring: "#666666", // Static dark grey for focus rings
 
       // Card
       card: "#FFFFFF",
@@ -235,7 +235,7 @@ const skins: Record<string, Skin> = {
       // Border and input
       border: "#E5E7EB", // Light gray border
       input: "#FFFFFF", // White input background
-      ring: "#0A6B71", // Primary color for focus rings
+      ring: "#666666", // Static dark grey for focus rings
 
       // Card
       card: "#FFFFFF",
@@ -325,7 +325,7 @@ const skins: Record<string, Skin> = {
       // Border and input
       border: "#E5E7EB",
       input: "#FFFFFF",
-      ring: "#0A6B71",
+      ring: "#666666", // Static dark grey for focus rings
 
       // Card
       card: "#FFFFFF",
@@ -415,7 +415,7 @@ const skins: Record<string, Skin> = {
       // Border and input
       border: "#E5E7EB",
       input: "#FFFFFF",
-      ring: "#0A6B71",
+      ring: "#666666", // Static dark grey for focus rings
 
       // Card
       card: "#FFFFFF",
