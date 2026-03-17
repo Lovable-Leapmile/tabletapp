@@ -264,6 +264,29 @@ const TrayOverflow = () => {
     }
   };
 
+  const handleRelease = async () => {
+    if (!authToken || !orderId) return;
+    setIsProcessing(true);
+    try {
+      const response = await fetch(
+        getApiUrl(`/nanostore/orders/complete?record_id=${orderId}`),
+        { method: "PATCH", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
+      );
+      if (!response.ok) throw new Error(`Failed to release: ${response.status}`);
+      toast.success(`Order #${orderId} released successfully!`);
+      setViewState("slots");
+      setSelectedSlot(null);
+      setTrayItems([]);
+      setOrderId("");
+      fetchOverflowSlots();
+    } catch (error) {
+      console.error("Error releasing order:", error);
+      toast.error("Failed to release order.");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   const handleBack = () => {
     if (viewState === "items") {
       setViewState("slots");
