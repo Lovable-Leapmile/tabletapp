@@ -82,12 +82,8 @@ const TrayOverflow = () => {
         }
       );
 
-      if (!response.ok) {
-        throw new Error(`Failed to fetch slots: ${response.status}`);
-      }
-
       const data = await response.json();
-      if (data.records && Array.isArray(data.records)) {
+      if (response.ok && data.records && Array.isArray(data.records)) {
         setSlots(data.records);
       } else {
         setSlots([]);
