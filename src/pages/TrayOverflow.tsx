@@ -213,7 +213,8 @@ const TrayOverflow = () => {
   };
 
   const handlePickItem = (item: TrayItem) => {
-    const qty = pickQuantities[item.id] || 0;
+    const key = getItemKey(item);
+    const qty = pickQuantities[key] || 0;
     if (qty <= 0) {
       toast.error("Please select a quantity to pick.");
       return;
