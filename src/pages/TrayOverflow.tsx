@@ -224,28 +224,20 @@ const TrayOverflow = () => {
     setIsProcessing(true);
 
     try {
-      // Create pickup transactions for the quantity
-      for (let i = 0; i < qty; i++) {
-        const response = await fetch(
-          getApiUrl("/nanostore/transaction"),
-          {
-            method: "POST",
-            headers: {
-              accept: "application/json",
-              Authorization: `Bearer ${authToken}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              order_id: parseInt(orderId),
-              item_id: itemToPick.item_id || "",
-              transaction_type: "pickup",
-            }),
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`Transaction failed at item ${i + 1}: ${response.status}`);
+      const today = new Date().toISOString().split("T")[0];
+      const response = await fetch(
+        getApiUrl(`/nanostore/transaction?order_id=${orderId}&item_id=${itemToPick.item_id || ""}&transaction_item_quantity=${qty}&transaction_type=pickup&transaction_date=${today}`),
+        {
+          method: "POST",
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
         }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Transaction failed: ${response.status}`);
       }
 
       toast.success(`Picked ${qty} of ${itemToPick.item_id || "item"} successfully!`);
