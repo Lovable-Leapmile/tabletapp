@@ -105,15 +105,13 @@ const TrayOverflow = () => {
     if (!authToken) return null;
     try {
       const response = await fetch(
-        getApiUrl(`/nanostore/orders?tray_id=${trayId}&order_by_field=updated_at&order_by_type=DESC`),
+        getApiUrl(`/nanostore/orders?tray_id=${trayId}&tray_status=tray_ready_to_use&order_by_field=updated_at&order_by_type=DESC`),
         { method: "GET", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
       );
+      if (response.status === 404) return null;
       const data = await response.json();
-      if (data.records && Array.isArray(data.records)) {
-        const activeOrder = data.records.find(
-          (o: any) => o.status === "active" || o.tray_status === "inprogress" || o.tray_status === "tray_ready_to_use"
-        );
-        if (activeOrder) return extractOrderId(activeOrder);
+      if (data.records && Array.isArray(data.records) && data.records.length > 0) {
+        return extractOrderId(data.records[0]);
       }
       return null;
     } catch {
