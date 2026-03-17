@@ -100,6 +100,23 @@ const TrayOverflow = () => {
     }
   };
 
+  const checkExistingOrder = async (trayId: string): Promise<string | null> => {
+    if (!authToken) return null;
+    try {
+      const response = await fetch(
+        getApiUrl(`/nanostore/orders?tray_id=${trayId}&order_by_field=updated_at&order_by_type=DESC`),
+        { method: "GET", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
+      );
+      if (!response.ok) return null;
+      const data = await response.json();
+      if (data.records && Array.isArray(data.records)) {
+        const activeOrder = data.records.find((o: any) => o.status === "active");
+        if (activeOrder) return activeOrder.id.toString();
+      }
+      return null;
+    } catch { return null; }
+  };
+
   const handleSlotClick = async (slot: OverflowSlot) => {
     if (!authToken) return;
 
@@ -111,43 +128,29 @@ const TrayOverflow = () => {
       toast.info(`Unblocking slot ${slot.slot_id}...`);
       const unblockResponse = await fetch(
         getApiUrl(`/robotmanager/unblock?slot_id=${slot.slot_id}`),
-        {
-          method: "PATCH",
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
+        { method: "PATCH", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
       );
-
-      if (!unblockResponse.ok) {
-        throw new Error(`Failed to unblock slot: ${unblockResponse.status}`);
-      }
-
+      if (!unblockResponse.ok) throw new Error(`Failed to unblock slot: ${unblockResponse.status}`);
       toast.success("Slot unblocked successfully!");
 
-      // Step 2: Create order for tray with 1000 min
-      const userId = sessionStorage.getItem("userId") || "";
-      toast.info(`Creating order for tray ${slot.tray_id}...`);
-
-      const orderResponse = await fetch(
-        getApiUrl(`/nanostore/orders?tray_id=${slot.tray_id}&user_id=${userId}&auto_complete_time=1000`),
-        {
-          method: "POST",
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
-
-      if (!orderResponse.ok) {
-        throw new Error(`Failed to create order: ${orderResponse.status}`);
+      // Step 2: Check for existing active order
+      const existingOrderId = await checkExistingOrder(slot.tray_id);
+      if (existingOrderId) {
+        setOrderId(existingOrderId);
+        toast.success(`Using existing order #${existingOrderId}`);
+      } else {
+        // Create new order
+        const userId = sessionStorage.getItem("userId") || "";
+        toast.info(`Creating order for tray ${slot.tray_id}...`);
+        const orderResponse = await fetch(
+          getApiUrl(`/nanostore/orders?tray_id=${slot.tray_id}&user_id=${userId}&auto_complete_time=1000`),
+          { method: "POST", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
+        );
+        if (!orderResponse.ok) throw new Error(`Failed to create order: ${orderResponse.status}`);
+        const orderData = await orderResponse.json();
+        setOrderId(orderData.id?.toString() || "");
+        toast.success("Order created for 1000 minutes!");
       }
-
-      const orderData = await orderResponse.json();
-      setOrderId(orderData.id?.toString() || "");
-      toast.success("Order created for 1000 minutes!");
 
       // Step 3: Fetch tray items
       await fetchTrayItems(slot.tray_id);
@@ -261,6 +264,29 @@ const TrayOverflow = () => {
     }
   };
 
+  const handleRelease = async () => {
+    if (!authToken || !orderId) return;
+    setIsProcessing(true);
+    try {
+      const response = await fetch(
+        getApiUrl(`/nanostore/orders/complete?record_id=${orderId}`),
+        { method: "PATCH", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
+      );
+      if (!response.ok) throw new Error(`Failed to release: ${response.status}`);
+      toast.success(`Order #${orderId} released successfully!`);
+      setViewState("slots");
+      setSelectedSlot(null);
+      setTrayItems([]);
+      setOrderId("");
+      fetchOverflowSlots();
+    } catch (error) {
+      console.error("Error releasing order:", error);
+      toast.error("Failed to release order.");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   const handleBack = () => {
     if (viewState === "items") {
       setViewState("slots");
@@ -358,8 +384,21 @@ const TrayOverflow = () => {
                   <h3 className="text-lg font-semibold text-foreground">
                     Tray: <span className="text-primary">{selectedSlot?.tray_id}</span>
                   </h3>
-                  <span className="text-sm text-muted-foreground">{trayItems.length} item(s)</span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm text-muted-foreground">{trayItems.length} item(s)</span>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={handleRelease}
+                      disabled={isProcessing || !orderId}
+                    >
+                      {isProcessing ? <Loader2 className="h-4 w-4 animate-spin" /> : "Release"}
+                    </Button>
+                  </div>
                 </div>
+                {orderId && (
+                  <p className="text-xs text-muted-foreground mb-1">Order ID: #{orderId}</p>
+                )}
                 {selectedSlot?.comment && (
                   <p className="text-sm font-semibold text-destructive">{selectedSlot.comment}</p>
                 )}
