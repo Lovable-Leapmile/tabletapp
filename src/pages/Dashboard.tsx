@@ -37,6 +37,12 @@ const Dashboard = () => {
       description: "Process outbound items",
     },
     {
+      title: "Tray Overflow",
+      icon: AlertTriangle,
+      path: "/tray-overflow",
+      description: "Handle overflow trays",
+    },
+    {
       title: "Station View",
       icon: Info,
       path: "/station-view",

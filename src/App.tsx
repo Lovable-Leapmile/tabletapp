@@ -52,6 +52,7 @@ const App = () => (
               <Route path="/pickup/select-bin" element={<SelectPickupBin />} />
               <Route path="/pickup/scan-items" element={<ScanItemToPickup />} />
               <Route path="/station-view" element={<StationView />} />
+              <Route path="/tray-overflow" element={<TrayOverflow />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/users" element={<AdminUsers />} />
               <Route path="/admin/bins" element={<AdminBins />} />
