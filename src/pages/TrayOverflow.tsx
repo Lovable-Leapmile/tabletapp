@@ -473,7 +473,7 @@ const TrayOverflow = () => {
                             </div>
                             <Button
                               onClick={(e) => { e.stopPropagation(); handlePickItem(item); }}
-                              disabled={!pickQuantities[item.id] || isProcessing}
+                              disabled={!pickQuantities[getItemKey(item)] || isProcessing}
                               className="h-10 px-6"
                             >
                               {isProcessing ? <Loader2 className="h-4 w-4 animate-spin" /> : "Pick"}
