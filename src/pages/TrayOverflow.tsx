@@ -51,7 +51,7 @@ const TrayOverflow = () => {
   const [isLoadingSlots, setIsLoadingSlots] = useState(true);
   const [selectedSlot, setSelectedSlot] = useState<OverflowSlot | null>(null);
   const [trayItems, setTrayItems] = useState<TrayItem[]>([]);
-  const [pickQuantities, setPickQuantities] = useState<Record<number, number>>({});
+  const [pickQuantities, setPickQuantities] = useState<Record<string, number>>({});
   const [isProcessing, setIsProcessing] = useState(false);
   const [showPickConfirm, setShowPickConfirm] = useState(false);
   const [itemToPick, setItemToPick] = useState<TrayItem | null>(null);
@@ -187,9 +187,10 @@ const TrayOverflow = () => {
       if (data.records && Array.isArray(data.records)) {
         setTrayItems(data.records);
         // Initialize pick quantities to 0
-        const quantities: Record<number, number> = {};
+        const quantities: Record<string, number> = {};
         data.records.forEach((item: TrayItem) => {
-          quantities[item.id] = 0;
+          const key = item.item_id || item.id.toString();
+          quantities[key] = 0;
         });
         setPickQuantities(quantities);
       }
@@ -199,18 +200,21 @@ const TrayOverflow = () => {
     }
   };
 
-  const handleQuantityChange = (itemId: number, delta: number) => {
+  const getItemKey = (item: TrayItem) => item.item_id || item.id.toString();
+
+  const handleQuantityChange = (item: TrayItem, delta: number) => {
+    const key = getItemKey(item);
     setPickQuantities((prev) => {
-      const item = trayItems.find((i) => i.id === itemId);
-      const maxQty = item?.available_quantity || 0;
-      const current = prev[itemId] || 0;
+      const maxQty = item.available_quantity || 0;
+      const current = prev[key] || 0;
       const newVal = Math.max(0, Math.min(maxQty, current + delta));
-      return { ...prev, [itemId]: newVal };
+      return { ...prev, [key]: newVal };
     });
   };
 
   const handlePickItem = (item: TrayItem) => {
-    const qty = pickQuantities[item.id] || 0;
+    const key = getItemKey(item);
+    const qty = pickQuantities[key] || 0;
     if (qty <= 0) {
       toast.error("Please select a quantity to pick.");
       return;
@@ -226,7 +230,7 @@ const TrayOverflow = () => {
       return;
     }
 
-    const qty = pickQuantities[itemToPick.id] || 0;
+    const qty = pickQuantities[getItemKey(itemToPick)] || 0;
     setIsProcessing(true);
 
     try {
@@ -450,18 +454,18 @@ const TrayOverflow = () => {
                           <div className="flex items-center justify-between pt-2 border-t border-border">
                             <div className="flex items-center gap-3">
                               <button
-                                onClick={(e) => { e.stopPropagation(); handleQuantityChange(item.id, -1); }}
-                                disabled={!pickQuantities[item.id]}
+                                onClick={(e) => { e.stopPropagation(); handleQuantityChange(item, -1); }}
+                                disabled={!pickQuantities[getItemKey(item)]}
                                 className="p-2 rounded-full bg-muted hover:bg-accent disabled:opacity-30 transition-colors"
                               >
                                 <Minus className="h-4 w-4" />
                               </button>
                               <span className="text-lg font-bold text-foreground min-w-[2rem] text-center">
-                                {pickQuantities[item.id] || 0}
+                                {pickQuantities[getItemKey(item)] || 0}
                               </span>
                               <button
-                                onClick={(e) => { e.stopPropagation(); handleQuantityChange(item.id, 1); }}
-                                disabled={(pickQuantities[item.id] || 0) >= item.available_quantity}
+                                onClick={(e) => { e.stopPropagation(); handleQuantityChange(item, 1); }}
+                                disabled={(pickQuantities[getItemKey(item)] || 0) >= item.available_quantity}
                                 className="p-2 rounded-full bg-muted hover:bg-accent disabled:opacity-30 transition-colors"
                               >
                                 <Plus className="h-4 w-4" />
@@ -469,7 +473,7 @@ const TrayOverflow = () => {
                             </div>
                             <Button
                               onClick={(e) => { e.stopPropagation(); handlePickItem(item); }}
-                              disabled={!pickQuantities[item.id] || isProcessing}
+                              disabled={!pickQuantities[getItemKey(item)] || isProcessing}
                               className="h-10 px-6"
                             >
                               {isProcessing ? <Loader2 className="h-4 w-4 animate-spin" /> : "Pick"}
@@ -498,7 +502,7 @@ const TrayOverflow = () => {
             <AlertDialogTitle className="text-foreground">Confirm Pickup</AlertDialogTitle>
             <AlertDialogDescription className="text-foreground space-y-2">
               <p>
-                Pick <span className="font-bold text-primary">{pickQuantities[itemToPick?.id || 0] || 0}</span> unit(s) of{" "}
+                Pick <span className="font-bold text-primary">{itemToPick ? pickQuantities[getItemKey(itemToPick)] || 0 : 0}</span> unit(s) of{" "}
                 <span className="font-bold">{itemToPick?.item_id || "item"}</span> from tray{" "}
                 <span className="font-bold text-primary">{selectedSlot?.tray_id}</span>?
               </p>
