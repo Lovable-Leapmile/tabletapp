@@ -454,18 +454,18 @@ const TrayOverflow = () => {
                           <div className="flex items-center justify-between pt-2 border-t border-border">
                             <div className="flex items-center gap-3">
                               <button
-                                onClick={(e) => { e.stopPropagation(); handleQuantityChange(item.id, -1); }}
-                                disabled={!pickQuantities[item.id]}
+                                onClick={(e) => { e.stopPropagation(); handleQuantityChange(item, -1); }}
+                                disabled={!pickQuantities[getItemKey(item)]}
                                 className="p-2 rounded-full bg-muted hover:bg-accent disabled:opacity-30 transition-colors"
                               >
                                 <Minus className="h-4 w-4" />
                               </button>
                               <span className="text-lg font-bold text-foreground min-w-[2rem] text-center">
-                                {pickQuantities[item.id] || 0}
+                                {pickQuantities[getItemKey(item)] || 0}
                               </span>
                               <button
-                                onClick={(e) => { e.stopPropagation(); handleQuantityChange(item.id, 1); }}
-                                disabled={(pickQuantities[item.id] || 0) >= item.available_quantity}
+                                onClick={(e) => { e.stopPropagation(); handleQuantityChange(item, 1); }}
+                                disabled={(pickQuantities[getItemKey(item)] || 0) >= item.available_quantity}
                                 className="p-2 rounded-full bg-muted hover:bg-accent disabled:opacity-30 transition-colors"
                               >
                                 <Plus className="h-4 w-4" />
