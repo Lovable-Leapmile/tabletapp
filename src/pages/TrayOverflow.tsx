@@ -502,7 +502,7 @@ const TrayOverflow = () => {
             <AlertDialogTitle className="text-foreground">Confirm Pickup</AlertDialogTitle>
             <AlertDialogDescription className="text-foreground space-y-2">
               <p>
-                Pick <span className="font-bold text-primary">{pickQuantities[itemToPick?.id || 0] || 0}</span> unit(s) of{" "}
+                Pick <span className="font-bold text-primary">{itemToPick ? pickQuantities[getItemKey(itemToPick)] || 0 : 0}</span> unit(s) of{" "}
                 <span className="font-bold">{itemToPick?.item_id || "item"}</span> from tray{" "}
                 <span className="font-bold text-primary">{selectedSlot?.tray_id}</span>?
               </p>
