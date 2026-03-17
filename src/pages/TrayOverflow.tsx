@@ -4,7 +4,7 @@ import { AppBar } from "@/components/AppBar";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Loader2, Package, AlertTriangle, Minus, Plus, ArrowLeft } from "lucide-react";
-import { toast } from "sonner";
+
 import { getApiUrl } from "@/utils/api";
 import {
   AlertDialog,
@@ -64,7 +64,7 @@ const TrayOverflow = () => {
 
   const fetchOverflowSlots = async () => {
     if (!authToken) {
-      toast.error("Authentication required. Please login again.");
+      console.warn("Authentication required. Please login again.");
       navigate("/");
       return;
     }
@@ -90,7 +90,7 @@ const TrayOverflow = () => {
       }
     } catch (error) {
       console.error("Error fetching overflow slots:", error);
-      toast.error("Failed to load overflow slots.");
+      console.error("Failed to load overflow slots.");
     } finally {
       setIsLoadingSlots(false);
     }
@@ -127,23 +127,23 @@ const TrayOverflow = () => {
 
     try {
       // Step 1: Unblock the slot
-      toast.info(`Unblocking slot ${slot.slot_id}...`);
+      console.info(`Unblocking slot ${slot.slot_id}...`);
       const unblockResponse = await fetch(
         getApiUrl(`/robotmanager/unblock?slot_id=${slot.slot_id}`),
         { method: "PATCH", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
       );
       if (!unblockResponse.ok) throw new Error(`Failed to unblock slot: ${unblockResponse.status}`);
-      toast.success("Slot unblocked successfully!");
+      console.info("Slot unblocked successfully!");
 
       // Step 2: Check for existing active order
       const existingOrderId = await checkExistingOrder(slot.tray_id);
       if (existingOrderId) {
         setOrderId(existingOrderId);
-        toast.success(`Using existing order #${existingOrderId}`);
+        console.info(`Using existing order #${existingOrderId}`);
       } else {
         // Create new order
         const userId = sessionStorage.getItem("userId") || "";
-        toast.info(`Creating order for tray ${slot.tray_id}...`);
+        console.info(`Creating order for tray ${slot.tray_id}...`);
         const orderResponse = await fetch(
           getApiUrl(`/nanostore/orders?tray_id=${slot.tray_id}&user_id=${userId}&auto_complete_time=1000`),
           { method: "POST", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
@@ -157,7 +157,7 @@ const TrayOverflow = () => {
         }
 
         setOrderId(createdOrderId);
-        toast.success(`Order #${createdOrderId} created for 1000 minutes!`);
+        console.info(`Order #${createdOrderId} created for 1000 minutes!`);
       }
 
       // Step 3: Fetch tray items
@@ -165,7 +165,7 @@ const TrayOverflow = () => {
       setViewState("items");
     } catch (error) {
       console.error("Error processing slot:", error);
-      toast.error("Failed to process tray overflow. Please try again.");
+      console.error("Failed to process tray overflow. Please try again.");
       setViewState("slots");
     }
   };
@@ -201,7 +201,7 @@ const TrayOverflow = () => {
       }
     } catch (error) {
       console.error("Error fetching tray items:", error);
-      toast.error("Failed to load tray items.");
+      console.error("Failed to load tray items.");
     }
   };
 
@@ -218,7 +218,7 @@ const TrayOverflow = () => {
   const handlePickItem = (item: TrayItem) => {
     const qty = pickQuantities[item.id] || 0;
     if (qty <= 0) {
-      toast.error("Please select a quantity to pick.");
+      return;
       return;
     }
     setItemToPick(item);
@@ -228,7 +228,7 @@ const TrayOverflow = () => {
   const confirmPick = async () => {
     if (!itemToPick || !authToken) return;
     if (!orderId) {
-      toast.error("Order ID missing. Please reopen the tray overflow slot.");
+      console.error("Order ID missing.");
       return;
     }
 
@@ -256,7 +256,7 @@ const TrayOverflow = () => {
         throw new Error(`Transaction failed: ${response.status} - ${responseData.message || ""}`);
       }
 
-      toast.success(`Picked ${qty} of ${itemToPick.item_id || "item"} successfully!`);
+      console.info(`Picked ${qty} of ${itemToPick.item_id || "item"} successfully!`);
 
       // Refresh items list
       if (selectedSlot) {
@@ -264,7 +264,7 @@ const TrayOverflow = () => {
       }
     } catch (error) {
       console.error("Error creating pickup transaction:", error);
-      toast.error("Failed to process pickup. Please try again.");
+      console.error("Failed to process pickup. Please try again.");
     } finally {
       setIsProcessing(false);
       setShowPickConfirm(false);
@@ -275,7 +275,7 @@ const TrayOverflow = () => {
   const handleRelease = async () => {
     if (!authToken) return;
     if (!orderId) {
-      toast.error("Order ID missing. Please reopen the tray overflow slot.");
+      console.error("Order ID missing.");
       return;
     }
 
@@ -290,7 +290,7 @@ const TrayOverflow = () => {
         console.error("Release response:", releaseData);
         throw new Error(`Failed to release: ${response.status} - ${releaseData.message || ""}`);
       }
-      toast.success(`Order #${orderId} released successfully!`);
+      console.info(`Order #${orderId} released successfully!`);
       setViewState("slots");
       setSelectedSlot(null);
       setTrayItems([]);
@@ -298,7 +298,7 @@ const TrayOverflow = () => {
       fetchOverflowSlots();
     } catch (error) {
       console.error("Error releasing order:", error);
-      toast.error("Failed to release order.");
+      console.error("Failed to release order.");
     } finally {
       setIsProcessing(false);
     }
