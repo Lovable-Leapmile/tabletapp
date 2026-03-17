@@ -187,9 +187,10 @@ const TrayOverflow = () => {
       if (data.records && Array.isArray(data.records)) {
         setTrayItems(data.records);
         // Initialize pick quantities to 0
-        const quantities: Record<number, number> = {};
+        const quantities: Record<string, number> = {};
         data.records.forEach((item: TrayItem) => {
-          quantities[item.id] = 0;
+          const key = item.item_id || item.id.toString();
+          quantities[key] = 0;
         });
         setPickQuantities(quantities);
       }
