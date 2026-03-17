@@ -384,8 +384,21 @@ const TrayOverflow = () => {
                   <h3 className="text-lg font-semibold text-foreground">
                     Tray: <span className="text-primary">{selectedSlot?.tray_id}</span>
                   </h3>
-                  <span className="text-sm text-muted-foreground">{trayItems.length} item(s)</span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm text-muted-foreground">{trayItems.length} item(s)</span>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={handleRelease}
+                      disabled={isProcessing || !orderId}
+                    >
+                      {isProcessing ? <Loader2 className="h-4 w-4 animate-spin" /> : "Release"}
+                    </Button>
+                  </div>
                 </div>
+                {orderId && (
+                  <p className="text-xs text-muted-foreground mb-1">Order ID: #{orderId}</p>
+                )}
                 {selectedSlot?.comment && (
                   <p className="text-sm font-semibold text-destructive">{selectedSlot.comment}</p>
                 )}
