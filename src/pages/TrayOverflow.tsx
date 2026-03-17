@@ -231,8 +231,10 @@ const TrayOverflow = () => {
         }
       );
 
+      const responseData = await response.json();
       if (!response.ok) {
-        throw new Error(`Transaction failed: ${response.status}`);
+        console.error("Transaction response:", responseData);
+        throw new Error(`Transaction failed: ${response.status} - ${responseData.message || ''}`);
       }
 
       toast.success(`Picked ${qty} of ${itemToPick.item_id || "item"} successfully!`);
