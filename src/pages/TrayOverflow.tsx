@@ -200,13 +200,15 @@ const TrayOverflow = () => {
     }
   };
 
-  const handleQuantityChange = (itemId: number, delta: number) => {
+  const getItemKey = (item: TrayItem) => item.item_id || item.id.toString();
+
+  const handleQuantityChange = (item: TrayItem, delta: number) => {
+    const key = getItemKey(item);
     setPickQuantities((prev) => {
-      const item = trayItems.find((i) => i.id === itemId);
-      const maxQty = item?.available_quantity || 0;
-      const current = prev[itemId] || 0;
+      const maxQty = item.available_quantity || 0;
+      const current = prev[key] || 0;
       const newVal = Math.max(0, Math.min(maxQty, current + delta));
-      return { ...prev, [itemId]: newVal };
+      return { ...prev, [key]: newVal };
     });
   };
 
