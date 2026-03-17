@@ -82,12 +82,8 @@ const TrayOverflow = () => {
         }
       );
 
-      if (!response.ok) {
-        throw new Error(`Failed to fetch slots: ${response.status}`);
-      }
-
       const data = await response.json();
-      if (data.records && Array.isArray(data.records)) {
+      if (response.ok && data.records && Array.isArray(data.records)) {
         setSlots(data.records);
       } else {
         setSlots([]);
@@ -107,7 +103,6 @@ const TrayOverflow = () => {
         getApiUrl(`/nanostore/orders?tray_id=${trayId}&order_by_field=updated_at&order_by_type=DESC`),
         { method: "GET", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
       );
-      if (!response.ok) return null;
       const data = await response.json();
       if (data.records && Array.isArray(data.records)) {
         const activeOrder = data.records.find((o: any) => o.status === "active");
@@ -236,8 +231,10 @@ const TrayOverflow = () => {
         }
       );
 
+      const responseData = await response.json();
       if (!response.ok) {
-        throw new Error(`Transaction failed: ${response.status}`);
+        console.error("Transaction response:", responseData);
+        throw new Error(`Transaction failed: ${response.status} - ${responseData.message || ''}`);
       }
 
       toast.success(`Picked ${qty} of ${itemToPick.item_id || "item"} successfully!`);
@@ -264,7 +261,11 @@ const TrayOverflow = () => {
         getApiUrl(`/nanostore/orders/complete?record_id=${orderId}`),
         { method: "PATCH", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
       );
-      if (!response.ok) throw new Error(`Failed to release: ${response.status}`);
+      const releaseData = await response.json();
+      if (!response.ok) {
+        console.error("Release response:", releaseData);
+        throw new Error(`Failed to release: ${response.status} - ${releaseData.message || ''}`);
+      }
       toast.success(`Order #${orderId} released successfully!`);
       setViewState("slots");
       setSelectedSlot(null);
