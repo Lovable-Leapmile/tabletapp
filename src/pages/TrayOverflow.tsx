@@ -228,7 +228,11 @@ const TrayOverflow = () => {
   };
 
   const confirmPick = async () => {
-    if (!itemToPick || !authToken || !orderId) return;
+    if (!itemToPick || !authToken) return;
+    if (!orderId) {
+      toast.error("Order ID missing. Please reopen the tray overflow slot.");
+      return;
+    }
 
     const qty = pickQuantities[itemToPick.id] || 0;
     setIsProcessing(true);
@@ -236,8 +240,9 @@ const TrayOverflow = () => {
     try {
       const today = new Date().toISOString().split("T")[0];
       const negativeQty = -Math.abs(qty);
+      const encodedItemId = encodeURIComponent(itemToPick.item_id || "");
       const response = await fetch(
-        getApiUrl(`/nanostore/transaction?order_id=${orderId}&item_id=${itemToPick.item_id || ""}&transaction_item_quantity=${negativeQty}&transaction_type=outbound&transaction_date=${today}`),
+        getApiUrl(`/nanostore/transaction?order_id=${orderId}&item_id=${encodedItemId}&transaction_item_quantity=${negativeQty}&transaction_type=outbound&transaction_date=${today}`),
         {
           method: "POST",
           headers: {
@@ -250,7 +255,7 @@ const TrayOverflow = () => {
       const responseData = await response.json();
       if (!response.ok) {
         console.error("Transaction response:", responseData);
-        throw new Error(`Transaction failed: ${response.status} - ${responseData.message || ''}`);
+        throw new Error(`Transaction failed: ${response.status} - ${responseData.message || ""}`);
       }
 
       toast.success(`Picked ${qty} of ${itemToPick.item_id || "item"} successfully!`);
@@ -270,7 +275,12 @@ const TrayOverflow = () => {
   };
 
   const handleRelease = async () => {
-    if (!authToken || !orderId) return;
+    if (!authToken) return;
+    if (!orderId) {
+      toast.error("Order ID missing. Please reopen the tray overflow slot.");
+      return;
+    }
+
     setIsProcessing(true);
     try {
       const response = await fetch(
@@ -280,7 +290,7 @@ const TrayOverflow = () => {
       const releaseData = await response.json();
       if (!response.ok) {
         console.error("Release response:", releaseData);
-        throw new Error(`Failed to release: ${response.status} - ${releaseData.message || ''}`);
+        throw new Error(`Failed to release: ${response.status} - ${releaseData.message || ""}`);
       }
       toast.success(`Order #${orderId} released successfully!`);
       setViewState("slots");
