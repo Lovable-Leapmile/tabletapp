@@ -96,6 +96,11 @@ const TrayOverflow = () => {
     }
   };
 
+  const extractOrderId = (payload: any): string | null => {
+    const id = payload?.id ?? payload?.record_id ?? payload?.records?.[0]?.id;
+    return id !== undefined && id !== null ? id.toString() : null;
+  };
+
   const checkExistingOrder = async (trayId: string): Promise<string | null> => {
     if (!authToken) return null;
     try {
@@ -105,11 +110,15 @@ const TrayOverflow = () => {
       );
       const data = await response.json();
       if (data.records && Array.isArray(data.records)) {
-        const activeOrder = data.records.find((o: any) => o.status === "active");
-        if (activeOrder) return activeOrder.id.toString();
+        const activeOrder = data.records.find(
+          (o: any) => o.status === "active" || o.tray_status === "inprogress" || o.tray_status === "tray_ready_to_use"
+        );
+        if (activeOrder) return extractOrderId(activeOrder);
       }
       return null;
-    } catch { return null; }
+    } catch {
+      return null;
+    }
   };
 
   const handleSlotClick = async (slot: OverflowSlot) => {
@@ -142,9 +151,15 @@ const TrayOverflow = () => {
           { method: "POST", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
         );
         if (!orderResponse.ok) throw new Error(`Failed to create order: ${orderResponse.status}`);
+
         const orderData = await orderResponse.json();
-        setOrderId(orderData.id?.toString() || "");
-        toast.success("Order created for 1000 minutes!");
+        const createdOrderId = extractOrderId(orderData);
+        if (!createdOrderId) {
+          throw new Error("Order was created but no order_id was returned by API.");
+        }
+
+        setOrderId(createdOrderId);
+        toast.success(`Order #${createdOrderId} created for 1000 minutes!`);
       }
 
       // Step 3: Fetch tray items
