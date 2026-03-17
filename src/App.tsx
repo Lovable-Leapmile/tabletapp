@@ -19,6 +19,7 @@ import AdminAddProduct from "./pages/AdminAddProduct";
 import AdminHistory from "./pages/AdminHistory";
 import AdminTestScanner from "./pages/AdminTestScanner";
 import AdminScannerManual from "./pages/AdminScannerManual";
+import TrayOverflow from "./pages/TrayOverflow";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
