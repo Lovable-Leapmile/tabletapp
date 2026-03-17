@@ -126,46 +126,23 @@ const TrayOverflow = () => {
     setViewState("loading-unblock");
 
     try {
-      // Step 1: Unblock the slot
-      toast.info(`Unblocking slot ${slot.slot_id}...`);
-      const unblockResponse = await fetch(
-        getApiUrl(`/robotmanager/unblock?slot_id=${slot.slot_id}`),
-        { method: "PATCH", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
-      );
-      if (!unblockResponse.ok) throw new Error(`Failed to unblock slot: ${unblockResponse.status}`);
-      toast.success("Slot unblocked successfully!");
-
-      // Step 2: Check for existing active order
+      // Fetch existing order for this tray
       const existingOrderId = await checkExistingOrder(slot.tray_id);
       if (existingOrderId) {
         setOrderId(existingOrderId);
-        toast.success(`Using existing order #${existingOrderId}`);
+        toast.success(`Found order #${existingOrderId}`);
       } else {
-        // Create new order
-        const userId = sessionStorage.getItem("userId") || "";
-        toast.info(`Creating order for tray ${slot.tray_id}...`);
-        const orderResponse = await fetch(
-          getApiUrl(`/nanostore/orders?tray_id=${slot.tray_id}&user_id=${userId}&auto_complete_time=1000`),
-          { method: "POST", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
-        );
-        if (!orderResponse.ok) throw new Error(`Failed to create order: ${orderResponse.status}`);
-
-        const orderData = await orderResponse.json();
-        const createdOrderId = extractOrderId(orderData);
-        if (!createdOrderId) {
-          throw new Error("Order was created but no order_id was returned by API.");
-        }
-
-        setOrderId(createdOrderId);
-        toast.success(`Order #${createdOrderId} created for 1000 minutes!`);
+        toast.error("No active order found for this tray.");
+        setViewState("slots");
+        return;
       }
 
-      // Step 3: Fetch tray items
+      // Fetch tray items
       await fetchTrayItems(slot.tray_id);
       setViewState("items");
     } catch (error) {
       console.error("Error processing slot:", error);
-      toast.error("Failed to process tray overflow. Please try again.");
+      toast.error("Failed to load tray. Please try again.");
       setViewState("slots");
     }
   };
