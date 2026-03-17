@@ -261,7 +261,11 @@ const TrayOverflow = () => {
         getApiUrl(`/nanostore/orders/complete?record_id=${orderId}`),
         { method: "PATCH", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
       );
-      if (!response.ok) throw new Error(`Failed to release: ${response.status}`);
+      const releaseData = await response.json();
+      if (!response.ok) {
+        console.error("Release response:", releaseData);
+        throw new Error(`Failed to release: ${response.status} - ${releaseData.message || ''}`);
+      }
       toast.success(`Order #${orderId} released successfully!`);
       setViewState("slots");
       setSelectedSlot(null);
