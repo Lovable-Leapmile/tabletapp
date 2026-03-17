@@ -51,7 +51,7 @@ const TrayOverflow = () => {
   const [isLoadingSlots, setIsLoadingSlots] = useState(true);
   const [selectedSlot, setSelectedSlot] = useState<OverflowSlot | null>(null);
   const [trayItems, setTrayItems] = useState<TrayItem[]>([]);
-  const [pickQuantities, setPickQuantities] = useState<Record<number, number>>({});
+  const [pickQuantities, setPickQuantities] = useState<Record<string, number>>({});
   const [isProcessing, setIsProcessing] = useState(false);
   const [showPickConfirm, setShowPickConfirm] = useState(false);
   const [itemToPick, setItemToPick] = useState<TrayItem | null>(null);
