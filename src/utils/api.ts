@@ -55,6 +55,10 @@ export const API_CONFIG = {
       item: '/nanostore/item',
       ordersComplete: '/nanostore/orders/complete',
       traysForOrder: '/nanostore/trays_for_order'
+    },
+    robotmanager: {
+      slots: '/robotmanager/slots',
+      unblock: '/robotmanager/unblock'
     }
   }
 } as const;

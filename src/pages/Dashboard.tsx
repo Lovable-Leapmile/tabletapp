@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { AppBar } from "@/components/AppBar";
 import { Footer } from "@/components/Footer";
 import { Card } from "@/components/ui/card";
-import { Package, ArrowUp, ArrowDown, Info, UserCog, LayoutDashboard } from "lucide-react";
+import { Package, ArrowUp, ArrowDown, Info, UserCog, LayoutDashboard, AlertTriangle } from "lucide-react";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -35,6 +35,12 @@ const Dashboard = () => {
       icon: PickupTrayIcon,
       path: "/pickup",
       description: "Process outbound items",
+    },
+    {
+      title: "Tray Overflow",
+      icon: AlertTriangle,
+      path: "/tray-overflow",
+      description: "Handle overflow trays",
     },
     {
       title: "Station View",

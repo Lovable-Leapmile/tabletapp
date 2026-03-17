@@ -19,6 +19,7 @@ import AdminAddProduct from "./pages/AdminAddProduct";
 import AdminHistory from "./pages/AdminHistory";
 import AdminTestScanner from "./pages/AdminTestScanner";
 import AdminScannerManual from "./pages/AdminScannerManual";
+import TrayOverflow from "./pages/TrayOverflow";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -51,6 +52,7 @@ const App = () => (
               <Route path="/pickup/select-bin" element={<SelectPickupBin />} />
               <Route path="/pickup/scan-items" element={<ScanItemToPickup />} />
               <Route path="/station-view" element={<StationView />} />
+              <Route path="/tray-overflow" element={<TrayOverflow />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/users" element={<AdminUsers />} />
               <Route path="/admin/bins" element={<AdminBins />} />
