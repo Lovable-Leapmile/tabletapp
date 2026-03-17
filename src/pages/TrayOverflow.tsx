@@ -220,8 +220,9 @@ const TrayOverflow = () => {
 
     try {
       const today = new Date().toISOString().split("T")[0];
+      const negativeQty = -Math.abs(qty);
       const response = await fetch(
-        getApiUrl(`/nanostore/transaction?order_id=${orderId}&item_id=${itemToPick.item_id || ""}&transaction_item_quantity=${qty}&transaction_type=pickup&transaction_date=${today}`),
+        getApiUrl(`/nanostore/transaction?order_id=${orderId}&item_id=${itemToPick.item_id || ""}&transaction_item_quantity=${negativeQty}&transaction_type=outbound&transaction_date=${today}`),
         {
           method: "POST",
           headers: {
