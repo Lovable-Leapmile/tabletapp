@@ -126,14 +126,7 @@ const TrayOverflow = () => {
     setViewState("loading-unblock");
 
     try {
-      // Step 1: Unblock the slot
-      const unblockResponse = await fetch(
-        getApiUrl(`/robotmanager/unblock?slot_id=${slot.slot_id}`),
-        { method: "PATCH", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
-      );
-      if (!unblockResponse.ok) throw new Error(`Failed to unblock slot: ${unblockResponse.status}`);
-
-      // Step 2: Check for existing active order
+      // Step 1: Check for existing active order or create new one
       const existingOrderId = await checkExistingOrder(slot.tray_id);
       if (existingOrderId) {
         setOrderId(existingOrderId);
@@ -153,6 +146,13 @@ const TrayOverflow = () => {
         }
         setOrderId(createdOrderId);
       }
+
+      // Step 2: Unblock the slot
+      const unblockResponse = await fetch(
+        getApiUrl(`/robotmanager/unblock?slot_id=${slot.slot_id}`),
+        { method: "PATCH", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
+      );
+      if (!unblockResponse.ok) throw new Error(`Failed to unblock slot: ${unblockResponse.status}`);
 
       // Step 3: Fetch tray items
       await fetchTrayItems(slot.tray_id);
