@@ -230,7 +230,7 @@ const TrayOverflow = () => {
       return;
     }
 
-    const qty = pickQuantities[itemToPick.id] || 0;
+    const qty = pickQuantities[getItemKey(itemToPick)] || 0;
     setIsProcessing(true);
 
     try {
