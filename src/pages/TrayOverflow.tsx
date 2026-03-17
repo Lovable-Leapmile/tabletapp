@@ -103,7 +103,6 @@ const TrayOverflow = () => {
         getApiUrl(`/nanostore/orders?tray_id=${trayId}&order_by_field=updated_at&order_by_type=DESC`),
         { method: "GET", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
       );
-      if (!response.ok) return null;
       const data = await response.json();
       if (data.records && Array.isArray(data.records)) {
         const activeOrder = data.records.find((o: any) => o.status === "active");
