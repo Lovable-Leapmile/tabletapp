@@ -174,18 +174,8 @@ const AdminUsers = () => {
             ) : filteredUsers.length > 0 ? (
               <div className="space-y-4">
                 {Array.isArray(filteredUsers) && filteredUsers.map((user) => (
-                  <div key={user.user_phone} className="p-4 sm:p-6 border border-border rounded-lg bg-card relative w-full">
-                    <div className="absolute top-4 right-4">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleEditUser(user)}
-                        className="h-8 w-8 hover:bg-accent/10 hover:text-accent"
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-4 pr-10">
+                  <div key={user.user_phone} className="p-4 sm:p-6 border border-border rounded-lg bg-card w-full">
+                     <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                       <div className="flex-1">
                         <h3 className="text-lg font-semibold text-foreground mb-2">{user.user_name}</h3>
                         <div className="space-y-1">
