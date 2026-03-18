@@ -11,7 +11,6 @@ interface User {
 }
 
 const AdminUsers = () => {
-  const navigate = useNavigate();
   const username = sessionStorage.getItem("username") || "Guest";
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
