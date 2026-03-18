@@ -100,55 +100,6 @@ const AdminUsers = () => {
     setFilteredUsers(filtered);
   }, [searchTerm, users]);
 
-  const handleEditUser = (user: User) => {
-    setSelectedUser(user);
-    setNewUserRole(user.user_role);
-    setShowEditDialog(true);
-  };
-
-  const handleUpdateUserRole = async () => {
-    if (!selectedUser || !newUserRole) return;
-
-    try {
-      console.log("Updating user role:", selectedUser.user_phone, "to:", newUserRole);
-      
-      const response = await fetch(getApiUrl(`/user/user?user_phone=${selectedUser.user_phone}`), {
-        method: 'PATCH',
-        headers: {
-          'accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authToken}`,
-        },
-        body: JSON.stringify({
-          user_role: newUserRole,
-        }),
-      });
-
-      console.log("Update API Response Status:", response.status);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      console.log("Update API Response:", result);
-
-      // Update local state
-      setUsers(prevUsers => 
-        prevUsers.map(user => 
-          user.user_phone === selectedUser.user_phone 
-            ? { ...user, user_role: newUserRole }
-            : user
-        )
-      );
-
-      setShowEditDialog(false);
-      alert('User role updated successfully');
-    } catch (error) {
-      console.error('Error updating user role:', error);
-      alert('Failed to update user role: ' + (error instanceof Error ? error.message : 'Unknown error'));
-    }
-  };
 
   return (
     <div className="min-h-screen bg-background mobile-app-bar-padding">
