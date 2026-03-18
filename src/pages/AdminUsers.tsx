@@ -1,11 +1,7 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { AppBar } from "@/components/AppBar";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { Edit, Search, X, Users } from "lucide-react";
+import { Search, X, Users } from "lucide-react";
 import { getApiUrl } from "@/utils/api";
 
 interface User {
@@ -15,16 +11,12 @@ interface User {
 }
 
 const AdminUsers = () => {
-  const navigate = useNavigate();
   const username = sessionStorage.getItem("username") || "Guest";
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const [showEditDialog, setShowEditDialog] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [newUserRole, setNewUserRole] = useState("");
 
   const authToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2wiOiJhZG1pbiIsImV4cCI6MTkwNzIyMTMyOX0.yl2G3oNWNgXXyCyCLnj8IW0VZ2TezllqSdnhSyLg9NQ";
 
@@ -103,55 +95,6 @@ const AdminUsers = () => {
     setFilteredUsers(filtered);
   }, [searchTerm, users]);
 
-  const handleEditUser = (user: User) => {
-    setSelectedUser(user);
-    setNewUserRole(user.user_role);
-    setShowEditDialog(true);
-  };
-
-  const handleUpdateUserRole = async () => {
-    if (!selectedUser || !newUserRole) return;
-
-    try {
-      console.log("Updating user role:", selectedUser.user_phone, "to:", newUserRole);
-      
-      const response = await fetch(getApiUrl(`/user/user?user_phone=${selectedUser.user_phone}`), {
-        method: 'PATCH',
-        headers: {
-          'accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authToken}`,
-        },
-        body: JSON.stringify({
-          user_role: newUserRole,
-        }),
-      });
-
-      console.log("Update API Response Status:", response.status);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      console.log("Update API Response:", result);
-
-      // Update local state
-      setUsers(prevUsers => 
-        prevUsers.map(user => 
-          user.user_phone === selectedUser.user_phone 
-            ? { ...user, user_role: newUserRole }
-            : user
-        )
-      );
-
-      setShowEditDialog(false);
-      alert('User role updated successfully');
-    } catch (error) {
-      console.error('Error updating user role:', error);
-      alert('Failed to update user role: ' + (error instanceof Error ? error.message : 'Unknown error'));
-    }
-  };
 
   return (
     <div className="min-h-screen bg-background mobile-app-bar-padding">
@@ -226,18 +169,8 @@ const AdminUsers = () => {
             ) : filteredUsers.length > 0 ? (
               <div className="space-y-4">
                 {Array.isArray(filteredUsers) && filteredUsers.map((user) => (
-                  <div key={user.user_phone} className="p-4 sm:p-6 border border-border rounded-lg bg-card relative w-full">
-                    <div className="absolute top-4 right-4">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleEditUser(user)}
-                        className="h-8 w-8 hover:bg-accent/10 hover:text-accent"
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-4 pr-10">
+                  <div key={user.user_phone} className="p-4 sm:p-6 border border-border rounded-lg bg-card w-full">
+                     <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                       <div className="flex-1">
                         <h3 className="text-lg font-semibold text-foreground mb-2">{user.user_name}</h3>
                         <div className="space-y-1">
@@ -273,43 +206,6 @@ const AdminUsers = () => {
         </main>
       </div>
 
-      {/* Edit User Dialog */}
-      <AlertDialog open={showEditDialog} onOpenChange={setShowEditDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Edit User Type</AlertDialogTitle>
-            <AlertDialogDescription>
-              Change the user role for {selectedUser?.user_name}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="user-role">User Type</Label>
-              <select 
-                value={newUserRole} 
-                onChange={(e) => setNewUserRole(e.target.value)}
-                className="w-full h-10 px-3 py-2 text-sm border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring"
-              >
-                <option value="">Select user type</option>
-                <option value="inbound">Inbound</option>
-                <option value="picking">Picking</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
-          </div>
-
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleUpdateUserRole}
-              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
-            >
-              Submit
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 };
