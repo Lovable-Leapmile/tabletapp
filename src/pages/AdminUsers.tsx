@@ -211,43 +211,6 @@ const AdminUsers = () => {
         </main>
       </div>
 
-      {/* Edit User Dialog */}
-      <AlertDialog open={showEditDialog} onOpenChange={setShowEditDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Edit User Type</AlertDialogTitle>
-            <AlertDialogDescription>
-              Change the user role for {selectedUser?.user_name}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="user-role">User Type</Label>
-              <select 
-                value={newUserRole} 
-                onChange={(e) => setNewUserRole(e.target.value)}
-                className="w-full h-10 px-3 py-2 text-sm border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring"
-              >
-                <option value="">Select user type</option>
-                <option value="inbound">Inbound</option>
-                <option value="picking">Picking</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
-          </div>
-
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleUpdateUserRole}
-              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
-            >
-              Submit
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 };
