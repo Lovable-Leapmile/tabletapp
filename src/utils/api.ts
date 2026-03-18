@@ -12,7 +12,8 @@ export const getBaseUrl = (): string => {
   const viteBaseUrl = import.meta.env.VITE_BASE_URL;
   
   if (!viteBaseUrl) {
-    throw new Error('VITE_BASE_URL is not defined. Please set it in your .env file.');
+    console.warn('VITE_BASE_URL is not defined. Falling back to default DHL base URL.');
+    return 'https://dhllucknow.leapmile.com';
   }
   
   return viteBaseUrl;
