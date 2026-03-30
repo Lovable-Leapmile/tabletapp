@@ -334,7 +334,7 @@ const AdminBins = () => {
                         <PackageOpen className="h-6 w-6 text-muted-foreground" />
                       </div>
                       <div className="flex-1 space-y-2">
-                        <h3 className="text-lg font-semibold text-foreground">{item.item_description}</h3>
+                        <h3 className="text-lg font-semibold text-foreground break-words overflow-hidden">{item.item_description}</h3>
                         <div className="space-y-1">
                           <p className="text-sm text-muted-foreground">
                             Item ID: <span className="font-medium text-foreground">{item.item_id}</span>
