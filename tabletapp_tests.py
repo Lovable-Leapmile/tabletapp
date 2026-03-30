@@ -8,11 +8,23 @@ load_dotenv()
 DOMAIN = os.getenv("LEAPMILE_DEPLOYMENT_NAME")
 url = os.getenv("LEAPMILE_HOST_BASEURL", "https://magesh.leapmile.com")
 
+def log_header():
+    print("-" * 105)
+    print(f"| {'Task Flow'.ljust(35)} | {'Status'.ljust(8)} | {'Message'.ljust(50)} |")
+    print("-" * 105)
+
+def log_step(task, status="✅", message="Done"):
+    msg = (message[:47] + '...') if len(message) > 50 else message.ljust(50)
+    print(f"| {task.ljust(35)} | {status.ljust(8)} | {msg} |")
+
+def log_footer():
+    print("-" * 105)
+
 def test_login(page, phone, password):
     # Watch for 500 errors
     def handle_response(response):
         if response.status >= 500:
-            print(f"❌ {response.status} Internal Server Error from {response.url}")
+            log_step("App Test", "❌", f"{response.status} Internal Server Error from {response.url}")
             try:
                 page.close()
             except:
@@ -23,27 +35,27 @@ def test_login(page, phone, password):
     try:
         page.goto(f"{url}/tabletapp/")
         page.wait_for_load_state("networkidle")
-        print(f"✅ Page opened: {page.url}")
+        log_step("Navigation", "✅", f"Page opened: {page.url}")
     except Exception as e:
-        print(f"❌ Failed to navigate to login page: {e}")
+        log_step("Navigation", "❌", f"Failed to navigate to login page: {e}")
         return False
 
     try:
         # Fill phone
         page.get_by_placeholder("ID Number").fill(phone)
         page.get_by_role("button", name="Login").click()
-        print("✅ Login form submitted")
+        log_step("Login Action", "✅", "Login form submitted")
     except Exception as e:
-        print(f"❌ Failed to submit login form: {e}")
+        log_step("App Test", "❌", f"Failed to submit login form: {e}")
         return False
 
     try:
         # Wait for home page, which is /dashboard for tabletapp
         page.wait_for_url(f"**/dashboard")
         page.wait_for_load_state("networkidle")
-        print("✅ Navigation to dashboard successful")
+        log_step("Navigation", "✅", "Navigation to dashboard successful")
     except Exception as e:
-        print(f"❌ Failed to reach dashboard: {e}")
+        log_step("App Test", "❌", f"Failed to reach dashboard: {e}")
         return False
 
     return True
@@ -56,29 +68,29 @@ def test_tablet_flow(page):
         expect(page.get_by_text("Pickup", exact=True)).to_be_visible()
         expect(page.get_by_text("Station View", exact=True)).to_be_visible()
         expect(page.get_by_text("Admin", exact=True)).to_be_visible()
-        print("✅ Checked all buttons and UI on Dashboard")
+        log_step("UI Check", "✅", "Checked all buttons and UI on Dashboard")
 
         # 2. Go to Station View
         page.get_by_text("Station View", exact=True).click()
         page.wait_for_url("**/station-view")
         page.wait_for_load_state("networkidle")
-        print("✅ Navigated to Station View")
+        log_step("Navigation", "✅", "Navigated to Station View")
 
         # 3. Check In Station tray
         expect(page.get_by_role("tab", name="In Station trays")).to_be_visible()
-        print("✅ Verified 'In Station trays' tab")
+        log_step("App Test", "✅", "Verified 'In Station trays' tab")
 
         # 4. Click In Progress trays
         page.get_by_role("tab", name="In Progress trays").click()
-        print("✅ Clicked 'In Progress trays' tab")
+        log_step("App Test", "✅", "Clicked 'In Progress trays' tab")
         page.wait_for_timeout(2000)
 
         # 5. Check if any data and console count
         in_progress_heading = page.locator("h2:has-text('In Progress Trays')")
         if in_progress_heading.is_visible():
-            print(f"📋 {in_progress_heading.inner_text()}")
+            log_step("App Test", "📋", f"{in_progress_heading.inner_text()}")
         else:
-            print("📋 No In Progress Trays found")
+            log_step("Parts Verification", "📋", "No In Progress Trays found")
 
         # Tray Overflow check (Not found in UI, gracefully logging)
         print("⚠️ 'Tray Overflow' not found in UI, skipping to Admin...")
@@ -88,14 +100,14 @@ def test_tablet_flow(page):
         page.wait_for_url("**/dashboard")
         page.get_by_text("Admin", exact=True).click()
         page.wait_for_url("**/admin")
-        print("✅ Navigated to Admin Dashboard")
+        log_step("Navigation", "✅", "Navigated to Admin Dashboard")
 
         # Admin -> Users Flow
         page.get_by_text("Users", exact=True).click()
         page.wait_for_url("**/admin/users")
         page.wait_for_timeout(2000)
         total_users = page.locator("text=Total Users:").locator("span.text-icon-accent").inner_text()
-        print(f"👥 Admin Users Count: {total_users}")
+        log_step("Tablet Flow", "👥", f"Admin Users Count: {total_users}")
         
         # Admin -> Bins Flow
         page.goto(f"{url}/tabletapp/admin")
@@ -103,7 +115,7 @@ def test_tablet_flow(page):
         page.wait_for_url("**/admin/bins")
         page.wait_for_timeout(2000)
         total_bins = page.locator("text=Total:").locator("span.text-icon-accent").inner_text()
-        print(f"📦 Admin Bins Count: {total_bins}")
+        log_step("Tablet Flow", "📦", f"Admin Bins Count: {total_bins}")
 
         # Admin -> History Flow
         page.goto(f"{url}/tabletapp/admin")
@@ -112,17 +124,17 @@ def test_tablet_flow(page):
         page.wait_for_timeout(2000)
         inbound_history_lbl = page.locator("span:has-text('total')").first
         if inbound_history_lbl.is_visible():
-            print(f"📜 Total History Inbound: {inbound_history_lbl.inner_text()}")
+            log_step("Tablet Flow", "📜", f"Total History Inbound: {inbound_history_lbl.inner_text()}")
         else:
-            print("📜 Total History Inbound (No Data)")
+            log_step("Tablet Flow", "📜", "Total History Inbound (No Data)")
         
         page.get_by_role("button", name="Pickup").click()
         page.wait_for_timeout(2000)
         pickup_history_lbl = page.locator("span:has-text('total')").first
         if pickup_history_lbl.is_visible():
-            print(f"📜 Total History Pickup (Outbound): {pickup_history_lbl.inner_text()}")
+            log_step("Tablet Flow", "📜", f"Total History Pickup (Outbound): {pickup_history_lbl.inner_text()}")
         else:
-            print("📜 Total History Pickup (No Data)")
+            log_step("Tablet Flow", "📜", "Total History Pickup (No Data)")
             
         # Admin -> Text Scanner Flow
         page.goto(f"{url}/tabletapp/admin")
@@ -131,7 +143,7 @@ def test_tablet_flow(page):
         page.get_by_placeholder("Enter item ID").fill("1234")
         page.get_by_role("button", name="Add").click()
         expect(page.get_by_text("Item ID – 1234")).to_be_visible()
-        print("✅ Test Scanner verified (Added Item ID: 1234)")
+        log_step("App Test", "✅", "Test Scanner verified (Added Item ID: 1234)")
 
         # Admin -> Scanner Manual Flow
         page.goto(f"{url}/tabletapp/admin")
@@ -140,7 +152,7 @@ def test_tablet_flow(page):
         expect(page.get_by_text("Step 1: Restart the device.")).to_be_visible()
         expect(page.get_by_text("Factory Default")).to_be_visible()
         expect(page.locator("svg").first).to_be_visible()
-        print("✅ Scanner Manual UI components and QRs verified")
+        log_step("App Test", "✅", "Scanner Manual UI components and QRs verified")
 
         # Admin -> Add Item before returning to Inbound
         page.goto(f"{url}/tabletapp/admin")
@@ -157,9 +169,9 @@ def test_tablet_flow(page):
         
         if ok_btns.is_visible():
             ok_btns.click()
-            print("✅ Admin Add Item: Successfully added Item1 as test_item_1")
+            log_step("Tablet Flow", "✅", "Admin Add Item: Successfully added Item1 as test_item_1")
         elif error_msg.is_visible():
-            print(f"❌ Admin Add Item Failed: {error_msg.inner_text()}")
+            log_step("Tablet Flow", "❌", f"Admin Add Item Failed: {error_msg.inner_text()}")
         else:
             print("⚠️ Admin Add Item: Verification state unclear (no success or error dialog)")
 
@@ -168,12 +180,12 @@ def test_tablet_flow(page):
         page.wait_for_url("**/dashboard")
         page.get_by_text("Inbound", exact=True).click()
         page.wait_for_url("**/inbound/select-bin")
-        print("✅ Navigated to Inbound Bins")
+        log_step("Navigation", "✅", "Navigated to Inbound Bins")
         page.wait_for_timeout(2000)
 
         # Check total count of inbound trays
         total_inbound = page.locator("div:has-text('Total:') > span.text-primary").last.inner_text()
-        print(f"📦 Total Inbound Trays Count: {total_inbound}")
+        log_step("Tablet Flow", "📦", f"Total Inbound Trays Count: {total_inbound}")
 
         # Search tray T1
         page.get_by_placeholder("Search bin ID...").fill("T1")
@@ -184,26 +196,26 @@ def test_tablet_flow(page):
         if t1_card.is_visible():
             t1_card.click()
             page.get_by_role("button", name="Confirm").click()
-            print("✅ Clicked Retrieve for Tray T1")
+            log_step("Parts Verification", "✅", "Clicked Retrieve for Tray T1")
             page.wait_for_timeout(2000)
         else:
-            print("❌ Tray T1 not found on Inbound screen")
+            log_step("Tablet Flow", "❌", "Tray T1 not found on Inbound screen")
 
         # 8. Go to Pickup
         page.goto(f"{url}/tabletapp/dashboard")
         page.wait_for_url("**/dashboard")
         page.get_by_text("Pickup", exact=True).click()
         page.wait_for_url("**/pickup/select-bin")
-        print("✅ Navigated to Pickup Bins")
+        log_step("Navigation", "✅", "Navigated to Pickup Bins")
         page.wait_for_timeout(2000)
 
         # 9. Check total count of Pickup trays
         total_pickup = page.locator("div:has-text('Total:') > span.text-primary").last.inner_text()
-        print(f"📦 Total Pickup Trays Count: {total_pickup}")
+        log_step("Tablet Flow", "📦", f"Total Pickup Trays Count: {total_pickup}")
 
         return True
     except Exception as e:
-        print(f"❌ Flow test failed: {e}")
+        log_step("UI Check", "❌", f"Flow test failed: {e}")
         return False
 
 def run_all_tests():
@@ -215,22 +227,22 @@ def run_all_tests():
         )
         context = browser.new_context(viewport={"width": 1024, "height": 768})
         page = context.new_page()
-        print("✅ Browser opened")
+        log_step("Browser State", "✅", "Browser opened")
 
         try:
             if not test_login(page, "1234567890", "567890"):
-                print("❌ Login failed, aborting tests")
+                log_step("Login Action", "❌", "Login failed, aborting tests")
                 return
 
             if not test_tablet_flow(page):
-                print("❌ Tablet Flow failed")
+                log_step("UI Check", "❌", "Tablet Flow failed")
                 return
 
             print("\n✅✅✅ All tests passed for Tablet App! ✅✅✅")
 
         finally:
             browser.close()
-            print("✅ Browser closed")
+            log_step("Browser State", "✅", "Browser closed")
 
 if __name__ == "__main__":
     run_all_tests()
