@@ -328,7 +328,7 @@ const AdminBins = () => {
             ) : binItems.length > 0 ? (
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {binItems.map((item) => (
-                  <Card key={item.id} className="p-6 bg-card border-border overflow-hidden">
+                  <Card key={item.id} className="p-6 bg-card border-border overflow-hidden min-h-[180px]">
                     <div className="flex items-start gap-4 min-w-0">
                       <div className="w-12 h-12 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
                         <PackageOpen className="h-6 w-6 text-muted-foreground" />
