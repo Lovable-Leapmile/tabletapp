@@ -35,7 +35,30 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
   const navigate = useNavigate();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [showProfileDialog, setShowProfileDialog] = useState(false);
+  const [profileData, setProfileData] = useState<{ user_name?: string; user_email?: string; user_type?: string; user_phone?: string } | null>(null);
+  const [profileLoading, setProfileLoading] = useState(false);
   const skin = getSkin();
+
+  const fetchProfileData = useCallback(async () => {
+    const phone = sessionStorage.getItem("userPhone");
+    const token = sessionStorage.getItem("authToken");
+    if (!phone || !token) return;
+    setProfileLoading(true);
+    try {
+      const res = await fetch(getApiUrl(`/user/users?user_phone=${phone}`), {
+        headers: { accept: "application/json", Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const user = Array.isArray(data) ? data[0] : data;
+        setProfileData(user);
+      }
+    } catch (e) {
+      console.error("Failed to fetch profile:", e);
+    } finally {
+      setProfileLoading(false);
+    }
+  }, []);
   
   const getBorderColor = () => {
     const skinName = import.meta.env.VITE_DEPLOYMENT_CSS_SKIN || 'DHL_UI';
