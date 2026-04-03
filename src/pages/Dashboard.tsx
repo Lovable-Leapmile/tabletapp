@@ -162,9 +162,9 @@ const Dashboard = () => {
                         onClick={() => navigate(option.path)}
                         className="p-3 sm:p-4 cursor-pointer transition-smooth active:scale-[0.98] bg-card border-border shadow-sm"
                       >
-                        <div className="flex items-center gap-2">
-                          <Icon className="w-5 h-5 text-icon-accent flex-shrink-0" />
-                          <span className="text-sm sm:text-base font-medium text-foreground truncate">
+                        <div className="flex flex-col items-center justify-center text-center space-y-1">
+                          <Icon className="w-5 h-5 text-icon-accent" />
+                          <span className="text-sm sm:text-base font-medium text-foreground">
                             {option.title}
                           </span>
                         </div>
