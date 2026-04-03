@@ -16,17 +16,18 @@ const Dashboard = () => {
   useEffect(() => {
     const token = sessionStorage.getItem("authToken");
     if (!token) return;
+    const userId = sessionStorage.getItem("userId") || "";
     const headers = { accept: "application/json", Authorization: `Bearer ${token}` };
 
     const fetchCounts = async () => {
       try {
-        const [activeRes, inprogressRes] = await Promise.all([
-          fetch(getApiUrl("/nanostore/trays?tray_status=active&order_by_field=updated_at&order_by_type=ASC"), { headers }),
-          fetch(getApiUrl(`/nanostore/orders?tray_status=inprogress&user_id=${sessionStorage.getItem("userId") || ""}&order_by_field=updated_at&order_by_type=ASC`), { headers }),
+        const [stationRes, inprogressRes] = await Promise.all([
+          fetch(getApiUrl(`/nanostore/orders?tray_status=tray_ready_to_use&user_id=${userId}&order_by_field=updated_at&order_by_type=ASC`), { headers }),
+          fetch(getApiUrl(`/nanostore/orders?tray_status=inprogress&user_id=${userId}&order_by_field=updated_at&order_by_type=ASC`), { headers }),
         ]);
         let total = 0;
-        if (activeRes.ok) {
-          const d = await activeRes.json();
+        if (stationRes.ok) {
+          const d = await stationRes.json();
           total += d.count || d.rowcount || 0;
         }
         if (inprogressRes.ok) {
