@@ -9,7 +9,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 const Dashboard = () => {
   const navigate = useNavigate();
   const username = sessionStorage.getItem("username") || "Guest";
-  const [adminOpen, setAdminOpen] = useState(true);
+  const [adminOpen, setAdminOpen] = useState(false);
 
   // Custom tray icons with arrows
   const InboundTrayIcon = () => (
