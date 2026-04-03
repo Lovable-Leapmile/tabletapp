@@ -121,15 +121,20 @@ const Dashboard = () => {
                     key={item.title}
                     onClick={() => navigate(item.path)}
                     className={`p-4 sm:p-6 cursor-pointer transition-smooth active:scale-[0.98] bg-card border-border shadow-sm animate-fade-in ${item.delay}`}
-                  >
-                    <div className="flex flex-col items-center text-center space-y-2">
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 bg-muted rounded-xl flex items-center justify-center">
-                        <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-icon-accent" />
-                      </div>
-                      <h3 className="text-sm sm:text-base font-medium text-foreground">
-                        {item.title}
-                      </h3>
-                    </div>
+              >
+                <div className="relative flex flex-col items-center text-center space-y-2">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-muted rounded-xl flex items-center justify-center">
+                    <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-icon-accent" />
+                  </div>
+                  <h3 className="text-sm sm:text-base font-medium text-foreground">
+                    {item.title}
+                  </h3>
+                  {item.title === "Station View" && stationTrayCount !== null && (
+                    <span className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground text-xs font-bold rounded-full min-w-[24px] h-6 flex items-center justify-center px-1.5">
+                      {stationTrayCount}
+                    </span>
+                  )}
+                </div>
                   </Card>
                 );
               })}
