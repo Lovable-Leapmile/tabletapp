@@ -1,7 +1,8 @@
 import { ArrowLeft, LogOut, Home, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { getApiUrl } from "@/utils/api";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -34,7 +35,30 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
   const navigate = useNavigate();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [showProfileDialog, setShowProfileDialog] = useState(false);
+  const [profileData, setProfileData] = useState<{ user_name?: string; user_email?: string; user_type?: string; user_phone?: string } | null>(null);
+  const [profileLoading, setProfileLoading] = useState(false);
   const skin = getSkin();
+
+  const fetchProfileData = useCallback(async () => {
+    const phone = sessionStorage.getItem("userPhone");
+    const token = sessionStorage.getItem("authToken");
+    if (!phone || !token) return;
+    setProfileLoading(true);
+    try {
+      const res = await fetch(getApiUrl(`/user/users?user_phone=${phone}`), {
+        headers: { accept: "application/json", Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const user = Array.isArray(data) ? data[0] : data;
+        setProfileData(user);
+      }
+    } catch (e) {
+      console.error("Failed to fetch profile:", e);
+    } finally {
+      setProfileLoading(false);
+    }
+  }, []);
   
   const getBorderColor = () => {
     const skinName = import.meta.env.VITE_DEPLOYMENT_CSS_SKIN || 'DHL_UI';
@@ -95,7 +119,7 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
                     <Button
                       variant="ghost"
                       size="lg"
-                      onClick={() => setShowProfileDialog(true)}
+                      onClick={() => { setShowProfileDialog(true); fetchProfileData(); }}
                       className="bg-card hover:bg-card/80 transition-colors p-3 min-w-[48px] min-h-[48px] rounded-lg shadow-sm active:scale-95"
                     >
                       <User className="h-7 w-7 text-icon-accent" />
@@ -188,11 +212,18 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
             <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center">
               <User className="w-12 h-12 text-muted-foreground" />
             </div>
-            <p className="text-xl font-semibold text-foreground">{username}</p>
-            <p className="text-sm text-muted-foreground">{sessionStorage.getItem("userEmail") || sessionStorage.getItem("userPhone") || ""}</p>
-            <span className="px-4 py-1 rounded-full border border-border text-sm font-medium text-foreground bg-muted">
-              {sessionStorage.getItem("userRole") || "User"}
-            </span>
+            {profileLoading ? (
+              <p className="text-sm text-muted-foreground">Loading...</p>
+            ) : (
+              <>
+                <p className="text-xl font-semibold text-foreground">{profileData?.user_name || username}</p>
+                <p className="text-sm text-muted-foreground">{profileData?.user_email || ""}</p>
+                <p className="text-sm text-muted-foreground">{profileData?.user_phone || ""}</p>
+                <span className="px-4 py-1 rounded-full border border-border text-sm font-medium text-foreground bg-muted">
+                  {profileData?.user_type || sessionStorage.getItem("userRole") || "User"}
+                </span>
+              </>
+            )}
             <button
               onClick={() => { setShowProfileDialog(false); handleLogoutClick(); }}
               className="flex items-center gap-2 mt-2 text-destructive hover:text-destructive/80 transition-colors"
