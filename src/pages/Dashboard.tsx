@@ -1,15 +1,45 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppBar } from "@/components/AppBar";
 import { Footer } from "@/components/Footer";
 import { Card } from "@/components/ui/card";
 import { Package, ArrowUp, ArrowDown, AlertTriangle, Info, History, UserCog, Users, Plus, Camera, BookOpen, ChevronDown } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { getApiUrl } from "@/utils/api";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const username = sessionStorage.getItem("username") || "Guest";
   const [adminOpen, setAdminOpen] = useState(true);
+  const [stationTrayCount, setStationTrayCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("authToken");
+    if (!token) return;
+    const headers = { accept: "application/json", Authorization: `Bearer ${token}` };
+
+    const fetchCounts = async () => {
+      try {
+        const [activeRes, inprogressRes] = await Promise.all([
+          fetch(getApiUrl("/nanostore/trays?tray_status=active&order_by_field=updated_at&order_by_type=ASC"), { headers }),
+          fetch(getApiUrl(`/nanostore/orders?tray_status=inprogress&user_id=${sessionStorage.getItem("userId") || ""}&order_by_field=updated_at&order_by_type=ASC`), { headers }),
+        ]);
+        let total = 0;
+        if (activeRes.ok) {
+          const d = await activeRes.json();
+          total += d.count || d.rowcount || 0;
+        }
+        if (inprogressRes.ok) {
+          const d = await inprogressRes.json();
+          total += d.count || d.rowcount || 0;
+        }
+        setStationTrayCount(total);
+      } catch (e) {
+        console.error("Failed to fetch station tray counts:", e);
+      }
+    };
+    fetchCounts();
+  }, []);
 
   // Custom tray icons with arrows
   const InboundTrayIcon = () => (
@@ -91,15 +121,20 @@ const Dashboard = () => {
                     key={item.title}
                     onClick={() => navigate(item.path)}
                     className={`p-4 sm:p-6 cursor-pointer transition-smooth active:scale-[0.98] bg-card border-border shadow-sm animate-fade-in ${item.delay}`}
-                  >
-                    <div className="flex flex-col items-center text-center space-y-2">
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 bg-muted rounded-xl flex items-center justify-center">
-                        <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-icon-accent" />
-                      </div>
-                      <h3 className="text-sm sm:text-base font-medium text-foreground">
-                        {item.title}
-                      </h3>
-                    </div>
+              >
+                <div className="relative flex flex-col items-center text-center space-y-2">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-muted rounded-xl flex items-center justify-center">
+                    <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-icon-accent" />
+                  </div>
+                  <h3 className="text-sm sm:text-base font-medium text-foreground">
+                    {item.title}
+                  </h3>
+                  {item.title === "Station View" && stationTrayCount !== null && (
+                    <span className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground text-xs font-bold rounded-full min-w-[24px] h-6 flex items-center justify-center px-1.5">
+                      {stationTrayCount}
+                    </span>
+                  )}
+                </div>
                   </Card>
                 );
               })}
