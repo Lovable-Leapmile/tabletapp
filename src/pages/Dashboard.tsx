@@ -57,7 +57,7 @@ const Dashboard = () => {
                   <div className="w-16 h-16 sm:w-20 sm:h-20 bg-card rounded-2xl flex items-center justify-center">
                     <InboundTrayIcon />
                   </div>
-                  <h3 className="text-lg sm:text-xl font-semibold text-primary-foreground">
+                <h3 className="text-lg sm:text-xl font-semibold text-foreground">
                     Inbound
                   </h3>
                 </div>
