@@ -138,6 +138,15 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
                   >
                     <ArrowLeft className="h-7 w-7 text-icon-accent" />
                   </Button>
+                ) : showProfile ? (
+                  <Button
+                    variant="ghost"
+                    size="lg"
+                    onClick={() => { setShowProfileDialog(true); fetchProfileData(); }}
+                    className="bg-card hover:bg-card/80 transition-colors p-3 min-w-[48px] min-h-[48px] rounded-lg shadow-sm active:scale-95"
+                  >
+                    <User className="h-7 w-7 text-icon-accent" />
+                  </Button>
                 ) : (
                   <div className="min-w-[48px] min-h-[48px]" />
                 )}
@@ -155,16 +164,6 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
               </div>
 
               <div className="flex items-center gap-2">
-                {showProfile && (
-                  <Button
-                    variant="ghost"
-                    size="lg"
-                    onClick={() => { setShowProfileDialog(true); fetchProfileData(); }}
-                    className="bg-card hover:bg-card/80 transition-colors p-3 min-w-[48px] min-h-[48px] rounded-lg shadow-sm active:scale-95"
-                  >
-                    <User className="h-7 w-7 text-icon-accent" />
-                  </Button>
-                )}
                 <Button
                   variant="ghost"
                   size="lg"
