@@ -79,7 +79,7 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
         className="bg-primary shadow-soft fixed top-[env(safe-area-inset-top)] left-0 right-0 z-50 border-b touch-none"
         style={{ borderBottomColor: getBorderColor(), borderBottomWidth: '2px' }}
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-1.5">
           <div className="flex flex-col gap-2">
             {/* Top section - Logo centered (if showLogo) or User ID */}
             {showLogo ? (
