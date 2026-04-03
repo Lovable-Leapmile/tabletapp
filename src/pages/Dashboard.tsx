@@ -1,15 +1,45 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppBar } from "@/components/AppBar";
 import { Footer } from "@/components/Footer";
 import { Card } from "@/components/ui/card";
 import { Package, ArrowUp, ArrowDown, AlertTriangle, Info, History, UserCog, Users, Plus, Camera, BookOpen, ChevronDown } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { getApiUrl } from "@/utils/api";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const username = sessionStorage.getItem("username") || "Guest";
   const [adminOpen, setAdminOpen] = useState(true);
+  const [stationTrayCount, setStationTrayCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("authToken");
+    if (!token) return;
+    const headers = { accept: "application/json", Authorization: `Bearer ${token}` };
+
+    const fetchCounts = async () => {
+      try {
+        const [activeRes, inprogressRes] = await Promise.all([
+          fetch(getApiUrl("/nanostore/trays?tray_status=active&order_by_field=updated_at&order_by_type=ASC"), { headers }),
+          fetch(getApiUrl(`/nanostore/orders?tray_status=inprogress&user_id=${sessionStorage.getItem("userId") || ""}&order_by_field=updated_at&order_by_type=ASC`), { headers }),
+        ]);
+        let total = 0;
+        if (activeRes.ok) {
+          const d = await activeRes.json();
+          total += d.count || d.rowcount || 0;
+        }
+        if (inprogressRes.ok) {
+          const d = await inprogressRes.json();
+          total += d.count || d.rowcount || 0;
+        }
+        setStationTrayCount(total);
+      } catch (e) {
+        console.error("Failed to fetch station tray counts:", e);
+      }
+    };
+    fetchCounts();
+  }, []);
 
   // Custom tray icons with arrows
   const InboundTrayIcon = () => (
