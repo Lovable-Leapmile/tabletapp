@@ -243,7 +243,7 @@ const SelectInboundBin = () => {
               <div className="flex items-center rounded-full border border-border overflow-hidden bg-muted">
                 <button
                   onClick={() => setFilterType('all')}
-                  className={`h-10 sm:h-12 px-5 sm:px-7 text-sm sm:text-base font-medium transition-colors ${
+                  className={`h-10 sm:h-12 px-5 sm:px-7 text-sm sm:text-base font-medium rounded-full transition-colors ${
                     filterType === 'all'
                       ? 'bg-foreground text-background'
                       : 'bg-transparent text-foreground hover:bg-accent'
@@ -253,7 +253,7 @@ const SelectInboundBin = () => {
                 </button>
                 <button
                   onClick={() => setFilterType('empty')}
-                  className={`h-10 sm:h-12 px-5 sm:px-7 text-sm sm:text-base font-medium transition-colors ${
+                  className={`h-10 sm:h-12 px-5 sm:px-7 text-sm sm:text-base font-medium rounded-full transition-colors ${
                     filterType === 'empty'
                       ? 'bg-foreground text-background'
                       : 'bg-transparent text-foreground hover:bg-accent'
@@ -267,7 +267,7 @@ const SelectInboundBin = () => {
               <div className="flex items-center gap-2 rounded-xl border border-primary/30 bg-primary/10 px-4 py-2 whitespace-nowrap flex-shrink-0">
                 <Package className="h-5 w-5 text-primary" />
                 <span className="text-sm sm:text-lg font-semibold text-foreground">Total Bins:</span>
-                <span className="text-sm sm:text-lg font-bold text-primary">{bins.length}</span>
+                <span className="text-sm sm:text-lg font-bold text-foreground">{bins.length}</span>
               </div>
             </div>
           </div>

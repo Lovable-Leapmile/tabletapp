@@ -30,7 +30,7 @@ interface AppBarProps {
   onBack?: () => void;
 }
 
-export const AppBar = ({ title, showBack = false, username = "John Doe", showHomeIcon = false, showLogo = false, showProfile = false, onBack }: AppBarProps) => {
+export const AppBar = ({ title, showBack = false, username = "John Doe", showHomeIcon = false, showLogo = true, showProfile = false, onBack }: AppBarProps) => {
   const navigate = useNavigate();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [showProfileDialog, setShowProfileDialog] = useState(false);
