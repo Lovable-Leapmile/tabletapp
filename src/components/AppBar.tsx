@@ -189,9 +189,9 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
               <User className="w-12 h-12 text-muted-foreground" />
             </div>
             <p className="text-xl font-semibold text-foreground">{username}</p>
-            <p className="text-sm text-muted-foreground">{sessionStorage.getItem("email") || "user@example.com"}</p>
+            <p className="text-sm text-muted-foreground">{sessionStorage.getItem("userEmail") || sessionStorage.getItem("userPhone") || ""}</p>
             <span className="px-4 py-1 rounded-full border border-border text-sm font-medium text-foreground bg-muted">
-              {sessionStorage.getItem("role") || "User"}
+              {sessionStorage.getItem("userRole") || "User"}
             </span>
             <button
               onClick={() => { setShowProfileDialog(false); handleLogoutClick(); }}

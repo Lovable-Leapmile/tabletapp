@@ -53,6 +53,9 @@ const Login = () => {
         sessionStorage.setItem("username", data.user_name);
         sessionStorage.setItem("userId", data.user_id?.toString() || "");
         sessionStorage.setItem("authToken", data.token);
+        sessionStorage.setItem("userEmail", data.email || "");
+        sessionStorage.setItem("userRole", data.role || data.user_role || "");
+        sessionStorage.setItem("userPhone", data.user_phone || data.phone || "");
 
         toast.success("Login successful!");
         navigate("/dashboard");
