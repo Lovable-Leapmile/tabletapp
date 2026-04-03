@@ -82,7 +82,7 @@ const Dashboard = () => {
             <div className="grid grid-cols-2 gap-4 sm:gap-6 mb-6">
               <Card
                 onClick={() => navigate("/inbound/select-bin")}
-                className="p-6 sm:p-8 cursor-pointer transition-smooth active:scale-[0.98] bg-primary/30 border border-primary/40 shadow-md animate-fade-in animation-delay-0"
+                className="p-6 sm:p-8 cursor-pointer transition-smooth active:scale-[0.98] bg-muted border border-border shadow-sm animate-fade-in animation-delay-0"
               >
                 <div className="flex flex-col items-center text-center space-y-3">
                   <div className="w-16 h-16 sm:w-20 sm:h-20 bg-card rounded-2xl flex items-center justify-center">
@@ -96,7 +96,7 @@ const Dashboard = () => {
 
               <Card
                 onClick={() => navigate("/pickup")}
-                className="p-6 sm:p-8 cursor-pointer transition-smooth active:scale-[0.98] bg-primary/30 border border-primary/40 shadow-md animate-fade-in animation-delay-1"
+                className="p-6 sm:p-8 cursor-pointer transition-smooth active:scale-[0.98] bg-muted border border-border shadow-sm animate-fade-in animation-delay-1"
               >
                 <div className="flex flex-col items-center text-center space-y-3">
                   <div className="w-16 h-16 sm:w-20 sm:h-20 bg-card rounded-2xl flex items-center justify-center">
@@ -162,9 +162,9 @@ const Dashboard = () => {
                         onClick={() => navigate(option.path)}
                         className="p-3 sm:p-4 cursor-pointer transition-smooth active:scale-[0.98] bg-card border-border shadow-sm"
                       >
-                        <div className="flex items-center gap-2">
-                          <Icon className="w-5 h-5 text-icon-accent flex-shrink-0" />
-                          <span className="text-sm sm:text-base font-medium text-foreground truncate">
+                        <div className="flex flex-col items-center justify-center text-center space-y-1">
+                          <Icon className="w-5 h-5 text-icon-accent" />
+                          <span className="text-sm sm:text-base font-medium text-foreground">
                             {option.title}
                           </span>
                         </div>

@@ -245,7 +245,7 @@ const SelectInboundBin = () => {
                   onClick={() => setFilterType('all')}
                   className={`h-10 sm:h-12 px-5 sm:px-7 text-sm sm:text-base font-medium rounded-full transition-colors ${
                     filterType === 'all'
-                      ? 'bg-foreground text-background'
+                      ? 'bg-accent text-accent-foreground'
                       : 'bg-transparent text-foreground hover:bg-accent'
                   }`}
                 >
@@ -255,7 +255,7 @@ const SelectInboundBin = () => {
                   onClick={() => setFilterType('empty')}
                   className={`h-10 sm:h-12 px-5 sm:px-7 text-sm sm:text-base font-medium rounded-full transition-colors ${
                     filterType === 'empty'
-                      ? 'bg-foreground text-background'
+                      ? 'bg-accent text-accent-foreground'
                       : 'bg-transparent text-foreground hover:bg-accent'
                   }`}
                 >
