@@ -253,7 +253,7 @@ const SelectPickupBin = () => {
                   className={`h-10 sm:h-12 px-5 sm:px-7 text-sm sm:text-base font-medium rounded-full transition-colors ${
                     filterType === "empty"
                       ? "bg-accent text-accent-foreground"
-                      : "bg-transparent text-foreground hover:bg-accent"
+                      : "bg-transparent text-foreground hover:bg-muted"
                   }`}
                 >
                   Empty Bins
