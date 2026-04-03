@@ -1,4 +1,4 @@
-import { ArrowLeft, LogOut, Home } from "lucide-react";
+import { ArrowLeft, LogOut, Home, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect } from "react";
@@ -12,6 +12,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { getSkin } from "@/config/skin.config";
 
 interface AppBarProps {
@@ -19,21 +25,23 @@ interface AppBarProps {
   showBack?: boolean;
   username?: string;
   showHomeIcon?: boolean;
+  showLogo?: boolean;
+  showProfile?: boolean;
   onBack?: () => void;
 }
 
-export const AppBar = ({ title, showBack = false, username = "John Doe", showHomeIcon = false, onBack }: AppBarProps) => {
+export const AppBar = ({ title, showBack = false, username = "John Doe", showHomeIcon = false, showLogo = false, showProfile = false, onBack }: AppBarProps) => {
   const navigate = useNavigate();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [showProfileDialog, setShowProfileDialog] = useState(false);
   const skin = getSkin();
   
-  // Get border color based on UI type
   const getBorderColor = () => {
     const skinName = import.meta.env.VITE_DEPLOYMENT_CSS_SKIN || 'DHL_UI';
     if (skinName === 'DHL_UI') {
-      return skin.colors.support || skin.colors.destructive; // Red for DHL
+      return skin.colors.support || skin.colors.destructive;
     }
-    return skin.colors.secondary; // Secondary color for other UIs
+    return skin.colors.secondary;
   };
 
   const handleBack = () => {
@@ -64,7 +72,6 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
 
   return (
     <>
-      {/* Safe area for mobile screens */}
       <div className="fixed top-0 left-0 right-0 h-[env(safe-area-inset-top)] bg-primary z-50" />
       
       <header 
@@ -72,20 +79,50 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
         className="bg-primary shadow-soft fixed top-[env(safe-area-inset-top)] left-0 right-0 z-50 border-b touch-none"
         style={{ borderBottomColor: getBorderColor(), borderBottomWidth: '2px' }}
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-col gap-3">
-            {/* Top section - User ID */}
-            <div className="flex justify-center">
-              <div className="bg-primary-foreground/10 px-6 py-2 rounded-full">
-                <p className="text-xs sm:text-sm font-normal text-primary-foreground">
-                  User – {username}
-                </p>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3">
+          <div className="flex flex-col gap-2">
+            {/* Top section - Logo centered (if showLogo) or User ID */}
+            {showLogo ? (
+              <div className="flex items-center justify-between">
+                <div className="w-[56px]" /> {/* spacer */}
+                <img 
+                  src={skin.logo} 
+                  alt="Logo" 
+                  className="h-10 sm:h-12 object-contain"
+                />
+                <div className="flex items-center gap-2">
+                  {showProfile && (
+                    <Button
+                      variant="ghost"
+                      size="lg"
+                      onClick={() => setShowProfileDialog(true)}
+                      className="bg-card hover:bg-card/80 transition-colors p-3 min-w-[48px] min-h-[48px] rounded-lg shadow-sm active:scale-95"
+                    >
+                      <User className="h-7 w-7 text-icon-accent" />
+                    </Button>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="lg"
+                    onClick={handleLogoutClick}
+                    className="bg-card hover:bg-card/80 transition-colors p-3 min-w-[48px] min-h-[48px] rounded-lg shadow-sm active:scale-95"
+                  >
+                    <LogOut className="h-7 w-7 text-icon-accent" />
+                  </Button>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="flex justify-center">
+                <div className="bg-primary-foreground/10 px-6 py-2 rounded-full">
+                  <p className="text-xs sm:text-sm font-normal text-primary-foreground">
+                    User – {username}
+                  </p>
+                </div>
+              </div>
+            )}
 
             {/* Bottom section - Title and Icons */}
             <div className="flex items-center justify-between">
-              {/* Left - Back button */}
               <div className="flex items-center gap-3">
                 {showBack && (
                   <Button
@@ -97,7 +134,6 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
                     <ArrowLeft className="h-8 w-8 text-icon-accent" />
                   </Button>
                 )}
-                {/* Hidden spacer button for centering when no back button */}
                 {!showBack && (
                   <Button
                     variant="ghost"
@@ -110,7 +146,6 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
                 )}
               </div>
 
-              {/* Center - Title */}
               <div className="flex-1 text-center">
                 <div className="flex items-center justify-center gap-2">
                   {showHomeIcon && (
@@ -122,21 +157,44 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
                 </div>
               </div>
 
-              {/* Right - Logout */}
-              <div className="flex items-center">
-                <Button
-                  variant="ghost"
-                  size="lg"
-                  onClick={handleLogoutClick}
-                  className="bg-card hover:bg-card/80 transition-colors p-4 min-w-[56px] min-h-[56px] rounded-lg shadow-sm active:scale-95"
-                >
-                  <LogOut className="h-8 w-8 text-icon-accent hover:text-icon-accent/80 transition-colors" />
-                </Button>
-              </div>
+              {/* Right - Logout (only if not showLogo, since logout is already in top row) */}
+              {!showLogo && (
+                <div className="flex items-center">
+                  <Button
+                    variant="ghost"
+                    size="lg"
+                    onClick={handleLogoutClick}
+                    className="bg-card hover:bg-card/80 transition-colors p-4 min-w-[56px] min-h-[56px] rounded-lg shadow-sm active:scale-95"
+                  >
+                    <LogOut className="h-8 w-8 text-icon-accent hover:text-icon-accent/80 transition-colors" />
+                  </Button>
+                </div>
+              )}
+              {showLogo && (
+                <div className="opacity-0 pointer-events-none invisible p-4 min-w-[56px] min-h-[56px]" />
+              )}
             </div>
           </div>
         </div>
       </header>
+
+      {/* Profile Dialog */}
+      <Dialog open={showProfileDialog} onOpenChange={setShowProfileDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="text-foreground">User Profile</DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col items-center gap-4 py-4">
+            <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center">
+              <User className="w-10 h-10 text-icon-accent" />
+            </div>
+            <div className="text-center">
+              <p className="text-lg font-semibold text-foreground">{username}</p>
+              <p className="text-sm text-muted-foreground">Logged in user</p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Logout Confirmation Dialog */}
       <AlertDialog open={showLogoutConfirm} onOpenChange={setShowLogoutConfirm}>
