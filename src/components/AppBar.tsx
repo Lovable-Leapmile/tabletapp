@@ -180,18 +180,26 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
 
       {/* Profile Dialog */}
       <Dialog open={showProfileDialog} onOpenChange={setShowProfileDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="text-foreground">User Profile</DialogTitle>
+        <DialogContent className="max-w-sm">
+          <DialogHeader className="sr-only">
+            <DialogTitle>User Profile</DialogTitle>
           </DialogHeader>
-          <div className="flex flex-col items-center gap-4 py-4">
-            <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center">
-              <User className="w-10 h-10 text-icon-accent" />
+          <div className="flex flex-col items-center gap-3 py-4">
+            <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center">
+              <User className="w-12 h-12 text-muted-foreground" />
             </div>
-            <div className="text-center">
-              <p className="text-lg font-semibold text-foreground">{username}</p>
-              <p className="text-sm text-muted-foreground">Logged in user</p>
-            </div>
+            <p className="text-xl font-semibold text-foreground">{username}</p>
+            <p className="text-sm text-muted-foreground">{sessionStorage.getItem("email") || "user@example.com"}</p>
+            <span className="px-4 py-1 rounded-full border border-border text-sm font-medium text-foreground bg-muted">
+              {sessionStorage.getItem("role") || "User"}
+            </span>
+            <button
+              onClick={() => { setShowProfileDialog(false); handleLogoutClick(); }}
+              className="flex items-center gap-2 mt-2 text-destructive hover:text-destructive/80 transition-colors"
+            >
+              <LogOut className="w-5 h-5" />
+              <span className="font-medium">Log Out</span>
+            </button>
           </div>
         </DialogContent>
       </Dialog>

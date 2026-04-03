@@ -108,12 +108,12 @@ const Dashboard = () => {
             {/* Admin Dropdown */}
             <Collapsible open={adminOpen} onOpenChange={setAdminOpen}>
               <CollapsibleTrigger asChild>
-                <div className="flex items-center justify-between bg-primary rounded-xl px-5 py-3 cursor-pointer transition-smooth active:scale-[0.99] shadow-sm">
+                <div className="flex items-center justify-between bg-muted rounded-xl px-5 py-3 cursor-pointer transition-smooth active:scale-[0.99] shadow-sm border border-border">
                   <div className="flex items-center gap-2">
-                    <UserCog className="w-5 h-5 text-primary-foreground" />
-                    <span className="text-base sm:text-lg font-semibold text-primary-foreground">Admin</span>
+                    <UserCog className="w-5 h-5 text-icon-accent" />
+                    <span className="text-base sm:text-lg font-semibold text-foreground">Admin</span>
                   </div>
-                  <ChevronDown className={`w-5 h-5 text-primary-foreground transition-transform duration-200 ${adminOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-5 h-5 text-icon-accent transition-transform duration-200 ${adminOpen ? 'rotate-180' : ''}`} />
                 </div>
               </CollapsibleTrigger>
               <CollapsibleContent className="mt-3">
