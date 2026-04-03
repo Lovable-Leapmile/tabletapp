@@ -65,6 +65,12 @@ const Dashboard = () => {
 
               <Card
                 onClick={() => navigate("/pickup")}
+                className="p-6 sm:p-8 cursor-pointer transition-smooth active:scale-[0.98] bg-primary/30 border border-primary/40 shadow-md animate-fade-in animation-delay-1"
+                </div>
+              </Card>
+
+              <Card
+                onClick={() => navigate("/pickup")}
                 className="p-6 sm:p-8 cursor-pointer transition-smooth active:scale-[0.98] bg-primary border-none shadow-md animate-fade-in animation-delay-1"
               >
                 <div className="flex flex-col items-center text-center space-y-3">
