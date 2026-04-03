@@ -43,7 +43,7 @@ const SelectPickupBin = () => {
   useEffect(() => {
     const fetchBins = async () => {
       const authToken = sessionStorage.getItem("authToken");
-      
+
       if (!authToken) {
         toast.error("Authentication token not found. Please login again.");
         navigate("/");
@@ -53,7 +53,7 @@ const SelectPickupBin = () => {
       try {
         setIsLoading(true);
         console.log("Fetching bins with token:", authToken);
-        
+
         const response = await fetch(
           getApiUrl(`/nanostore/trays?tray_status=active&order_by_field=updated_at&order_by_type=DESC`),
           {
@@ -62,7 +62,7 @@ const SelectPickupBin = () => {
               accept: "application/json",
               Authorization: `Bearer ${authToken}`,
             },
-          }
+          },
         );
 
         console.log("Response status:", response.status);
@@ -75,12 +75,12 @@ const SelectPickupBin = () => {
         }
 
         const data = await response.json();
-        
+
         console.log("API Response:", data);
-        
+
         // Map API response to bin format - the data is in the 'records' property
         let bins: Bin[] = [];
-        
+
         if (data.records && Array.isArray(data.records)) {
           bins = data.records.map((tray: any) => ({
             id: tray.tray_id,
@@ -118,11 +118,7 @@ const SelectPickupBin = () => {
   }, [navigate]);
 
   // Filter bins based on search query and filter type
-  let bins = searchQuery
-    ? allBins.filter((bin) =>
-        bin.id.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : allBins;
+  let bins = searchQuery ? allBins.filter((bin) => bin.id.toLowerCase().includes(searchQuery.toLowerCase())) : allBins;
 
   // Apply empty filter
   if (filterType === "empty") {
@@ -136,10 +132,10 @@ const SelectPickupBin = () => {
 
   const handleConfirm = async () => {
     if (!selectedBin) return;
-    
+
     const authToken = sessionStorage.getItem("authToken");
     const userId = sessionStorage.getItem("userId");
-    
+
     if (!authToken || !userId) {
       toast.error("Authentication required. Please login again.");
       navigate("/");
@@ -147,17 +143,17 @@ const SelectPickupBin = () => {
     }
 
     setIsCreatingOrder(true);
-    
+
     try {
       const response = await fetch(
         getApiUrl(`/nanostore/orders?tray_id=${selectedBin.id}&user_id=${userId}&auto_complete_time=${trayStayTime}`),
         {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'accept': 'application/json',
-            'Authorization': `Bearer ${authToken}`,
+            accept: "application/json",
+            Authorization: `Bearer ${authToken}`,
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -167,24 +163,24 @@ const SelectPickupBin = () => {
       }
 
       const orderData = await response.json();
-      
+
       // Store order info in session for scan items page
       const itemCount = selectedBin.itemCount ?? 0;
       console.log("Navigating with bin:", selectedBin.id, "itemCount:", itemCount);
-      
+
       sessionStorage.setItem("currentOrderId", orderData.id?.toString() || "");
       sessionStorage.setItem("currentTrayId", selectedBin.id);
       sessionStorage.setItem("currentUserId", userId);
       sessionStorage.setItem("trayStayTime", trayStayTime.toString());
       sessionStorage.setItem("selectedBinItemCount", itemCount.toString());
-      
+
       toast.success("Order created successfully!");
-      navigate("/pickup/scan-items", { 
-        state: { 
-          binId: selectedBin.id, 
+      navigate("/pickup/scan-items", {
+        state: {
+          binId: selectedBin.id,
           orderId: orderData.id,
-          itemCount: itemCount
-        } 
+          itemCount: itemCount,
+        },
       });
     } catch (error) {
       toast.error("Failed to create order. Please try again.");
@@ -207,15 +203,15 @@ const SelectPickupBin = () => {
 
   return (
     <div className="min-h-screen bg-background mobile-app-bar-padding">
-      <AppBar title="Select Pickup Bin" showBack username={username} />
+      <AppBar title="Pickup Bin" showBack username={username} />
 
       {/* Fixed White Div with Search and Stats */}
       <div
         className="fixed left-0 right-0 bg-card border-b border-border z-40 shadow-sm -mt-[6px]"
         style={{
           top: `calc(var(--app-bar-height, 122px) + env(safe-area-inset-top))`,
-        }}>
-
+        }}
+      >
         <div className="container mx-auto mobile-content-padding py-4">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-row items-center gap-2 sm:gap-4 flex-wrap">
@@ -243,21 +239,21 @@ const SelectPickupBin = () => {
               {/* Toggle Filter Buttons */}
               <div className="flex items-center rounded-full border border-border overflow-hidden bg-muted">
                 <button
-                  onClick={() => setFilterType('all')}
+                  onClick={() => setFilterType("all")}
                   className={`h-10 sm:h-12 px-5 sm:px-7 text-sm sm:text-base font-medium rounded-full transition-colors ${
-                    filterType === 'all'
-                      ? 'bg-foreground text-background'
-                      : 'bg-transparent text-foreground hover:bg-accent'
+                    filterType === "all"
+                      ? "bg-foreground text-background"
+                      : "bg-transparent text-foreground hover:bg-accent"
                   }`}
                 >
                   All Bins
                 </button>
                 <button
-                  onClick={() => setFilterType('empty')}
+                  onClick={() => setFilterType("empty")}
                   className={`h-10 sm:h-12 px-5 sm:px-7 text-sm sm:text-base font-medium rounded-full transition-colors ${
-                    filterType === 'empty'
-                      ? 'bg-foreground text-background'
-                      : 'bg-transparent text-foreground hover:bg-accent'
+                    filterType === "empty"
+                      ? "bg-foreground text-background"
+                      : "bg-transparent text-foreground hover:bg-accent"
                   }`}
                 >
                   Empty Bins
@@ -295,10 +291,7 @@ const SelectPickupBin = () => {
                     style={{ animationDelay: `${index * 20}ms` }}
                     onClick={() => handleBinClick(bin)}
                   >
-                    <BinCard
-                      binId={bin.id}
-                      itemCount={bin.itemCount}
-                    />
+                    <BinCard binId={bin.id} itemCount={bin.itemCount} />
                   </div>
                 ))}
               </div>
@@ -309,12 +302,10 @@ const SelectPickupBin = () => {
                 </div>
                 <div className="flex items-center justify-center gap-3">
                   <Package className="h-8 w-8 text-muted-foreground" />
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">
-                    No Bins Found
-                  </h2>
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">No Bins Found</h2>
                 </div>
                 <p className="text-base sm:text-lg text-muted-foreground max-w-md mx-auto">
-                  {searchQuery ? 'No bins match your search criteria.' : 'No bins available in the system.'}
+                  {searchQuery ? "No bins match your search criteria." : "No bins available in the system."}
                 </p>
               </div>
             )}
@@ -329,10 +320,10 @@ const SelectPickupBin = () => {
             <AlertDialogTitle className="text-center">Confirm Bin Selection</AlertDialogTitle>
             <AlertDialogDescription className="space-y-4 text-center">
               <div className="flex justify-center">
-                <BinCard 
-                  binId={selectedBin?.id || ""} 
-                  itemCount={selectedBin?.itemCount || 0} 
-                  onClick={() => {}} 
+                <BinCard
+                  binId={selectedBin?.id || ""}
+                  itemCount={selectedBin?.itemCount || 0}
+                  onClick={() => {}}
                   className="!max-w-[280px]"
                 />
               </div>
@@ -341,7 +332,7 @@ const SelectPickupBin = () => {
                   <Clock className="h-4 w-4 text-accent" />
                   Enter tray stay time at station (in minutes)
                 </Label>
-                
+
                 {/* Arrow Number Picker */}
                 <div className="flex items-center justify-center gap-4 py-2">
                   {/* Left Arrow */}
@@ -352,18 +343,14 @@ const SelectPickupBin = () => {
                   >
                     <ChevronLeft className="h-6 w-6" />
                   </button>
-                  
+
                   {/* Number Display with Min Label */}
                   <div className="flex items-center justify-center gap-2">
                     {/* Number Display */}
-                    <div className="text-5xl font-bold text-primary">
-                      {trayStayTime}
-                    </div>
-                    <span className="text-lg font-medium text-primary/80">
-                      min
-                    </span>
+                    <div className="text-5xl font-bold text-primary">{trayStayTime}</div>
+                    <span className="text-lg font-medium text-primary/80">min</span>
                   </div>
-                  
+
                   {/* Right Arrow */}
                   <button
                     onClick={() => handleTimeChange(trayStayTime + 1)}
@@ -377,8 +364,8 @@ const SelectPickupBin = () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="flex gap-2">
-            <AlertDialogCancel 
-              onClick={() => setSelectedBin(null)} 
+            <AlertDialogCancel
+              onClick={() => setSelectedBin(null)}
               disabled={isCreatingOrder}
               className="flex-1 h-11 border border-border bg-card text-foreground hover:bg-muted transition-colors"
             >
