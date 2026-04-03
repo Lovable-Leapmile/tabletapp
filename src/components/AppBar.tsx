@@ -105,74 +105,33 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
         style={{ borderBottomColor: getBorderColor(), borderBottomWidth: '2px' }}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-1.5">
-          <div className="flex flex-col gap-2">
-            {/* Top section - Logo centered (if showLogo) or User ID */}
-            {showLogo ? (
-              <div className="flex items-center justify-between">
-                <div className="w-[56px]" /> {/* spacer */}
+          <div className="flex items-center justify-between">
+            {/* Left - Back button */}
+            <div className="flex items-center gap-2">
+              {showBack ? (
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  onClick={handleBack}
+                  className="bg-card hover:bg-card/80 transition-colors p-3 min-w-[48px] min-h-[48px] rounded-lg shadow-sm active:scale-95"
+                >
+                  <ArrowLeft className="h-7 w-7 text-icon-accent" />
+                </Button>
+              ) : (
+                <div className="min-w-[48px] min-h-[48px]" />
+              )}
+            </div>
+
+            {/* Center - Logo or Title */}
+            <div className="flex-1 flex items-center justify-center">
+              {showLogo ? (
                 <img 
                   src={skin.logo} 
                   alt="Logo" 
                   className="h-10 sm:h-12 object-contain"
                 />
+              ) : (
                 <div className="flex items-center gap-2">
-                  {showProfile && (
-                    <Button
-                      variant="ghost"
-                      size="lg"
-                      onClick={() => { setShowProfileDialog(true); fetchProfileData(); }}
-                      className="bg-card hover:bg-card/80 transition-colors p-3 min-w-[48px] min-h-[48px] rounded-lg shadow-sm active:scale-95"
-                    >
-                      <User className="h-7 w-7 text-icon-accent" />
-                    </Button>
-                  )}
-                  <Button
-                    variant="ghost"
-                    size="lg"
-                    onClick={handleLogoutClick}
-                    className="bg-card hover:bg-card/80 transition-colors p-3 min-w-[48px] min-h-[48px] rounded-lg shadow-sm active:scale-95"
-                  >
-                    <LogOut className="h-7 w-7 text-icon-accent" />
-                  </Button>
-                </div>
-              </div>
-            ) : (
-              <div className="flex justify-center">
-                <div className="bg-primary-foreground/10 px-6 py-2 rounded-full">
-                  <p className="text-xs sm:text-sm font-normal text-primary-foreground">
-                    User – {username}
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Bottom section - Title and Icons */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                {showBack && (
-                  <Button
-                    variant="ghost"
-                    size="lg"
-                    onClick={handleBack}
-                    className="bg-card hover:bg-card/80 transition-colors p-4 min-w-[56px] min-h-[56px] rounded-lg shadow-sm active:scale-95"
-                  >
-                    <ArrowLeft className="h-8 w-8 text-icon-accent" />
-                  </Button>
-                )}
-                {!showBack && (
-                  <Button
-                    variant="ghost"
-                    size="lg"
-                    disabled
-                    className="opacity-0 pointer-events-none invisible p-4 min-w-[56px] min-h-[56px] rounded-lg shadow-sm"
-                  >
-                    <ArrowLeft className="h-8 w-8 opacity-0" />
-                  </Button>
-                )}
-              </div>
-
-              <div className="flex-1 text-center">
-                <div className="flex items-center justify-center gap-2">
                   {showHomeIcon && (
                     <Home className="h-5 w-5 sm:h-6 sm:w-6 text-primary-foreground flex-shrink-0" />
                   )}
@@ -180,24 +139,29 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
                     {title}
                   </h1>
                 </div>
-              </div>
+              )}
+            </div>
 
-              {/* Right - Logout (only if not showLogo, since logout is already in top row) */}
-              {!showLogo && (
-                <div className="flex items-center">
-                  <Button
-                    variant="ghost"
-                    size="lg"
-                    onClick={handleLogoutClick}
-                    className="bg-card hover:bg-card/80 transition-colors p-4 min-w-[56px] min-h-[56px] rounded-lg shadow-sm active:scale-95"
-                  >
-                    <LogOut className="h-8 w-8 text-icon-accent hover:text-icon-accent/80 transition-colors" />
-                  </Button>
-                </div>
+            {/* Right - Profile + Logout */}
+            <div className="flex items-center gap-2">
+              {showProfile && (
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  onClick={() => { setShowProfileDialog(true); fetchProfileData(); }}
+                  className="bg-card hover:bg-card/80 transition-colors p-3 min-w-[48px] min-h-[48px] rounded-lg shadow-sm active:scale-95"
+                >
+                  <User className="h-7 w-7 text-icon-accent" />
+                </Button>
               )}
-              {showLogo && (
-                <div className="opacity-0 pointer-events-none invisible p-4 min-w-[56px] min-h-[56px]" />
-              )}
+              <Button
+                variant="ghost"
+                size="lg"
+                onClick={handleLogoutClick}
+                className="bg-card hover:bg-card/80 transition-colors p-3 min-w-[48px] min-h-[48px] rounded-lg shadow-sm active:scale-95"
+              >
+                <LogOut className="h-7 w-7 text-icon-accent" />
+              </Button>
             </div>
           </div>
         </div>
