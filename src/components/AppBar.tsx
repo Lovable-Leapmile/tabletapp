@@ -50,8 +50,9 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
       });
       if (res.ok) {
         const data = await res.json();
-        const user = Array.isArray(data) ? data[0] : data;
-        setProfileData(user);
+        const records = data.records || data;
+        const user = Array.isArray(records) ? records[0] : records;
+        setProfileData(user || null);
       }
     } catch (e) {
       console.error("Failed to fetch profile:", e);
