@@ -40,7 +40,7 @@ const Dashboard = () => {
       <AppBar title="Dashboard" username={username} showHomeIcon showLogo showProfile />
 
       <main className="flex-1 overflow-y-auto touch-scroll no-pull-refresh mobile-app-bar-padding">
-        <div className="container mx-auto mobile-content-padding py-6 sm:py-10">
+        <div className="container mx-auto mobile-content-padding py-2 sm:py-4">
           <div className="max-w-4xl mx-auto">
             {/* Title */}
             <h2 className="text-2xl sm:text-3xl font-semibold text-foreground text-center mb-6 sm:mb-8">
