@@ -164,8 +164,6 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
               </Button>
             </div>
           </div>
-            </div>
-          </div>
         </div>
       </header>
 
