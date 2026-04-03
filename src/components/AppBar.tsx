@@ -212,11 +212,18 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
             <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center">
               <User className="w-12 h-12 text-muted-foreground" />
             </div>
-            <p className="text-xl font-semibold text-foreground">{username}</p>
-            <p className="text-sm text-muted-foreground">{sessionStorage.getItem("userEmail") || sessionStorage.getItem("userPhone") || ""}</p>
-            <span className="px-4 py-1 rounded-full border border-border text-sm font-medium text-foreground bg-muted">
-              {sessionStorage.getItem("userRole") || "User"}
-            </span>
+            {profileLoading ? (
+              <p className="text-sm text-muted-foreground">Loading...</p>
+            ) : (
+              <>
+                <p className="text-xl font-semibold text-foreground">{profileData?.user_name || username}</p>
+                <p className="text-sm text-muted-foreground">{profileData?.user_email || ""}</p>
+                <p className="text-sm text-muted-foreground">{profileData?.user_phone || ""}</p>
+                <span className="px-4 py-1 rounded-full border border-border text-sm font-medium text-foreground bg-muted">
+                  {profileData?.user_type || sessionStorage.getItem("userRole") || "User"}
+                </span>
+              </>
+            )}
             <button
               onClick={() => { setShowProfileDialog(false); handleLogoutClick(); }}
               className="flex items-center gap-2 mt-2 text-destructive hover:text-destructive/80 transition-colors"
