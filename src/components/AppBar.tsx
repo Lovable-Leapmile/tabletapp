@@ -107,38 +107,18 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-1.5">
           <div className="flex flex-col gap-2">
             {/* Top section - Logo centered (if showLogo) or User ID */}
-            {showLogo ? (
-              <div className="flex items-center justify-between">
-                <div className="w-[56px]" /> {/* spacer */}
+            {showLogo && (
+              <div className="flex items-center justify-center">
                 <img 
                   src={skin.logo} 
                   alt="Logo" 
-                  className="h-10 sm:h-12 object-contain"
+                  className="h-8 sm:h-10 object-contain"
                 />
-                <div className="flex items-center gap-2">
-                  {showProfile && (
-                    <Button
-                      variant="ghost"
-                      size="lg"
-                      onClick={() => { setShowProfileDialog(true); fetchProfileData(); }}
-                      className="bg-card hover:bg-card/80 transition-colors p-3 min-w-[48px] min-h-[48px] rounded-lg shadow-sm active:scale-95"
-                    >
-                      <User className="h-7 w-7 text-icon-accent" />
-                    </Button>
-                  )}
-                  <Button
-                    variant="ghost"
-                    size="lg"
-                    onClick={handleLogoutClick}
-                    className="bg-card hover:bg-card/80 transition-colors p-3 min-w-[48px] min-h-[48px] rounded-lg shadow-sm active:scale-95"
-                  >
-                    <LogOut className="h-7 w-7 text-icon-accent" />
-                  </Button>
-                </div>
               </div>
-            ) : (
+            )}
+            {!showLogo && (
               <div className="flex justify-center">
-                <div className="bg-primary-foreground/10 px-6 py-2 rounded-full">
+                <div className="bg-primary-foreground/10 px-6 py-1.5 rounded-full">
                   <p className="text-xs sm:text-sm font-normal text-primary-foreground">
                     User – {username}
                   </p>
@@ -146,28 +126,20 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
               </div>
             )}
 
-            {/* Bottom section - Title and Icons */}
+            {/* Single row - Back/spacer, Title, Profile+Logout */}
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                {showBack && (
+              <div className="flex items-center gap-2">
+                {showBack ? (
                   <Button
                     variant="ghost"
                     size="lg"
                     onClick={handleBack}
-                    className="bg-card hover:bg-card/80 transition-colors p-4 min-w-[56px] min-h-[56px] rounded-lg shadow-sm active:scale-95"
+                    className="bg-card hover:bg-card/80 transition-colors p-3 min-w-[48px] min-h-[48px] rounded-lg shadow-sm active:scale-95"
                   >
-                    <ArrowLeft className="h-8 w-8 text-icon-accent" />
+                    <ArrowLeft className="h-7 w-7 text-icon-accent" />
                   </Button>
-                )}
-                {!showBack && (
-                  <Button
-                    variant="ghost"
-                    size="lg"
-                    disabled
-                    className="opacity-0 pointer-events-none invisible p-4 min-w-[56px] min-h-[56px] rounded-lg shadow-sm"
-                  >
-                    <ArrowLeft className="h-8 w-8 opacity-0" />
-                  </Button>
+                ) : (
+                  <div className="min-w-[48px] min-h-[48px]" />
                 )}
               </div>
 
@@ -182,22 +154,26 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
                 </div>
               </div>
 
-              {/* Right - Logout (only if not showLogo, since logout is already in top row) */}
-              {!showLogo && (
-                <div className="flex items-center">
+              <div className="flex items-center gap-2">
+                {showProfile && (
                   <Button
                     variant="ghost"
                     size="lg"
-                    onClick={handleLogoutClick}
-                    className="bg-card hover:bg-card/80 transition-colors p-4 min-w-[56px] min-h-[56px] rounded-lg shadow-sm active:scale-95"
+                    onClick={() => { setShowProfileDialog(true); fetchProfileData(); }}
+                    className="bg-card hover:bg-card/80 transition-colors p-3 min-w-[48px] min-h-[48px] rounded-lg shadow-sm active:scale-95"
                   >
-                    <LogOut className="h-8 w-8 text-icon-accent hover:text-icon-accent/80 transition-colors" />
+                    <User className="h-7 w-7 text-icon-accent" />
                   </Button>
-                </div>
-              )}
-              {showLogo && (
-                <div className="opacity-0 pointer-events-none invisible p-4 min-w-[56px] min-h-[56px]" />
-              )}
+                )}
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  onClick={handleLogoutClick}
+                  className="bg-card hover:bg-card/80 transition-colors p-3 min-w-[48px] min-h-[48px] rounded-lg shadow-sm active:scale-95"
+                >
+                  <LogOut className="h-7 w-7 text-icon-accent" />
+                </Button>
+              </div>
             </div>
           </div>
         </div>
