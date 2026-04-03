@@ -240,25 +240,35 @@ const SelectPickupBin = () => {
                   </button>
                 )}
               </div>
-              {/* Filter Buttons */}
-              <div className="flex items-center gap-2">
-                <Button
-                  variant={filterType === 'all' ? 'default' : 'outline'}
+              {/* Toggle Filter Buttons */}
+              <div className="flex items-center rounded-full border border-border overflow-hidden bg-muted">
+                <button
                   onClick={() => setFilterType('all')}
-                  className="h-10 sm:h-12 px-4 sm:px-6 text-sm sm:text-base shadow-sm">
+                  className={`h-10 sm:h-12 px-5 sm:px-7 text-sm sm:text-base font-medium transition-colors ${
+                    filterType === 'all'
+                      ? 'bg-foreground text-background'
+                      : 'bg-transparent text-foreground hover:bg-accent'
+                  }`}
+                >
                   All Bins
-                </Button>
-                <Button
-                  variant={filterType === 'empty' ? 'default' : 'outline'}
+                </button>
+                <button
                   onClick={() => setFilterType('empty')}
-                  className={`h-10 sm:h-12 px-4 sm:px-6 text-sm sm:text-base shadow-sm ${filterType === 'empty' ? 'text-primary-foreground' : ''}`}>
+                  className={`h-10 sm:h-12 px-5 sm:px-7 text-sm sm:text-base font-medium transition-colors ${
+                    filterType === 'empty'
+                      ? 'bg-foreground text-background'
+                      : 'bg-transparent text-foreground hover:bg-accent'
+                  }`}
+                >
                   Empty Bins
-                </Button>
+                </button>
               </div>
 
-              {/* Total Bins Label */}
-              <div className="text-sm sm:text-lg font-medium text-foreground whitespace-nowrap flex-shrink-0">
-                Total: <span className="text-primary">{bins.length}</span>
+              {/* Total Bins Badge */}
+              <div className="flex items-center gap-2 rounded-xl border border-primary/30 bg-primary/10 px-4 py-2 whitespace-nowrap flex-shrink-0">
+                <Package className="h-5 w-5 text-primary" />
+                <span className="text-sm sm:text-lg font-semibold text-foreground">Total Bins:</span>
+                <span className="text-sm sm:text-lg font-bold text-primary">{bins.length}</span>
               </div>
             </div>
           </div>
