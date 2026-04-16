@@ -8,7 +8,7 @@ import { Package, PackageOpen, History, ArrowDown, ArrowUp, Tag, Archive, Chevro
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format } from "date-fns";
-import { getApiUrl } from "@/utils/api";
+import { getApiUrl, authenticatedFetch } from "@/utils/api";
 
 interface Transaction {
   id: number;
@@ -83,12 +83,8 @@ const AdminHistory = () => {
       }
       
       console.log("Fetching inbound transactions...", { offset, numRecords, page: inboundPage, selectedDate, formattedDate: selectedDate ? format(selectedDate, 'yyyy-MM-dd') : null });
-      const response = await fetch(apiUrl, {
-        method: 'GET',
-        headers: {
-          'accept': 'application/json',
-          'Authorization': `Bearer ${authToken}`,
-        },
+      const response = await authenticatedFetch(apiUrl, {
+        method: 'GET'
       });
 
       console.log("Inbound API Response Status:", response.status);
@@ -174,12 +170,8 @@ const AdminHistory = () => {
       }
       
       console.log("Fetching pickup transactions...", { offset, numRecords, page: pickupPage, selectedDate, formattedDate: selectedDate ? format(selectedDate, 'yyyy-MM-dd') : null });
-      const response = await fetch(apiUrl, {
-        method: 'GET',
-        headers: {
-          'accept': 'application/json',
-          'Authorization': `Bearer ${authToken}`,
-        },
+      const response = await authenticatedFetch(apiUrl, {
+        method: 'GET'
       });
 
       console.log("Pickup API Response Status:", response.status);
@@ -270,12 +262,8 @@ const AdminHistory = () => {
   // Fetch available dates for calendar
   const fetchAvailableDates = async () => {
     try {
-      const response = await fetch(getApiUrl(`/nanostore/transactions?transaction_type=${activeTab}&num_records=1000`), {
-        method: 'GET',
-        headers: {
-          'accept': 'application/json',
-          'Authorization': `Bearer ${authToken}`,
-        },
+      const response = await authenticatedFetch(getApiUrl(`/nanostore/transactions?transaction_type=${activeTab}&num_records=1000`), {
+        method: 'GET'
       });
       
       if (response.ok) {

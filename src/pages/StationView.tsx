@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Clock, PackageCheck, PackageSearch, AlertCircle, ArrowRight, Loader2, Monitor, Activity } from "lucide-react";
-import { getApiUrl } from "@/utils/api";
+import { getApiUrl, authenticatedFetch } from "@/utils/api";
 
 interface StationOrder {
   id: string;
@@ -90,15 +90,8 @@ const StationView = () => {
     }
 
     try {
-      const response = await fetch(
-        getApiUrl(`/nanostore/orders?tray_status=tray_ready_to_use&user_id=${userId}&order_by_field=updated_at&order_by_type=ASC`),
-        {
-          method: 'GET',
-          headers: {
-            'accept': 'application/json',
-            'Authorization': `Bearer ${authToken}`,
-          },
-        }
+      const response = await authenticatedFetch(
+        getApiUrl(`/nanostore/orders?tray_status=tray_ready_to_use&user_id=${userId}&order_by_field=updated_at&order_by_type=ASC`)
       );
 
       if (response.ok) {
@@ -149,15 +142,8 @@ const StationView = () => {
     setIsLoadingInProgress(true);
     
     try {
-      const response = await fetch(
-        getApiUrl(`/nanostore/orders?tray_status=inprogress&user_id=${userId}&order_by_field=updated_at&order_by_type=ASC`),
-        {
-          method: 'GET',
-          headers: {
-            'accept': 'application/json',
-            'Authorization': `Bearer ${authToken}`,
-          },
-        }
+      const response = await authenticatedFetch(
+        getApiUrl(`/nanostore/orders?tray_status=inprogress&user_id=${userId}&order_by_field=updated_at&order_by_type=ASC`)
       );
 
       if (response.ok) {
@@ -220,15 +206,9 @@ const StationView = () => {
     setIsReleasing(true);
     
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         getApiUrl(`/nanostore/orders/complete?record_id=${pendingOrder.id}`),
-        {
-          method: 'PATCH',
-          headers: {
-            'accept': 'application/json',
-            'Authorization': `Bearer ${authToken}`,
-          },
-        }
+        { method: 'PATCH' }
       );
 
       if (response.ok) {

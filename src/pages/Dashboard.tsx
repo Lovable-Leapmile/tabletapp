@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 import { Card } from "@/components/ui/card";
 import { Package, ArrowUp, ArrowDown, AlertTriangle, Info, History, UserCog, Users, Plus, Camera, BookOpen, ChevronDown } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { getApiUrl } from "@/utils/api";
+import { getApiUrl, authenticatedFetch } from "@/utils/api";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -14,16 +14,13 @@ const Dashboard = () => {
   const [stationTrayCount, setStationTrayCount] = useState<number | null>(null);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("authToken");
-    if (!token) return;
     const userId = sessionStorage.getItem("userId") || "";
-    const headers = { accept: "application/json", Authorization: `Bearer ${token}` };
 
     const fetchCounts = async () => {
       try {
         const [stationRes, inprogressRes] = await Promise.all([
-          fetch(getApiUrl(`/nanostore/orders?tray_status=tray_ready_to_use&user_id=${userId}&order_by_field=updated_at&order_by_type=ASC`), { headers }),
-          fetch(getApiUrl(`/nanostore/orders?tray_status=inprogress&user_id=${userId}&order_by_field=updated_at&order_by_type=ASC`), { headers }),
+          authenticatedFetch(getApiUrl(`/nanostore/orders?tray_status=tray_ready_to_use&user_id=${userId}&order_by_field=updated_at&order_by_type=ASC`)),
+          authenticatedFetch(getApiUrl(`/nanostore/orders?tray_status=inprogress&user_id=${userId}&order_by_field=updated_at&order_by_type=ASC`)),
         ]);
         let total = 0;
         if (stationRes.ok) {

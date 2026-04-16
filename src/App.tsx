@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { BackHandlerProvider } from "@/components/BackHandlerProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import SelectInboundBin from "./pages/SelectInboundBin";
@@ -44,22 +45,32 @@ const App = () => (
           */}
           <div className="relative w-full h-full overflow-y-auto overflow-x-hidden overscroll-contain touch-pan-y scroll-container" style={{ WebkitOverflowScrolling: 'touch' }}>
             <Routes>
+              {/* Public route */}
               <Route path="/" element={<Login />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/inbound/select-bin" element={<SelectInboundBin />} />
-              <Route path="/inbound/scan-items" element={<ScanItemToInbound />} />
-              <Route path="/pickup" element={<Pickup />} />
-              <Route path="/pickup/select-bin" element={<SelectPickupBin />} />
-              <Route path="/pickup/scan-items" element={<ScanItemToPickup />} />
-              <Route path="/station-view" element={<StationView />} />
-              <Route path="/tray-overflow" element={<TrayOverflow />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/admin/users" element={<AdminUsers />} />
-              <Route path="/admin/bins" element={<AdminBins />} />
-              <Route path="/admin/add-product" element={<AdminAddProduct />} />
-              <Route path="/admin/history" element={<AdminHistory />} />
-              <Route path="/admin/test-scanner" element={<AdminTestScanner />} />
-              <Route path="/admin/scanner-manual" element={<AdminScannerManual />} />
+              
+              {/* Authenticated routes (any standard user) */}
+              <Route element={<ProtectedRoute />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/inbound/select-bin" element={<SelectInboundBin />} />
+                <Route path="/inbound/scan-items" element={<ScanItemToInbound />} />
+                <Route path="/pickup" element={<Pickup />} />
+                <Route path="/pickup/select-bin" element={<SelectPickupBin />} />
+                <Route path="/pickup/scan-items" element={<ScanItemToPickup />} />
+                <Route path="/station-view" element={<StationView />} />
+                <Route path="/tray-overflow" element={<TrayOverflow />} />
+              </Route>
+
+              {/* Admin-only routes */}
+              <Route element={<ProtectedRoute requireRole="admin" />}>
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/admin/users" element={<AdminUsers />} />
+                <Route path="/admin/bins" element={<AdminBins />} />
+                <Route path="/admin/add-product" element={<AdminAddProduct />} />
+                <Route path="/admin/history" element={<AdminHistory />} />
+                <Route path="/admin/test-scanner" element={<AdminTestScanner />} />
+                <Route path="/admin/scanner-manual" element={<AdminScannerManual />} />
+              </Route>
+              
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

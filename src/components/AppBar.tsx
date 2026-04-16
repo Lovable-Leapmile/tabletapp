@@ -2,7 +2,8 @@ import { ArrowLeft, LogOut, Home, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect, useCallback } from "react";
-import { getApiUrl } from "@/utils/api";
+import { getApiUrl, authenticatedFetch } from "@/utils/api";
+import { logout } from "@/utils/auth";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -45,8 +46,8 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
     if (!phone || !token) return;
     setProfileLoading(true);
     try {
-      const res = await fetch(getApiUrl(`/user/users?user_phone=${phone}`), {
-        headers: { accept: "application/json", Authorization: `Bearer ${token}` },
+      const res = await authenticatedFetch(getApiUrl(`/user/users?user_phone=${phone}`), {
+        method: "GET",
       });
       if (res.ok) {
         const data = await res.json();
@@ -82,8 +83,7 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
   };
 
   const handleLogoutConfirm = () => {
-    sessionStorage.clear();
-    navigate("/");
+    logout(navigate);
   };
 
   const headerRef = useRef<HTMLHeadElement>(null);

@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Loader2, Package, AlertTriangle, Minus, Plus, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
-import { getApiUrl } from "@/utils/api";
+import { getApiUrl, authenticatedFetch } from "@/utils/api";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -71,15 +71,9 @@ const TrayOverflow = () => {
 
     try {
       setIsLoadingSlots(true);
-      const response = await fetch(
+      const response = await authenticatedFetch(
         getApiUrl("/robotmanager/slots?tags=station&slot_status=inactive&order_by_field=updated_at&order_by_type=DESC"),
-        {
-          method: "GET",
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
+        { method: "GET" }
       );
 
       const data = await response.json();
@@ -104,9 +98,9 @@ const TrayOverflow = () => {
   const checkExistingOrder = async (trayId: string): Promise<string | null> => {
     if (!authToken) return null;
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         getApiUrl(`/nanostore/orders?tray_id=${trayId}&tray_status=tray_ready_to_use&order_by_field=updated_at&order_by_type=DESC`),
-        { method: "GET", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
+        { method: "GET" }
       );
       if (response.status === 404) return null;
       const data = await response.json();
@@ -133,9 +127,9 @@ const TrayOverflow = () => {
       } else {
         // Create new order
         const userId = sessionStorage.getItem("userId") || "";
-        const orderResponse = await fetch(
+        const orderResponse = await authenticatedFetch(
           getApiUrl(`/nanostore/orders?tray_id=${slot.tray_id}&user_id=${userId}&auto_complete_time=1000`),
-          { method: "POST", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
+          { method: "POST" }
         );
         if (!orderResponse.ok) throw new Error(`Failed to create order: ${orderResponse.status}`);
 
@@ -148,9 +142,9 @@ const TrayOverflow = () => {
       }
 
       // Step 2: Unblock the slot
-      const unblockResponse = await fetch(
+      const unblockResponse = await authenticatedFetch(
         getApiUrl(`/robotmanager/unblock?slot_id=${slot.slot_id}`),
-        { method: "PATCH", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
+        { method: "PATCH" }
       );
       if (!unblockResponse.ok) throw new Error(`Failed to unblock slot: ${unblockResponse.status}`);
 
@@ -168,15 +162,9 @@ const TrayOverflow = () => {
     if (!authToken) return;
 
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         getApiUrl(`/nanostore/trays_for_order?in_station=true&tray_id=${trayId}&like=false&num_records=10&offset=0&order_flow=fifo`),
-        {
-          method: "GET",
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
+        { method: "GET" }
       );
 
       if (!response.ok) {
@@ -237,15 +225,9 @@ const TrayOverflow = () => {
       const today = new Date().toISOString().split("T")[0];
       const negativeQty = -Math.abs(qty);
       const encodedItemId = encodeURIComponent(itemToPick.item_id || "");
-      const response = await fetch(
+      const response = await authenticatedFetch(
         getApiUrl(`/nanostore/transaction?order_id=${orderId}&item_id=${encodedItemId}&transaction_item_quantity=${negativeQty}&transaction_type=outbound&transaction_date=${today}`),
-        {
-          method: "POST",
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
+        { method: "POST" }
       );
 
       const responseData = await response.json();
@@ -279,9 +261,9 @@ const TrayOverflow = () => {
 
     setIsProcessing(true);
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         getApiUrl(`/nanostore/orders/complete?record_id=${orderId}`),
-        { method: "PATCH", headers: { accept: "application/json", Authorization: `Bearer ${authToken}` } }
+        { method: "PATCH" }
       );
       const releaseData = await response.json();
       if (!response.ok) {

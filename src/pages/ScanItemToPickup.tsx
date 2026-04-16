@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Barcode, Camera, X, ArrowRight, Package, PackageCheck, Loader2, PackageSearch, MapPin } from "lucide-react";
 import { toast } from "sonner";
 import robotAnimation from "@/assets/robot-bin-animation.gif";
-import { getApiUrl } from "@/utils/api";
+import { getApiUrl, authenticatedFetch } from "@/utils/api";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -69,15 +69,9 @@ const ScanItemToPickup = () => {
         
         if (pollingMode === 'inprogress') {
           // Check inprogress status
-          const response = await fetch(
+          const response = await authenticatedFetch(
             getApiUrl(`/nanostore/orders?tray_id=${binId}&tray_status=inprogress&user_id=${userId}&order_by_field=updated_at&order_by_type=DESC&num_records=1`),
-            {
-              method: 'GET',
-              headers: {
-                'accept': 'application/json',
-                'Authorization': `Bearer ${authToken}`,
-              },
-            }
+            { method: 'GET' }
           );
 
           if (response.ok) {
@@ -108,15 +102,9 @@ const ScanItemToPickup = () => {
             console.error("Inprogress API failed:", response.status, "immediately checking tray_ready_to_use API");
             
             try {
-              const readyResponse = await fetch(
+              const readyResponse = await authenticatedFetch(
                 getApiUrl(`/nanostore/orders?tray_id=${binId}&tray_status=tray_ready_to_use&user_id=${userId}&order_by_field=updated_at&order_by_type=DESC&num_records=1`),
-                {
-                  method: 'GET',
-                  headers: {
-                    'accept': 'application/json',
-                    'Authorization': `Bearer ${authToken}`,
-                  },
-                }
+                { method: 'GET' }
               );
 
               if (readyResponse.ok) {
@@ -141,15 +129,9 @@ const ScanItemToPickup = () => {
           }
         } else if (pollingMode === 'ready_to_use') {
           // Check tray_ready_to_use status - continue polling until API failure
-          const response = await fetch(
+          const response = await authenticatedFetch(
             getApiUrl(`/nanostore/orders?tray_id=${binId}&tray_status=tray_ready_to_use&user_id=${userId}&order_by_field=updated_at&order_by_type=DESC&num_records=1`),
-            {
-              method: 'GET',
-              headers: {
-                'accept': 'application/json',
-                'Authorization': `Bearer ${authToken}`,
-              },
-            }
+            { method: 'GET' }
           );
 
           if (response.ok) {
@@ -178,15 +160,9 @@ const ScanItemToPickup = () => {
           console.log("Inprogress check error, immediately checking tray_ready_to_use API");
           
           try {
-            const readyResponse = await fetch(
+            const readyResponse = await authenticatedFetch(
               getApiUrl(`/nanostore/orders?tray_id=${binId}&tray_status=tray_ready_to_use&user_id=${userId}&order_by_field=updated_at&order_by_type=DESC&num_records=1`),
-              {
-                method: 'GET',
-                headers: {
-                  'accept': 'application/json',
-                  'Authorization': `Bearer ${authToken}`,
-                },
-              }
+              { method: 'GET' }
             );
 
             if (readyResponse.ok) {
@@ -270,15 +246,9 @@ const ScanItemToPickup = () => {
     if (!authToken) return;
 
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         getApiUrl(`/nanostore/transactions?order_id=${orderRecord.id}&order_by_field=updated_at&order_by_type=DESC`),
-        {
-          method: 'GET',
-          headers: {
-            'accept': 'application/json',
-            'Authorization': `Bearer ${authToken}`,
-          },
-        }
+        { method: 'GET' }
       );
 
       if (response.ok) {
@@ -321,15 +291,9 @@ const ScanItemToPickup = () => {
     if (!authToken) return;
 
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         getApiUrl(`/nanostore/trays_for_order?in_station=false&like=false&num_records=10&offset=0&order_flow=fifo`),
-        {
-          method: 'GET',
-          headers: {
-            'accept': 'application/json',
-            'Authorization': `Bearer ${authToken}`,
-          },
-        }
+        { method: 'GET' }
       );
 
       if (response.ok) {
@@ -410,18 +374,12 @@ const ScanItemToPickup = () => {
 
     try {
       // Patch order to update and reset timer
-      const patchResponse = await fetch(
+      const patchResponse = await authenticatedFetch(
         getApiUrl(`/nanostore/orders?record_id=${orderRecord.id}`),
         {
           method: 'PATCH',
-          headers: {
-            'accept': 'application/json',
-            'Authorization': `Bearer ${authToken}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            user_id: userId
-          }),
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: userId }),
         }
       );
 
@@ -444,15 +402,9 @@ const ScanItemToPickup = () => {
       }
 
       // Create transaction
-      const transactionResponse = await fetch(
+      const transactionResponse = await authenticatedFetch(
         getApiUrl(`/nanostore/transaction?order_id=${orderRecord.id}&item_id=${value}&transaction_item_quantity=-1&transaction_type=outbound&transaction_date=${new Date().toISOString().split('T')[0]}`),
-        {
-          method: 'POST',
-          headers: {
-            'accept': 'application/json',
-            'Authorization': `Bearer ${authToken}`,
-          },
-        }
+        { method: 'POST' }
       );
 
       if (transactionResponse.ok) {
@@ -494,15 +446,9 @@ const ScanItemToPickup = () => {
     }
 
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         getApiUrl(`/nanostore/transaction?record_id=${itemToDelete.id}`),
-        {
-          method: 'DELETE',
-          headers: {
-            'accept': 'application/json',
-            'Authorization': `Bearer ${authToken}`,
-          },
-        }
+        { method: 'DELETE' }
       );
 
       if (response.ok) {
@@ -537,15 +483,9 @@ const ScanItemToPickup = () => {
     }
 
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         getApiUrl(`/nanostore/orders/complete?record_id=${orderRecord.id}`),
-        {
-          method: 'PATCH',
-          headers: {
-            'accept': 'application/json',
-            'Authorization': `Bearer ${authToken}`,
-          },
-        }
+        { method: 'PATCH' }
       );
 
       if (response.ok) {

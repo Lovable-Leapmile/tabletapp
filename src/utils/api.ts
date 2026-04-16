@@ -6,6 +6,7 @@
  * - Lovable deployment (using environment variables)
  * - No fallback URLs - environment variable is mandatory
  */
+import { logout } from './auth';
 
 // Get the base URL from environment variables (required)
 export const getBaseUrl = (): string => {
@@ -33,6 +34,33 @@ export const getApiUrl = (endpoint: string): string => {
 };
 
 /**
+ * Authenticated Fetch Wrapper
+ * Automatically appends the Authorization header to all requests.
+ * Detects 401 Unauthorized and automatically purges the local session.
+ */
+export const authenticatedFetch = async (input: URL | RequestInfo, init?: RequestInit): Promise<Response> => {
+  const token = sessionStorage.getItem("authToken");
+  
+  const modifiedInit = {
+    ...init,
+    headers: {
+      ...init?.headers,
+      ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+      'accept': 'application/json', // default standard header
+    },
+  };
+
+  const response = await fetch(input, modifiedInit);
+
+  if (response.status === 401 || response.status === 403) {
+    // If token is invalid/expired, definitively drop the session
+    logout();
+  }
+
+  return response;
+};
+
+/**
  * API configuration object for easy access
  */
 export const API_CONFIG = {
@@ -40,6 +68,7 @@ export const API_CONFIG = {
     return getBaseUrl();
   },
   getApiUrl,
+  authenticatedFetch,
   
   // Common endpoints for reference
   endpoints: {

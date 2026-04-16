@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import bin1 from "@/assets/bin1.png";
 import { Search, X, Filter, Loader2, Package, Clock, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
-import { getApiUrl } from "@/utils/api";
+import { getApiUrl, authenticatedFetch } from "@/utils/api";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -54,15 +54,9 @@ const SelectPickupBin = () => {
         setIsLoading(true);
         console.log("Fetching bins with token:", authToken);
 
-        const response = await fetch(
+        const response = await authenticatedFetch(
           getApiUrl(`/nanostore/trays?tray_status=active&order_by_field=updated_at&order_by_type=DESC`),
-          {
-            method: "GET",
-            headers: {
-              accept: "application/json",
-              Authorization: `Bearer ${authToken}`,
-            },
-          },
+          { method: "GET" }
         );
 
         console.log("Response status:", response.status);
@@ -145,15 +139,9 @@ const SelectPickupBin = () => {
     setIsCreatingOrder(true);
 
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         getApiUrl(`/nanostore/orders?tray_id=${selectedBin.id}&user_id=${userId}&auto_complete_time=${trayStayTime}`),
-        {
-          method: "POST",
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-        },
+        { method: "POST" }
       );
 
       if (!response.ok) {

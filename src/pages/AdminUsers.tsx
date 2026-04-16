@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AppBar } from "@/components/AppBar";
 import { Input } from "@/components/ui/input";
 import { Search, X, Users } from "lucide-react";
-import { getApiUrl } from "@/utils/api";
+import { getApiUrl, authenticatedFetch } from "@/utils/api";
 
 interface User {
   user_name: string;
@@ -34,12 +34,8 @@ const AdminUsers = () => {
       setError("");
       
       console.log("Fetching users from API...");
-      const response = await fetch(getApiUrl('/user/users'), {
-        method: 'GET',
-        headers: {
-          'accept': 'application/json',
-          'Authorization': `Bearer ${authToken}`,
-        },
+      const response = await authenticatedFetch(getApiUrl('/user/users'), {
+        method: 'GET'
       });
 
       console.log("API Response Status:", response.status);
