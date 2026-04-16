@@ -83,7 +83,7 @@ export const AppBar = ({ title, showBack = false, username = "John Doe", showHom
   };
 
   const handleLogoutConfirm = () => {
-    logout(navigate);
+    logout();
   };
 
   const headerRef = useRef<HTMLHeadElement>(null);
