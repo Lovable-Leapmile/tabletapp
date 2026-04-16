@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppBar } from "@/components/AppBar";
 import { Footer } from "@/components/Footer";
@@ -21,7 +21,13 @@ const AdminAddProduct = () => {
   const [addedItem, setAddedItem] = useState<{ item_id: string; item_description: string } | null>(null);
   const [error, setError] = useState("");
 
-  const authToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2wiOiJhZG1pbiIsImV4cCI6MTkwNzIyMTMyOX0.yl2G3oNWNgXXyCyCLnj8IW0VZ2TezllqSdnhSyLg9NQ";
+  const authToken = sessionStorage.getItem("authToken");
+
+  useEffect(() => {
+    if (!authToken) {
+      navigate("/login");
+    }
+  }, [authToken, navigate]);
 
   const handleScanAgain = () => {
     if (itemId || itemDescription) {

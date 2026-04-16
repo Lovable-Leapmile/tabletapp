@@ -53,7 +53,13 @@ const AdminHistory = () => {
   const [showNoTransactionMessage, setShowNoTransactionMessage] = useState(false);
   const numRecords = 10;
 
-  const authToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2wiOiJhZG1pbiIsImV4cCI6MTkwNzIyMTMyOX0.yl2G3oNWNgXXyCyCLnj8IW0VZ2TezllqSdnhSyLg9NQ";
+  const authToken = sessionStorage.getItem("authToken");
+
+  useEffect(() => {
+    if (!authToken) {
+      navigate("/login");
+    }
+  }, [authToken, navigate]);
 
   const fetchInboundTransactions = async () => {
     try {

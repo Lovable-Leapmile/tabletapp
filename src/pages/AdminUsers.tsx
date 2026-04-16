@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { AppBar } from "@/components/AppBar";
 import { Input } from "@/components/ui/input";
 import { Search, X, Users } from "lucide-react";
@@ -11,6 +12,7 @@ interface User {
 }
 
 const AdminUsers = () => {
+  const navigate = useNavigate();
   const username = sessionStorage.getItem("username") || "Guest";
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
@@ -18,7 +20,13 @@ const AdminUsers = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const authToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2wiOiJhZG1pbiIsImV4cCI6MTkwNzIyMTMyOX0.yl2G3oNWNgXXyCyCLnj8IW0VZ2TezllqSdnhSyLg9NQ";
+  const authToken = sessionStorage.getItem("authToken");
+
+  useEffect(() => {
+    if (!authToken) {
+      navigate("/login");
+    }
+  }, [authToken, navigate]);
 
   const fetchUsers = async () => {
     try {
