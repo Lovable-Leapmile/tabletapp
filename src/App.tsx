@@ -26,8 +26,8 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 // Get base path from env, removing trailing slash for BrowserRouter
-const getBasename = (): string => {
-  const base = import.meta.env.VITE_APP_BASE || "/";
+export const getBasename = (): string => {
+  const base = import.meta.env.BASE_URL || "/";
   // Remove trailing slash if present (but keep "/" as is)
   return base === "/" ? "/" : base.replace(/\/$/, "");
 };
@@ -47,7 +47,7 @@ const App = () => (
             <Routes>
               {/* Public route */}
               <Route path="/" element={<Login />} />
-              
+
               {/* Authenticated routes (any standard user) */}
               <Route element={<ProtectedRoute />}>
                 <Route path="/dashboard" element={<Dashboard />} />
@@ -69,7 +69,7 @@ const App = () => (
 
 
 
-              
+
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

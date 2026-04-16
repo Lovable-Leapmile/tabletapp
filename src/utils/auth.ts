@@ -16,5 +16,6 @@ export const logout = (): void => {
   sessionStorage.removeItem("userPhone");
   
   // Hard redirect to login page causing a fresh state reset
-  window.location.href = "/";
+  // Using BASE_URL ensures we redirect to the correct subpath (e.g. /tabletapp/)
+  window.location.href = import.meta.env.BASE_URL || "/";
 };
