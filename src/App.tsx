@@ -58,10 +58,6 @@ const App = () => (
                 <Route path="/pickup/scan-items" element={<ScanItemToPickup />} />
                 <Route path="/station-view" element={<StationView />} />
                 <Route path="/tray-overflow" element={<TrayOverflow />} />
-              </Route>
-
-              {/* Admin-only routes */}
-              <Route element={<ProtectedRoute requireRole="admin" />}>
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/admin/users" element={<AdminUsers />} />
                 <Route path="/admin/bins" element={<AdminBins />} />
@@ -70,6 +66,9 @@ const App = () => (
                 <Route path="/admin/test-scanner" element={<AdminTestScanner />} />
                 <Route path="/admin/scanner-manual" element={<AdminScannerManual />} />
               </Route>
+
+
+
               
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
