@@ -75,6 +75,7 @@
     "rollup": "4.24.0",
     "@xmldom/xmldom": "0.8.12",
     "picomatch": "2.3.2",
+    "@isaacs/brace-expansion": "5.0.1",
     "@remix-run/router": "1.23.2"
   },
   "devDependencies": {
