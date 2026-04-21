@@ -19,7 +19,7 @@ export const BinCard = ({
   showStatusBadge = true
 }: BinCardProps) => {
   const isEmpty = itemCount === 0;
-  
+
   return (
     <div className="relative">
       <Card
@@ -32,36 +32,36 @@ export const BinCard = ({
           className
         )}
       >
-      
-      <div className={cn(
-        "flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-lg",
-        "flex items-center justify-center p-2 overflow-hidden",
-        isEmpty ? "bg-muted/30" : "bg-primary/10"
-      )}>
-        <img 
-          src={isEmpty ? bin2Image : bin1Image}
-          alt={isEmpty ? "Empty bin" : "Bin with items"}
-          className="w-full h-full object-contain transition-transform group-hover:scale-110"
-        />
-      </div>
-      
-      {showStatusBadge && isEmpty && (
-        <div className="absolute top-0 left-0 pl-5 z-10">
-          <span className="inline-flex items-center pl-1.5 pr-1.5 pb-0.5 pt-0 rounded-b text-xs font-medium bg-success/20 text-success border border-success/30 border-t-0">
-            Empty
-          </span>
+
+        <div className={cn(
+          "flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-lg",
+          "flex items-center justify-center p-2 overflow-hidden",
+          isEmpty ? "bg-muted/30" : "bg-primary/10"
+        )}>
+          <img
+            src={isEmpty ? bin2Image : bin1Image}
+            alt={isEmpty ? "Empty bin" : "Bin with items"}
+            className="w-full h-full object-contain transition-transform group-hover:scale-110"
+          />
         </div>
-      )}
-      
-      <div className="flex-1 min-w-0">
-        <h3 className="text-sm sm:text-base font-medium text-foreground truncate">
-          {binId}
-        </h3>
-        <p className="text-xs sm:text-sm text-muted-foreground">
-          {isEmpty ? 'No items' : `${itemCount} item${itemCount !== 1 ? 's' : ''}`}
-        </p>
-      </div>
-    </Card>
+
+        {showStatusBadge && isEmpty && (
+          <div className="absolute top-0 left-0 pl-5 z-10">
+            <span className="inline-flex items-center pl-1.5 pr-1.5 pb-0.5 pt-0 rounded-b text-xs font-medium bg-success/20 text-success border border-success/30 border-t-0">
+              Empty
+            </span>
+          </div>
+        )}
+
+        <div className="flex-1 min-w-0">
+          <h3 className="text-sm sm:text-base font-medium text-foreground truncate">
+            {binId}
+          </h3>
+          <p className="text-xs sm:text-sm text-muted-foreground">
+            {isEmpty ? 'No items' : `${itemCount} item${itemCount !== 1 ? 's' : ''}`}
+          </p>
+        </div>
+      </Card>
     </div>
   );
 };
