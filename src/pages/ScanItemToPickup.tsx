@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Barcode, Camera, X, ArrowRight, Package, PackageCheck, Loader2, PackageSearch, MapPin } from "lucide-react";
 import { toast } from "sonner";
-import robotAnimation from "@/assets/robot-bin-animation.gif";
+import robotAnimation from "@/assets/images/robot-bin-animation.gif";
 import { getApiUrl, authenticatedFetch } from "@/utils/api";
 import {
   AlertDialog,

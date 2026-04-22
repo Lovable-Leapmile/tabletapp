@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import bin1Image from "@/assets/bin1.png";
-import bin2Image from "@/assets/bin2.png";
+import bin1Image from "@/assets/images/bin1.png";
+import bin2Image from "@/assets/images/bin2.png";
 
 interface BinCardProps {
   binId: string;

@@ -17,18 +17,18 @@
   <meta name="referrer" content="strict-origin-when-cross-origin" />
 
   <!-- Security: Content-Security-Policy meta fallback.
-         Primary CSP is enforced by NGINX.
-         This meta tag acts as a secondary layer for clients / edge caches that
-         bypass NGINX headers. unsafe-eval is intentionally excluded.
+         All assets (fonts, images, icons, scripts, styles) are served locally.
+         No external CDNs/hosts in font-src, style-src, img-src, or media-src.
+         Primary CSP is enforced by NGINX; this meta tag is the secondary layer.
     -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self';
                base-uri 'self';
-               script-src 'self' https://www.googletagmanager.com 'unsafe-inline';
-               style-src 'self' https://fonts.googleapis.com 'unsafe-inline';
-               font-src 'self' https://fonts.gstatic.com;
-               img-src 'self' data: https://leapmile-website.blr1.digitaloceanspaces.com https://www.googletagmanager.com;
-               media-src 'self' https://leapmile-website.blr1.digitaloceanspaces.com;
-               connect-src 'self' https://*.leapmile.com https://www.google-analytics.com;
+               script-src 'self' 'unsafe-inline';
+               style-src 'self' 'unsafe-inline';
+               font-src 'self' data:;
+               img-src 'self' data: blob:;
+               media-src 'self' data: blob:;
+               connect-src 'self' https://*.leapmile.com;
                object-src 'none';
                upgrade-insecure-requests;" />
 
