@@ -13,25 +13,6 @@
   <meta name="theme-color" content="#FFCC00" />
   <link rel="apple-touch-icon" href="/pwa-192x192.png" />
 
-  <!-- Security: Referrer-Policy — defence-in-depth (NGINX header is primary) -->
-  <meta name="referrer" content="strict-origin-when-cross-origin" />
-
-  <!-- Security: Content-Security-Policy meta fallback.
-         All assets (fonts, images, icons, scripts, styles) are served locally.
-         No external CDNs/hosts in font-src, style-src, img-src, or media-src.
-         Primary CSP is enforced by NGINX; this meta tag is the secondary layer.
-    -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self';
-               base-uri 'self';
-               script-src 'self' 'unsafe-inline';
-               style-src 'self' 'unsafe-inline';
-               font-src 'self' data:;
-               img-src 'self' data: blob:;
-               media-src 'self' data: blob:;
-               connect-src 'self' https://*.leapmile.com;
-               object-src 'none';
-               upgrade-insecure-requests;" />
-
   <title>DHL Supply Chain - Nanowarehouse Control</title>
   <meta name="description"
     content="Professional warehouse control application for DHL Supply Chain Nanowarehouse Cube Robot" />
