@@ -5,7 +5,7 @@ import { BinCard } from "@/components/BinCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import bin1 from "@/assets/bin1.png";
+import bin1 from "@/assets/images/bin1.png";
 import { Search, X, Filter, Loader2, Package, Clock, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { getApiUrl, authenticatedFetch } from "@/utils/api";

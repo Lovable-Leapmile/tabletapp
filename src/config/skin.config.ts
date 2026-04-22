@@ -1,7 +1,8 @@
 // src/config/skin.config.ts
 
-// Import local logo assets
-import dhlLogo from "@/assets/dhl-logo.png";
+// Import local logo assets (no external URLs — CSP compliant)
+import dhlLogo from "@/assets/images/dhl-logo.png";
+import leapmileLogo from "@/assets/images/leapmile.png";
 
 interface Skin {
   logo: string;
@@ -101,7 +102,7 @@ interface Skin {
 
 const skins: Record<string, Skin> = {
   LEAPMILE_UI: {
-    logo: "https://leapmile-website.blr1.digitaloceanspaces.com/leapmile.png",
+    logo: leapmileLogo,
     colors: {
       // Base colors
       background: "#FFFFFF",
@@ -281,7 +282,7 @@ const skins: Record<string, Skin> = {
     },
   },
   BIAL_UI: {
-    logo: "https://leapmile-website.blr1.digitaloceanspaces.com/BIAL.png",
+    logo: leapmileLogo,
     colors: {
       // Base colors
       background: "#FFFFFF",
@@ -371,7 +372,7 @@ const skins: Record<string, Skin> = {
     },
   },
   AMS_UI: {
-    logo: "https://leapmile-website.blr1.digitaloceanspaces.com/AMS.png",
+    logo: leapmileLogo,
     colors: {
       // Base colors
       background: "#FFFFFF",
